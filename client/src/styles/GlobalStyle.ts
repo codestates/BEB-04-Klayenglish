@@ -15,6 +15,9 @@ const globalStyle = css`
     font-family: "Roboto", "Noto Sans KR", sans-serif;
   }
 
+  body {
+    background-color: ${palette.black};
+  }
   a {
     text-decoration: none;
     color: inherit;

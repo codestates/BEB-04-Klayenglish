@@ -8,11 +8,11 @@ const Base = styled.div`
   color: ${palette.gray[200]};
 
   .Home-description {
-    padding-top: 10rem;
+    padding-top: 10rem; // 160px
     display: flex;
     flex-direction: column;
     align-items: center;
-    font-size: 2rem;
+    font-size: 2rem; // 32px
     font-weight: 700;
   }
 `;

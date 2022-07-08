@@ -16,8 +16,6 @@ const App: React.FC = () => {
         <Route path="/" element={<Home />}></Route>
         <Route path="/test" element={<Test />}></Route>
         <Route path="/test/:id" element={<TestDetail />}></Route>
-        {/* 라우터 안에는 2개에 props를 가져간다! */}
-        {/* Restful api 규칙에따른  MovieDetail설정하였음*/}
       </Routes>
     </div>
   );
