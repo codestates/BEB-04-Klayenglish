@@ -59,10 +59,11 @@ const Movies: React.FC = () => {
   return (
     <Base>
       <div>
-        <h1>커뮤니티</h1>
-        <h1>영화슬라이드</h1>
+        <h1>Comunity</h1>
+        <br />
+        <h1>$ 영화슬라이드 작업중...</h1>
         <div>
-          <button>오늘의 명언</button>
+          <h2>Life quotes</h2>
           {/* onClick={onClick}설정??  */}
         </div>
         {word && (
