@@ -56,6 +56,9 @@ const Navigation: React.FC = () => {
               <Link to="/Test" className="Nav-item">
                 Test
               </Link>
+              <Link to="/Comunity" className="Nav-item">
+                Comunity
+              </Link>
               {/* 리액트라우터 Link 사용 ! */}
             </Nav>
             <Form className="d-flex">

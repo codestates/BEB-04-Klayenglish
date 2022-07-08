@@ -67,7 +67,7 @@ const Base = styled.div`
   }
 `;
 
-const Movies: React.FC = () => {
+const Test: React.FC = () => {
   const currentPage = useSelector((state) => state.quiz.page);
   const list = dummyQuiz[currentPage];
   const dispatch = useDispatch();
@@ -77,7 +77,6 @@ const Movies: React.FC = () => {
     }
     dispatch(quizActions.backQuiz());
   };
-
   return (
     <Base>
       <div className="quiz_header">
@@ -100,4 +99,4 @@ const Movies: React.FC = () => {
   );
 };
 
-export default Movies;
+export default Test;
