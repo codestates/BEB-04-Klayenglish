@@ -6,6 +6,7 @@ import Navigation from "./components/Navigation";
 import Test from "./pages/Test";
 import TestDetail from "./pages/TestDetail";
 import GlobalStyle from "./styles/GlobalStyle";
+import Course from "./pages/Course";
 
 const App: React.FC = () => {
   return (
@@ -16,6 +17,7 @@ const App: React.FC = () => {
         <Route path="/" element={<Home />}></Route>
         <Route path="/test" element={<Test />}></Route>
         <Route path="/test/:id" element={<TestDetail />}></Route>
+        <Route path="/course/" element={<Course />}></Route>
         {/* 라우터 안에는 2개에 props를 가져간다! */}
         {/* Restful api 규칙에따른  MovieDetail설정하였음*/}
       </Routes>
