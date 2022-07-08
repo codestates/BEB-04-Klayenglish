@@ -24,6 +24,7 @@ export const quizSlice = createSlice({
     },
     backQuiz(state) {
       state.page--;
+      state.pass = "init";
     },
     setPageNum(
       state,

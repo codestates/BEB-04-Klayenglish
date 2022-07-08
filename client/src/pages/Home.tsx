@@ -4,7 +4,7 @@ import palette from "../styles/palette";
 
 const Base = styled.div`
   background-color: ${palette.black};
-  height: 100vh;
+  height: 100%;
   color: ${palette.gray[200]};
 
   .Home-description {

@@ -9,7 +9,7 @@ const Base = styled.div`
   .page_div {
     position: absolute;
     top: -2rem;
-    width: 3rem;
+    width: 4rem;
     left: 8rem;
     padding: 2px 4px 3px;
     font-size: 14px;
@@ -46,7 +46,7 @@ const Pagenum: React.FC<Props> = ({ currentNum, sumNum, ...props }) => {
   return (
     <Base>
       <div className="page_div" {...props}>
-        <PageNumber>{currentNum}</PageNumber>
+        <PageNumber>{currentNum} </PageNumber>
         <PageNumber>/ {sumNum}</PageNumber>
       </div>
     </Base>

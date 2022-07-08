@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import palette from "../styles/palette";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import TestResult from "../components/TestResult";
 import Pagenum from "../components/common/Pagenum";
 import QuizBtn from "../components/common/QuizBtn";
 import dummyQuiz from "../lib/dummyQuiz";
@@ -79,22 +80,28 @@ const Test: React.FC = () => {
   };
   return (
     <Base>
-      <div className="quiz_header">
-        <h2 className="quiz_title">초급 단어 01</h2>
-        <a className="quiz_back_btn" onClick={onResetClick}>
-          <ArrowBackIcon />
-        </a>
-      </div>
-      <div className="quiz_container">
-        <div className="quiz_content">
-          <Pagenum currentNum={list.quizNum} sumNum={10} />
-          <h3 className="multiple_title">뜻에 맞는 단어를 고르세요.</h3>
-          <strong className="multiple_question">{list.quizMean}</strong>
-          <div className="multiple_answer_list">
-            <QuizBtn words={list.answerList} page={currentPage} />
+      {currentPage == 10 ? (
+        <TestResult />
+      ) : (
+        <>
+          <div className="quiz_header">
+            <h2 className="quiz_title">초급 단어 01</h2>
+            <a className="quiz_back_btn" onClick={onResetClick}>
+              <ArrowBackIcon />
+            </a>
           </div>
-        </div>
-      </div>
+          <div className="quiz_container">
+            <div className="quiz_content">
+              <Pagenum currentNum={list.quizNum} sumNum={10} />
+              <h3 className="multiple_title">뜻에 맞는 단어를 고르세요.</h3>
+              <strong className="multiple_question">{list.quizMean}</strong>
+              <div className="multiple_answer_list">
+                <QuizBtn words={list.answerList} page={currentPage} />
+              </div>
+            </div>
+          </div>
+        </>
+      )}
     </Base>
   );
 };
