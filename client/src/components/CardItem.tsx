@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import lectureList from "../dummy/lectureList";
+import lectureList from "../lib/lectureList";
 
 const CardItem: React.FC = (props) => {
   return (

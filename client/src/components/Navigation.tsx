@@ -16,7 +16,7 @@ const Base = styled.div`
   border-bottom: 1px solid ${palette.gray[400]};
   .Nav-item {
     color: ${palette.gray[300]};
-    margin-left: 1rem;
+    margin-left: 1rem; //16px
     transition: all 0.5s;
     padding: 1rem 0;
     &:hover {
@@ -24,9 +24,12 @@ const Base = styled.div`
     }
   }
   img {
-    max-width: 2rem;
-    margin-right: 0.5rem;
+    max-width: 2rem; //32px
+    margin-right: 0.5rem; //8px
     margin-left: 0.5rem;
+  }
+  .d-flex {
+    margin-right: 1rem;
   }
 `;
 // 스타일컴포넌트 넣기
@@ -52,6 +55,9 @@ const Navigation: React.FC = () => {
             >
               <Link to="/Test" className="Nav-item">
                 Test
+              </Link>
+              <Link to="/Comunity" className="Nav-item">
+                Comunity
               </Link>
               {/* 리액트라우터 Link 사용 ! */}
               <Link to="/Course" className="Nav-item">

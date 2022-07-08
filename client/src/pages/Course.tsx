@@ -1,7 +1,7 @@
 import React from "react";
 import CardItem from "../components/CardItem";
 import "./Cards.css";
-import lectureList from "../dummy/lectureList";
+import lectureList from "../lib/lectureList";
 
 const Course: React.FC = () => {
   return (
