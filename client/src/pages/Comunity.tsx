@@ -6,6 +6,8 @@ import { useEffect } from "react";
 import WordsCard from "../components/WordsCard";
 import { Card, Col, Row, Container } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
+import MovieSlice from "../store/movieSlice";
+import MovieSliede from "../components/MovieSlide";
 
 // type GreetingsProps = {
 //   item: void;
@@ -17,6 +19,11 @@ const Movies: React.FC = () => {
     background-color: ${palette.gray[700]};
     height: 100vh;
     color: ${palette.gray[200]};
+    display: flex;
+
+    .Textarea {
+      border: 2px solid rgb(213, 194, 194);
+    }
   `;
 
   //   1. 무비슬라이드 만들기
@@ -62,14 +69,18 @@ const Movies: React.FC = () => {
         <h1>Comunity</h1>
         <br />
         <h1>$ 영화슬라이드 작업중...</h1>
+        <MovieSliede />
+        {/* <MovieSlide movies={popularMovies}/> */}
+        {/* 컴포넌트작업중 */}
         <div>
           <h2>Life quotes</h2>
           {/* onClick={onClick}설정??  */}
         </div>
         {word && (
           <textarea
-            rows={7}
-            value={JSON.stringify(word, null, 2)}
+            className="Textarea"
+            // rows={5}
+            placeholder={JSON.stringify(word, null, 2)}
             readOnly={true}
           />
         )}
