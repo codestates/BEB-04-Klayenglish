@@ -14,11 +14,13 @@ import palette from "../styles/palette";
 
 const Base = styled.div`
   border-bottom: 1px solid ${palette.gray[400]};
+  .Nav-title {
+    color: ${palette.gray[300]};
+  }
   .Nav-item {
     color: ${palette.gray[300]};
     margin-left: 1rem; //16px
     transition: all 0.5s;
-    padding: 1rem 0;
     &:hover {
       color: ${palette.gray[100]};
     }
@@ -42,7 +44,7 @@ const Navigation: React.FC = () => {
         <Container fluid>
           <Navbar.Brand>
             <Link to="/">
-              <img src={`${process.env.PUBLIC_URL}/klaytn-klay-logo.png`} />
+              <img src={`${process.env.PUBLIC_URL}/Klay.png`} />
               <span className="Nav-title">Klayenglish</span>
             </Link>
           </Navbar.Brand>
@@ -65,8 +67,10 @@ const Navigation: React.FC = () => {
               </Link>
             </Nav>
             <Form className="d-flex">
-              <Button variant="outline-danger">Wallet</Button>
-              {/* outline-danger로 바꿈 */}
+              {/* 클릭 이후 아웃라인 디자인 수정 가능한지? */}
+              <Link to="/signin" className="Nav-item">
+                <Button variant="outline-light">Sign In</Button>
+              </Link>
             </Form>
           </Navbar.Collapse>
         </Container>

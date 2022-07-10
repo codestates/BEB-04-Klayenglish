@@ -8,6 +8,8 @@ import TestDetail from "./pages/TestDetail";
 import GlobalStyle from "./styles/GlobalStyle";
 import Course from "./pages/Course";
 import Comunity from "./pages/Comunity";
+import SignIn from "./pages/SignIn";
+import SignUp from "./pages/SignUp";
 
 const App: React.FC = () => {
   return (
@@ -20,8 +22,8 @@ const App: React.FC = () => {
         <Route path="/comunity" element={<Comunity />}></Route>
         <Route path="/test/:id" element={<TestDetail />}></Route>
         <Route path="/course/" element={<Course />}></Route>
-        {/* 라우터 안에는 2개에 props를 가져간다! */}
-        {/* Restful api 규칙에따른  MovieDetail설정하였음*/}
+        <Route path="/signin" element={<SignIn />}></Route>
+        <Route path="/signup" element={<SignUp />}></Route>
       </Routes>
     </div>
   );
