@@ -7,7 +7,8 @@ import WordsCard from "../components/WordsCard";
 import { Card, Col, Row, Container } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import MovieSlice from "../store/movieSlice";
-import MovieSliede from "../components/MovieSlide";
+import BoardList from "../components/BoardList";
+// import MovieSliede from "../components/MovieSlide";
 
 // type GreetingsProps = {
 //   item: void;
@@ -69,7 +70,7 @@ const Movies: React.FC = () => {
         <h1>Comunity</h1>
         <br />
         <h1>$ 영화슬라이드 작업중...</h1>
-        <MovieSliede />
+        {/* <MovieSliede /> */}
         {/* <MovieSlide movies={popularMovies}/> */}
         {/* 컴포넌트작업중 */}
         <div>
@@ -84,6 +85,11 @@ const Movies: React.FC = () => {
             readOnly={true}
           />
         )}
+        <div>
+          <h1>게시판 & 이벤트</h1>
+          <BoardList />
+          {/* 게시판 목록보기 */}
+        </div>
         <Container>
           <Row>
             {/* {data.map((slip) => (
@@ -92,7 +98,7 @@ const Movies: React.FC = () => {
                 <WordsCard item={slip} />
               </Col>
             ))} */}
-            <h1>게시판 & 이벤트</h1>
+
             <Col lg={3}>
               {" "}
               <WordsCard />
