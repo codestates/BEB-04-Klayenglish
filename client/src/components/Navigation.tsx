@@ -3,7 +3,6 @@ import {
   Navbar,
   Container,
   Form,
-  Button,
   Nav,
   NavDropdown,
   FormControl,
@@ -11,6 +10,7 @@ import {
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import palette from "../styles/palette";
+import Button from "./common/Button";
 
 const Base = styled.div`
   border-bottom: 1px solid ${palette.gray[400]};
@@ -32,6 +32,16 @@ const Base = styled.div`
   }
   .d-flex {
     margin-right: 1rem;
+  }
+  .Nav-signIn {
+    background: linear-gradient(to right top, #da246c, #ff9426);
+    color: ${palette.gray[100]};
+    &:hover {
+      background: linear-gradient(to right top, #b81e5c, #d97d21);
+    }
+    :active {
+      transform: scale(0.9);
+    }
   }
 `;
 // 스타일컴포넌트 넣기
@@ -55,7 +65,7 @@ const Navigation: React.FC = () => {
               style={{ maxHeight: "100px" }}
               navbarScroll
             >
-              <Link to="/Test" className="Nav-item">
+              <Link to="/choseTest" className="Nav-item">
                 Test
               </Link>
               <Link to="/Comunity" className="Nav-item">
@@ -69,7 +79,7 @@ const Navigation: React.FC = () => {
             <Form className="d-flex">
               {/* 클릭 이후 아웃라인 디자인 수정 가능한지? */}
               <Link to="/signin" className="Nav-item">
-                <Button variant="outline-light">Sign In</Button>
+                <Button className="Nav-signIn">Sign In</Button>
               </Link>
             </Form>
           </Navbar.Collapse>

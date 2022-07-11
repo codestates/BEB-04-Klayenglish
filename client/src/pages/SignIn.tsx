@@ -23,7 +23,7 @@ const Base = styled.div`
   align-items: center;
   .login_logo {
     font-size: 2.5rem;
-    font-weight: 600;
+    font-weight: 500;
     color: ${palette.gray[300]};
     padding-bottom: 0.5rem;
     margin-top: 5.5rem;
@@ -79,14 +79,14 @@ const Base = styled.div`
         font-size: 1.2rem;
         margin: 1rem;
         padding: 0.7rem;
-        border-radius: 0.3rem;
+        border-radius: 10px;
         border: none;
-        background-color: ${palette.green[500]};
+        background: linear-gradient(to right top, #da246c, #ff9426);
         color: #ffff;
         cursor: pointer;
         transition: 0.3s;
         :hover {
-          background-color: ${palette.green[600]};
+          background: linear-gradient(to right top, #b81e5c, #d97d21);
         }
         :active {
           transform: scale(0.9);
@@ -143,17 +143,17 @@ const SignIn: React.FC = () => {
 
   return (
     <Base>
-      <h1 className="login_logo">Klayenglish</h1>
+      <h1 className="login_logo">Sign in to Klayenglish</h1>
       <form className="login_form">
         <Input
           type="text"
-          placeholder="이메일"
+          placeholder="Email address"
           value={email}
           onChange={onChangeEmail}
         />
         <Input
           type={passwordType.type}
-          placeholder="비밀번호"
+          placeholder="Password"
           value={password}
           onChange={onChangePassword}
         />
@@ -167,7 +167,7 @@ const SignIn: React.FC = () => {
             이메일 또는 비밀번호가 잘못되었습니다.
           </p>
         )}
-        <button className="login_btn">로그인</button>
+        <button className="login_btn">Continue</button>
         <p className="forgot_pw" onClick={() => navigate("/password")}>
           비밀번호를 잊으셨나요?
         </p>
@@ -177,7 +177,7 @@ const SignIn: React.FC = () => {
             className="createAccount_btn"
             onClick={() => navigate("/signup")}
           >
-            새 계정 만들기
+            Create Account
           </div>
         </div>
       </form>

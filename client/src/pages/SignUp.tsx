@@ -61,17 +61,18 @@ const Base = styled.div`
     justify-content: flex-end;
     gap: 1rem; // 16px
     .btn_goBack {
-      background-color: ${palette.gray[500]};
+      border: 1px solid ${palette.gray[200]};
       color: ${palette.gray[200]};
       &:hover {
-        background-color: ${palette.gray[600]};
+        background-color: ${palette.gray[200]};
+        color: ${palette.black};
       }
     }
     .btn_signUp {
-      background-color: ${palette.gray[500]};
+      background: linear-gradient(to right top, #da246c, #ff9426);
       color: ${palette.gray[200]};
-      &:hover {
-        background-color: ${palette.gray[600]};
+      :hover {
+        background: linear-gradient(to right top, #b81e5c, #d97d21);
       }
     }
   }
@@ -214,14 +215,14 @@ const SignUp: React.FC = () => {
 
   return (
     <Base>
-      <h1 className="signup-heading">회원가입</h1>
-      <span>빠르고 쉽습니다.</span>
+      <h1 className="signup-heading">Join Klayenglish</h1>
+      <span>it's fast and easy.</span>
       <Divider />
-      <p className="signup-input-label">닉네임</p>
+      <p className="signup-input-label">Nickname</p>
       <div className="signup-input-wrapper">
         <Input
           type="text"
-          placeholder="닉네임을 입력해주세요"
+          placeholder=""
           onChange={handleInputValue("nickname")}
           validated={validate.nickname === "fail" ? false : true}
           width="100%"
@@ -248,11 +249,10 @@ const SignUp: React.FC = () => {
           닉네임은 2~8자, 특수문자 사용불가 입니다.
         </p>
       )}
-      <p className="signup-input-label">이메일 주소</p>
+      <p className="signup-input-label">Email address</p>
       <div className="signup-input-wrapper">
         <Input
           type="text"
-          placeholder="이메일을 입력해주세요"
           onChange={handleInputValue("email")}
           validated={validate.email === "fail" ? false : true}
           width="100%"
@@ -281,11 +281,10 @@ const SignUp: React.FC = () => {
             : "올바른 이메일 주소를 입력해주세요."}
         </p>
       )}
-      <p className="signup-input-label">비밀번호</p>
+      <p className="signup-input-label">Password</p>
       <div className="signup-input-wrapper">
         <Input
           type={passwordType.type}
-          placeholder="비밀번호를 입력해주세요"
           onChange={handleInputValue("password")}
           validated={validate.password === "fail" ? false : true}
           width="100%"
@@ -318,10 +317,10 @@ const SignUp: React.FC = () => {
 
       <div className="signup-submit-button-wrapper">
         <Button className="btn_goBack" onClick={() => navigate(-1)}>
-          돌아가기
+          Back
         </Button>
         <Button className="btn_signUp" onClick={onClickSubmitButton}>
-          가입하기
+          Next
         </Button>
       </div>
     </Base>
