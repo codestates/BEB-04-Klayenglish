@@ -1,12 +1,15 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import lectureList from "../lib/lectureList";
+import styled from "styled-components";
+import palette from "../styles/palette";
 
+const Base = styled.li``;
 const CardItem: React.FC = (props) => {
   return (
     <>
       {lectureList.map((aa) => (
-        <li className="cards__item" key={aa.id}>
+        <Base className="cards__item" key={aa.id}>
           <Link className="cards__item__link" to={aa.path}>
             <figure className="cards__item__pic-wrap" data-category={aa.label}>
               <img
@@ -21,7 +24,7 @@ const CardItem: React.FC = (props) => {
               {/* 10 tut($ 4.56) */}
             </div>
           </Link>
-        </li>
+        </Base>
       ))}
     </>
   );
