@@ -63,6 +63,9 @@ const Navigation: React.FC = () => {
               <Link to="/Course" className="Nav-item">
                 Course
               </Link>
+              <Link to="/Chat" className="Nav-item">
+                Chat
+              </Link>
             </Nav>
             <Form className="d-flex">
               <Button variant="outline-danger">Wallet</Button>

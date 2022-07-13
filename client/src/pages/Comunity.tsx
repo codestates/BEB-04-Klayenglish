@@ -7,7 +7,7 @@ import WordsCard from "../components/WordsCard";
 import { Card, Col, Row, Container } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import MovieSlice from "../store/movieSlice";
-import BoardList from "../components/BoardList";
+// import BoardList from "../components/BoardList";
 // import MovieSliede from "../components/MovieSlide";
 
 // type GreetingsProps = {
@@ -22,9 +22,9 @@ const Movies: React.FC = () => {
     color: ${palette.gray[200]};
     display: flex;
 
-    .Textarea {
+    /* .Textarea {
       border: 2px solid rgb(213, 194, 194);
-    }
+    } */
   `;
 
   //   1. 무비슬라이드 만들기
@@ -87,8 +87,8 @@ const Movies: React.FC = () => {
         )}
         <div>
           <h1>게시판 & 이벤트</h1>
-          <BoardList />
-          {/* 게시판 목록보기 */}
+          {/* <BoardList />
+          게시판 목록보기 */}
         </div>
         <Container>
           <Row>
