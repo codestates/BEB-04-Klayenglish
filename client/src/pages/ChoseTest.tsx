@@ -9,13 +9,37 @@ import { useState } from "react";
 import { useSelector, useDispatch } from "../store";
 import { quizActions } from "../store/quizSlice";
 import Test from "../components/Test";
+import TestList from "../components/TestList";
 
-const Base = styled.div``;
+const Base = styled.div`
+  color: ${palette.gray[200]};
+  height: 100vh;
+  .choseTest-logo {
+    padding-top: 2rem;
+    text-align: center;
+  }
+  .tests-list-container {
+    .test-list {
+      margin-top: 3rem;
+      display: flex;
+      // 화면 가운데에서 왼쪽부터 추가하는 방법을 모르겠다
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+  }
+`;
 
 const ChoseTest: React.FC = () => {
   return (
     <Base>
-      <Test />
+      <h1 className="choseTest-logo">Test</h1>
+      <div className="tests-list-container">
+        <div className="test-list">
+          <TestList />
+          <TestList />
+          <TestList />
+        </div>
+      </div>
     </Base>
   );
 };
