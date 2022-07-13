@@ -193,13 +193,27 @@ const SignUp: React.FC = () => {
       return;
     }
 
-    const body = {
+    const regForm = {
       username: email,
       password: password,
       nickname: nickname,
     };
+
     try {
-      await navigate("/");
+      fetch("http://localhost:3001/register", {
+        method: "post",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify({ regForm }),
+      }).then((res) => {
+        if (res.status >= 200 && res.status <= 204) {
+          alert("회원가입 완료!!");
+          navigate("/");
+        } else {
+          alert("이미가입된 사용자입니다.");
+        }
+      });
     } catch (error) {
       console.log(error);
     }

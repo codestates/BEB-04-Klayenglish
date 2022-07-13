@@ -119,6 +119,7 @@ const SignIn: React.FC = () => {
     type: "password",
     visible: false,
   });
+
   const navigate = useNavigate();
   const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
 
@@ -139,6 +140,30 @@ const SignIn: React.FC = () => {
         return { type: "password", visible: false };
       }
     });
+  };
+  const [msg, setMsg] = useState("");
+
+  const login = async () => {
+    //console.log("id = " + id + "pwd = " + pwd);
+    try {
+      fetch("http://localhost:3001/login", {
+        method: "post",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify({ id: email, pwd: password }),
+      }).then(
+        (res) => res.json().then((msg) => setMsg(msg["message"]))
+        // console.log(res.body);
+        // if (res.status >= 200 && res.status <= 204) {
+        //   console.log("클라이언트 로그인성공");
+        // }
+      );
+    } catch (error) {
+      console.error(error);
+    }
+
+    navigate("/");
   };
 
   return (
@@ -167,7 +192,9 @@ const SignIn: React.FC = () => {
             이메일 또는 비밀번호가 잘못되었습니다.
           </p>
         )}
-        <button className="login_btn">Continue</button>
+        <button className="login_btn" onClick={login}>
+          Continue
+        </button>
         <p className="forgot_pw" onClick={() => navigate("/password")}>
           비밀번호를 잊으셨나요?
         </p>
