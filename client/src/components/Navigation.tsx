@@ -77,6 +77,12 @@ const Navigation: React.FC = () => {
               </Link>
             </Nav>
             <Form className="d-flex">
+              <Link to="/Wallet" className="Nav-item">
+                <Button className="Nav-signIn">Wallet</Button>
+              </Link>
+            </Form>
+
+            <Form className="d-flex">
               {/* 클릭 이후 아웃라인 디자인 수정 가능한지? */}
               <Link to="/signin" className="Nav-item">
                 <Button className="Nav-signIn">Sign In</Button>
