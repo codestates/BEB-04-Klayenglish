@@ -9,10 +9,30 @@ import Course from "./pages/Course";
 import Comunity from "./pages/Comunity";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
+import Wallet from "./pages/Wallet";
 import ChoseTest from "./pages/ChoseTest";
 import TestGroup from "./pages/TestGroup";
+import { useState } from "react";
 
 const App: React.FC = () => {
+  const [account, setAccount] = useState("");
+
+  const Connect = async () => {
+    try {
+      if (window.ethereum) {
+        const accounts = await window.ethereum.request({
+          method: "eth_requestAccounts",
+        });
+
+        setAccount(accounts[0]);
+      } else {
+        alert("Install Metamask first!!");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <div>
       <GlobalStyle />
@@ -26,6 +46,10 @@ const App: React.FC = () => {
         <Route path="/course/" element={<Course />}></Route>
         <Route path="/signin" element={<SignIn />}></Route>
         <Route path="/signup" element={<SignUp />}></Route>
+        <Route
+          path="/wallet"
+          element={<Wallet account={account} onClickConnect={Connect} />}
+        ></Route>
       </Routes>
     </div>
   );
