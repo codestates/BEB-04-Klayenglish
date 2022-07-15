@@ -1,6 +1,5 @@
 import React from "react";
 import CardItem from "../components/CardItem";
-import lectureList from "../lib/lectureList";
 import styled from "styled-components";
 import palette from "../styles/palette";
 

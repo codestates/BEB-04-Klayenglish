@@ -16,7 +16,8 @@ import { useState } from "react";
 
 const App: React.FC = () => {
   const [account, setAccount] = useState("");
-
+  const [balance, setBalance] = useState("");
+  window.ethereum.request();
   const Connect = async () => {
     try {
       if (window.ethereum) {
@@ -25,6 +26,14 @@ const App: React.FC = () => {
         });
 
         setAccount(accounts[0]);
+
+        const balances = await window.ethereum.request({
+          method: "eth_getBalance",
+          params: [accounts[0], "latest"],
+        });
+        setBalance(balances);
+        // console.log("bal = " + balance / 10 ** 18);
+        // 0x19eae62c6ab1906aa08253107178a8a502a97c43
       } else {
         alert("Install Metamask first!!");
       }
@@ -32,6 +41,21 @@ const App: React.FC = () => {
       console.error(error);
     }
   };
+  // const getBal = async () => {
+  //   try {
+  //     if (window.ethereum) {
+  //       console.log(account);
+  //       const balance = await window.ethereum.request({
+  //         method: "eth_getBalance",
+  //         params: ["0x19eae62c6ab1906aa08253107178a8a502a97c43", "latest"],
+  //       });
+  //       console.log("bal = " + balance / 10 ** 18);
+  //     }
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
+  // getBal();
 
   return (
     <div>
@@ -48,7 +72,13 @@ const App: React.FC = () => {
         <Route path="/signup" element={<SignUp />}></Route>
         <Route
           path="/wallet"
-          element={<Wallet account={account} onClickConnect={Connect} />}
+          element={
+            <Wallet
+              account={account}
+              balance={balance}
+              onClickConnect={Connect}
+            />
+          }
         ></Route>
       </Routes>
     </div>
