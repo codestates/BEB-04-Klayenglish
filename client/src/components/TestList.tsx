@@ -4,6 +4,7 @@ import palette from "../styles/palette";
 import TestLevel from "./common/TestLevel";
 import Test from "./Test";
 import { Link } from "react-router-dom";
+import dummyTestList from "../lib/dummyTestList";
 
 const Base = styled.div`
   box-sizing: border-box;
@@ -28,8 +29,10 @@ const Base = styled.div`
     border-radius: 0.5rem;
   }
   .test-image {
+    width: 22rem;
+    height: 12rem;
+    object-fit: cover;
     transition: all 0.5s;
-    max-width: 22rem;
     border-radius: 0.5rem;
   }
   .text-box-detail-container {
@@ -63,22 +66,23 @@ const Base = styled.div`
   }
 `;
 
-const TestList: React.FC = () => {
+interface Props {
+  id: number;
+}
+
+const TestList: React.FC<Props> = ({ id }) => {
+  const currentId = id;
+  const testList = dummyTestList[currentId];
+  const { testId, testImg, testTitle, testLevel } = testList;
   return (
-    <Link to="/test">
+    <Link to={`/testgroup/${currentId}`}>
       <Base>
-        {/* 추후 level에도 난이도 데이터 삽입 */}
-        <TestLevel level="고급" />
+        <TestLevel level={testLevel} position="ab" />
         <div className="test-image-container">
-          <span>
-            <img
-              className="test-image"
-              src="https://nomadcoders.co/_next/image?url=https%3A%2F%2Fd1telmomo28umc.cloudfront.net%2Fmedia%2Fpublic%2Fthumbnails%2FreduxThumbnail_iZI93yi.jpg&w=3840&q=75"
-            />
-          </span>
+          <img className="test-image" src={testImg} />
         </div>
         <div className="text-box-detail-container">
-          <span className="text-box-detail">초보자를 위한 리덕스</span>
+          <span className="text-box-detail">{testTitle}</span>
           <div className="test-complete-bar"></div>
           <span className="test-complete-total">0% complete</span>
         </div>

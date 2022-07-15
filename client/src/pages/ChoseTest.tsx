@@ -10,6 +10,7 @@ import { useSelector, useDispatch } from "../store";
 import { quizActions } from "../store/quizSlice";
 import Test from "../components/Test";
 import TestList from "../components/TestList";
+import dummyTestList from "../lib/dummyTestList";
 
 const Base = styled.div`
   color: ${palette.gray[200]};
@@ -30,15 +31,15 @@ const Base = styled.div`
 `;
 
 const ChoseTest: React.FC = () => {
+  // map함수 실행
+  const testList: JSX.Element[] = dummyTestList.map((el) => (
+    <TestList id={el.testId} />
+  ));
   return (
     <Base>
       <h1 className="choseTest-logo">Test</h1>
       <div className="tests-list-container">
-        <div className="test-list">
-          <TestList />
-          <TestList />
-          <TestList />
-        </div>
+        <div className="test-list">{testList}</div>
       </div>
     </Base>
   );
