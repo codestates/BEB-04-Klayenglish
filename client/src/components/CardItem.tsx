@@ -2,11 +2,12 @@ import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 // import lectureList from "../lib/lectureList";
 import styled from "styled-components";
+import { validateLocaleAndSetLanguage } from "typescript";
 import palette from "../styles/palette";
 
 const Base = styled.li``;
 const CardItem: React.FC = (props) => {
-  const [cards, setCards] = useState<any>([]);
+  const [cards, setCards] = useState([]);
   // const { id } = useParams();
 
   useEffect(() => {
@@ -21,7 +22,7 @@ const CardItem: React.FC = (props) => {
         }).then((res) =>
           res.json().then((result) => {
             setCards(result);
-            console.log(result);
+            //console.log(result);
           })
         );
       } catch (error) {
@@ -31,10 +32,18 @@ const CardItem: React.FC = (props) => {
     cardData();
   }, []);
 
-  // const aa = cards.filter((ll: any) => ll.lec_id);
+  // function replacer(key: any, value: any) {
+  //   if (typeof value === "string") {
+  //     return undefined;
+  //   }
+  // }
 
+  // const chg = JSON.stringify(cards, replacer);
+  // console.log(chg[0]);
+  const aa = cards.map((d) => console.log(d[0]));
   return (
     <>
+      {}
       {/* {cards.lec_id}
       {cards.lec_name} */}
       {/* {cards.lec_name} */}
