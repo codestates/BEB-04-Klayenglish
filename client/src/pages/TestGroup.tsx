@@ -120,10 +120,6 @@ const TestGroup: React.FC = () => {
         </div>
         <ul className="quiz-list">
           <QuizItem id={testId} />
-          <QuizItem id={testId} />
-          <QuizItem id={testId} />
-          <QuizItem id={testId} />
-          <QuizItem id={testId} />
         </ul>
       </div>
     </Base>

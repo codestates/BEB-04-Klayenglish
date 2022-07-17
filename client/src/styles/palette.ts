@@ -73,7 +73,7 @@ const palette = {
     800: "#7C2D00",
     900: "#662400",
   },
-  black: "#212529",
+  black: "#1F2937",
 };
 
 export default palette;

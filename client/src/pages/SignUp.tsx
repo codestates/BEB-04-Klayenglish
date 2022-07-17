@@ -11,6 +11,8 @@ import Input from "../components/common/Input";
 import Divider from "../components/common/Divider";
 import Button from "../components/common/Button";
 import CheckOrFail from "../components/common/CheckOrFail";
+// api
+import { signUpAPI } from "../lib/api/user";
 
 const Base = styled.div`
   display: flex;
@@ -181,15 +183,15 @@ const SignUp: React.FC = () => {
   const onClickSubmitButton = async () => {
     const { email, password, nickname } = userinfo;
     if (!validateNickname(nickname)) {
-      alert("pls check your nickname");
+      alert("올바른 닉네임 양식인지 확인해주세요!");
       return;
     }
     if (!validateEmail(email)) {
-      alert("pls check your email");
+      alert("올바른 이메일 양식인지 확인해주세요!");
       return;
     }
     if (!validatePassword(password)) {
-      alert("pls check your password");
+      alert("올바른 비밀번호 양식인지 확인해주세요!");
       return;
     }
 
@@ -200,7 +202,7 @@ const SignUp: React.FC = () => {
     };
 
     try {
-      fetch("http://localhost:3001/register", {
+      fetch("http://localhost:3001/user/register", {
         method: "post",
         headers: {
           "content-type": "application/json",
@@ -209,7 +211,7 @@ const SignUp: React.FC = () => {
       }).then((res) => {
         if (res.status >= 200 && res.status <= 204) {
           alert("회원가입 완료!!");
-          navigate("/");
+          navigate("/signin");
         } else {
           alert("이미가입된 사용자입니다.");
         }
@@ -218,10 +220,10 @@ const SignUp: React.FC = () => {
       console.log(error);
     }
   };
-
-  /*   useEffect(() => {
+  // 로그인시 리다이렉트
+  useEffect(() => {
     isLoggedIn && navigate("/", { replace: true });
-  }); */
+  });
 
   useEffect(() => {
     scrollToTop();

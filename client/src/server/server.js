@@ -5,7 +5,10 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 const mysql = require("mysql"); // mysql 모듈 사용
 const dotenv = require("dotenv");
+//const jwt = require("jsonwebtoken");
+// const cookieParser = require("cookie-parser");
 dotenv.config({ path: "../../.env" });
+// control + c -> 서버 종료 커맨드
 
 var connection = mysql.createConnection({
   host: process.env.DATABASE_HOST,
@@ -19,8 +22,9 @@ connection.connect();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cors());
+// app.use(cookieParser());
 
-app.post("/login", (req, res) => {
+app.post("/user/login", (req, res) => {
   //로그인
   const id = req.body.id;
   const pwd = req.body.pwd;
@@ -35,13 +39,15 @@ app.post("/login", (req, res) => {
         res.status(400).send({ message: "입력정보가 맞지 않습니다." });
       } else {
         console.log("로그인됨");
+        console.log(rows[0].nickName);
+        // res.cookie("nickname", "2");
         res.status(200).send({ message: "login success" });
       }
     }
   );
 });
 
-app.post("/register", (req, res) => {
+app.post("/user/register", (req, res) => {
   console.log(req.body.regForm.username);
   console.log(req.body.regForm.password);
   console.log(req.body.regForm.nickname);
@@ -51,6 +57,7 @@ app.post("/register", (req, res) => {
   // json형식의 object에서 각 value만 담아서 배열을 만든다 아래insert ?구문에 들어갈 [ary]배열을 만들기 위함
   const valExtract = req.body.regForm;
   const ary = [];
+  // key 애러 발생
   for (key in valExtract) {
     ary.push(valExtract[key]);
   }
@@ -102,5 +109,5 @@ app.post("/selectCard", (req, res) => {
 });
 
 app.listen(port, () => {
-  console.log(`Connect at http://localhost:${port}`);
+  console.log(`✅ Connect at http://localhost:${port} 🚀`);
 });
