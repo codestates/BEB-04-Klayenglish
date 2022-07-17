@@ -87,6 +87,21 @@ app.post("/register", (req, res) => {
   );
 });
 
+app.post("/selectCard", (req, res) => {
+  connection.query("SELECT * FROM lecture", function (err, rows, fields) {
+    if (err) {
+      console.log("실패");
+    } else {
+      if (rows.length < 1) {
+        console.log("조회된결과가 하나도 없습니다.");
+      } else {
+        console.log(rows);
+        res.send(rows);
+      }
+    }
+  });
+});
+
 app.listen(port, () => {
   console.log(`✅ Connect at http://localhost:${port} 🚀`);
 });
