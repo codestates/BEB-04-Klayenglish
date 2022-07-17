@@ -202,7 +202,7 @@ const SignUp: React.FC = () => {
     };
 
     try {
-      fetch("http://localhost:3001/register", {
+      fetch("http://localhost:3001/user/register", {
         method: "post",
         headers: {
           "content-type": "application/json",
@@ -220,10 +220,10 @@ const SignUp: React.FC = () => {
       console.log(error);
     }
   };
-
-  /*   useEffect(() => {
+  // 로그인시 리다이렉트
+  useEffect(() => {
     isLoggedIn && navigate("/", { replace: true });
-  }); */
+  });
 
   useEffect(() => {
     scrollToTop();

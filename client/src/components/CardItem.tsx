@@ -32,35 +32,36 @@ const CardItem: React.FC = (props) => {
   }, []);
 
   // const aa = cards.filter((ll: any) => ll.lec_id);
-
-  return (
-    <>
-      {/* {cards.lec_id}
-      {cards.lec_name} */}
-      {/* {cards.lec_name} */}
-    </>
-    // <>
-    //   {cardId.map((aa) => (
-    //     <Base className="cards__item" key={aa.id}>
-    //       <Link className="cards__item__link" to={aa.path}>
-    //         {aa.path}
-    //         <figure className="cards__item__pic-wrap" data-category={aa.label}>
-    //           <img
-    //             className="cards__item__img"
-    //             alt="Lecture Image"
-    //             src={aa.src}
-    //             //  {props.src}
-    //           />
-    //         </figure>
-    //         <div className="cards__item__info">
-    //           <h5 className="cards__item__text">{aa.text}</h5>
-    //           {/* 10 tut($ 4.56) */}
-    //         </div>
-    //       </Link>
-    //     </Base>
-    //   ))}
-    // </>
-  );
+  {
+    /* {cards.lec_id */
+  }
+  {
+    /* cards.lec_name} */
+  }
+  {
+    /* {cards.lec_name} */
+  }
+  // map함수 실행
+  const cardList: JSX.Element[] = cards.map((aa: any) => (
+    <Base className="cards__item" key={aa.id}>
+      <Link className="cards__item__link" to={aa.path}>
+        {aa.path}
+        <figure className="cards__item__pic-wrap" data-category={aa.label}>
+          <img
+            className="cards__item__img"
+            alt="Lecture Image"
+            src={aa.src}
+            //  {props.src}
+          />
+        </figure>
+        <div className="cards__item__info">
+          <h5 className="cards__item__text">{aa.text}</h5>
+          {/* 10 tut($ 4.56) */}
+        </div>
+      </Link>
+    </Base>
+  ));
+  return <>{cardList}</>;
 };
 
 export default CardItem;

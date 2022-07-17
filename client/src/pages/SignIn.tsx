@@ -10,7 +10,7 @@ import Input from "../components/common/Input";
 import Divider from "../components/common/Divider";
 // hooks
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "../store";
 import { userActions } from "../store/userSlice";
 
@@ -119,7 +119,7 @@ const SignIn: React.FC = () => {
     type: "password",
     visible: false,
   });
-
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
 
@@ -142,30 +142,36 @@ const SignIn: React.FC = () => {
     });
   };
   const [msg, setMsg] = useState("");
-
-  /*   const login = async (event: React.MouseEvent<HTMLButtonElement>) => {
+  // 로그인 버튼
+  const login = async (event: React.MouseEvent<HTMLButtonElement>) => {
     //console.log("id = " + id + "pwd = " + pwd);
     try {
-      fetch("http://localhost:3001/login", {
+      fetch("http://localhost:3001/user/login", {
         method: "post",
         headers: {
           "content-type": "application/json",
         },
         body: JSON.stringify({ id: email, pwd: password }),
-      }).then(
-        (res) => res.json().then((msg) => setMsg(msg["message"]))
-        // console.log(res.body);
-        // if (res.status >= 200 && res.status <= 204) {
-        //   console.log("클라이언트 로그인성공");
-        // }
-      );
+      }).then((res) => {
+        res.json().then((msg) => setMsg(msg["message"]));
+        console.log(res.body);
+        if (res.status >= 200 && res.status <= 204) {
+          console.log("클라이언트 로그인성공");
+          dispatch(userActions.setLoggedIn());
+        }
+      });
     } catch (error) {
       console.error(error);
     }
 
     navigate("/");
-  }; */
-  const login = async (event: React.MouseEvent<HTMLButtonElement>) => {};
+  };
+  // 로그인 되어있으면 리다이렉트
+  useEffect(() => {
+    if (isLoggedIn) {
+      navigate("/", { replace: true });
+    }
+  }, [isLoggedIn, navigate]);
 
   return (
     <Base>

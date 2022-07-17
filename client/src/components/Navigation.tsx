@@ -11,7 +11,8 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import palette from "../styles/palette";
 import Button from "./common/Button";
-
+import { useSelector, useDispatch } from "../store";
+import { userActions } from "../store/userSlice";
 const Base = styled.div`
   border-bottom: 1px solid ${palette.gray[400]};
   .navcolor {
@@ -50,6 +51,8 @@ const Base = styled.div`
 // 스타일컴포넌트 넣기
 
 const Navigation: React.FC = () => {
+  const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
+  const dispatch = useDispatch();
   return (
     <Base>
       <Navbar variant="dark" expand="lg" className="navcolor">
@@ -86,10 +89,20 @@ const Navigation: React.FC = () => {
             </Form>
 
             <Form className="d-flex">
-              {/* 클릭 이후 아웃라인 디자인 수정 가능한지? */}
-              <Link to="/signin" className="Nav-item">
-                <Button className="Nav-signIn">Sign In</Button>
-              </Link>
+              {isLoggedIn ? (
+                <div className="Nav-item">
+                  <Button
+                    className="Nav-signIn"
+                    onClick={() => dispatch(userActions.setLoggedOut())}
+                  >
+                    Sign out
+                  </Button>
+                </div>
+              ) : (
+                <Link to="/signin" className="Nav-item">
+                  <Button className="Nav-signIn">Sign in</Button>
+                </Link>
+              )}
             </Form>
           </Navbar.Collapse>
         </Container>

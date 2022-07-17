@@ -43,10 +43,6 @@ type GetProfileAPIResponseType = {
   balance: number;
 };
 
-type GoogleLoginAPIBodyType = {
-  google_token: string;
-};
-
 type FindpasswordAPIBodyType = {
   username: string;
 };
