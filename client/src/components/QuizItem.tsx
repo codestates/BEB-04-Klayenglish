@@ -45,7 +45,11 @@ const Base = styled.li`
       height: 5rem;
       top: 2rem;
       left: 6.5rem;
-      background-color: ${palette.gray[400]};
+      background: linear-gradient(
+        to right bottom,
+        ${palette.gray[400]},
+        ${palette.gray[600]}
+      );
       border-radius: 50%;
       display: flex;
       flex-direction: column;
@@ -56,6 +60,10 @@ const Base = styled.li`
       padding: 50px 0 18px;
       background-color: ${palette.gray[200]};
       color: black;
+      .quiz-item-bottom-content {
+        display: flex;
+        justify-content: center;
+      }
     }
   }
 `;
@@ -76,7 +84,7 @@ const QuizItem: React.FC<Props> = ({ id }) => {
           </div>
         </div>
         <div className="quiz-item-bottom">
-          <Link to={`/test/${id}`}>
+          <Link to={`/test/${id}`} className="quiz-item-bottom-content">
             퀴즈풀기
             <KeyboardArrowRightIcon />
           </Link>

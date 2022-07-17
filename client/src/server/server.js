@@ -6,6 +6,7 @@ const bodyParser = require("body-parser");
 const mysql = require("mysql"); // mysql 모듈 사용
 const dotenv = require("dotenv");
 dotenv.config({ path: "../../.env" });
+// command + c -> 서버 종료 커맨드
 
 var connection = mysql.createConnection({
   host: process.env.DATABASE_HOST,
@@ -87,5 +88,5 @@ app.post("/register", (req, res) => {
 });
 
 app.listen(port, () => {
-  console.log(`Connect at http://localhost:${port}`);
+  console.log(`✅ Connect at http://localhost:${port} 🚀`);
 });

@@ -14,6 +14,9 @@ import Button from "./common/Button";
 
 const Base = styled.div`
   border-bottom: 1px solid ${palette.gray[400]};
+  .navcolor {
+    background-color: #1f2937;
+  }
   .Nav-title {
     color: ${palette.gray[300]};
   }
@@ -49,7 +52,7 @@ const Base = styled.div`
 const Navigation: React.FC = () => {
   return (
     <Base>
-      <Navbar bg="dark" variant="dark" expand="lg">
+      <Navbar variant="dark" expand="lg" className="navcolor">
         {/* dark로 설정 */}
         <Container fluid>
           <Navbar.Brand>

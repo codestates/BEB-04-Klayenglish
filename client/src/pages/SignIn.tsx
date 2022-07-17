@@ -143,7 +143,7 @@ const SignIn: React.FC = () => {
   };
   const [msg, setMsg] = useState("");
 
-  const login = async () => {
+  /*   const login = async (event: React.MouseEvent<HTMLButtonElement>) => {
     //console.log("id = " + id + "pwd = " + pwd);
     try {
       fetch("http://localhost:3001/login", {
@@ -164,7 +164,8 @@ const SignIn: React.FC = () => {
     }
 
     navigate("/");
-  };
+  }; */
+  const login = async (event: React.MouseEvent<HTMLButtonElement>) => {};
 
   return (
     <Base>
