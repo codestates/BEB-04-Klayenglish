@@ -5,7 +5,6 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 const mysql = require("mysql"); // mysql 모듈 사용
 const dotenv = require("dotenv");
-//const jwt = require("jsonwebtoken");
 // const cookieParser = require("cookie-parser");
 dotenv.config({ path: "../../.env" });
 // control + c -> 서버 종료 커맨드
@@ -40,7 +39,6 @@ app.post("/user/login", (req, res) => {
       } else {
         console.log("로그인됨");
         console.log(rows[0].nickName);
-        // res.cookie("nickname", "2");
         res.status(200).send({ message: "login success" });
       }
     }
