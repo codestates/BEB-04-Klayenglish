@@ -5,7 +5,23 @@ import palette from "../styles/palette";
 
 // card.css 파일 옮겨왔습니다. - 규현
 const Cards = styled.div`
-  padding: 4rem;
+  color: ${palette.gray[200]};
+  height: 100vh;
+  .choseTest-logo {
+    padding-top: 2rem;
+    text-align: center;
+  }
+  .tests-list-container {
+    .test-list {
+      margin-top: 3rem;
+      display: flex;
+      // 화면 가운데에서 왼쪽부터 추가하는 방법을 모르겠다
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+  }
+  // 이전 css
+  /*   padding: 4rem;
   background: ${palette.black};
   .cards__intro {
     text-align: center;
@@ -27,7 +43,6 @@ const Cards = styled.div`
   .cards__items {
     margin-bottom: 24px;
   }
-
   .cards__item {
     display: flex;
     flex: 1;
@@ -123,7 +138,11 @@ const Cards = styled.div`
     font-size: 18px;
     line-height: 24px;
   }
-
+  @media only screen and (max-width: 1024px) {
+    .cards__item {
+      margin-bottom: 2rem;
+    }
+  }
   @media only screen and (min-width: 1200px) {
     .content__blog__container {
       width: 84%;
@@ -140,23 +159,22 @@ const Cards = styled.div`
     .cards__item {
       margin-bottom: 2rem;
     }
-  }
+  } */
 `;
 
 const Course: React.FC = () => {
   return (
     <Cards>
-      <h1 className="cards__intro">
+      <h1 className="choseTest-logo">
         Buy more advanced courses with TUT coins!!!!
       </h1>
-      <div className="cards__container">
-        <div className="cards__wrapper">
-          <ul className="cards__items">
-            <CardItem />
-          </ul>
-          {/* <ul className="cards__items"> */}
-          {/* <CardItem src={"../dummy/voca.png"} /> */}
-          {/* <CardItem
+      <div className="tests-list-container">
+        <div className="test-list">
+          <CardItem />
+        </div>
+        {/* <ul className="cards__items"> */}
+        {/* <CardItem src={"../dummy/voca.png"} /> */}
+        {/* <CardItem
               src="images/img-3.jpg"
               text="Set Sail in the Atlantic Ocean visiting Uncharted Waters"
               label="Mystery"
@@ -174,8 +192,7 @@ const Course: React.FC = () => {
               label="Adrenaline"
               path="/sign-up"
             // /> */}
-          {/* </ul> */}
-        </div>
+        {/* </ul> */}
       </div>
     </Cards>
   );

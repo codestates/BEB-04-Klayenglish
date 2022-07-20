@@ -4,23 +4,23 @@ import styled, { css } from "styled-components";
 import palette from "../../styles/palette";
 
 interface BaseProps {
-  level?: "고급" | "중급" | "초급";
+  level?: "master" | "diamond" | "bronze";
   position?: "ab" | "rel";
 }
 
-const getLevelColor = (level?: "고급" | "중급" | "초급") => {
+const getLevelColor = (level?: "master" | "diamond" | "bronze") => {
   switch (level) {
-    case "고급":
+    case "master":
       return css`
         background-color: ${palette.purple[100]};
         color: ${palette.purple[600]};
       `;
-    case "중급":
+    case "diamond":
       return css`
         background-color: ${palette.green[100]};
         color: ${palette.green[400]};
       `;
-    case "초급":
+    case "bronze":
       return css`
         background-color: ${palette.yellow[100]};
         color: ${palette.yellow[500]};
@@ -57,7 +57,7 @@ const Base = styled.div<BaseProps>`
 `;
 
 interface Props {
-  level?: "고급" | "중급" | "초급";
+  level?: "master" | "diamond" | "bronze";
   position?: "ab" | "rel";
 }
 
