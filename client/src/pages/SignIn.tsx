@@ -13,7 +13,7 @@ import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "../store";
 import { userActions } from "../store/userSlice";
-
+import axios from "../lib/api";
 const Base = styled.div`
   background-color: ${palette.black};
   height: 100%;
@@ -153,9 +153,13 @@ const SignIn: React.FC = () => {
         },
         body: JSON.stringify({ id: email, pwd: password }),
       }).then((res) => {
-        res.json().then((msg) => setMsg(msg["message"]));
-        console.log(res.body);
         if (res.status >= 200 && res.status <= 204) {
+          // msg -> 서버에서 보내오는 데이터
+          res
+            .json()
+            .then((msg) =>
+              localStorage.setItem("accessToken", JSON.stringify(msg["data"]))
+            );
           console.log("클라이언트 로그인성공");
           dispatch(userActions.setLoggedIn());
         }

@@ -5,9 +5,11 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 const mysql = require("mysql"); // mysql 모듈 사용
 const dotenv = require("dotenv");
+const jwt = require("./jwt-util");
 const cookieParser = require("cookie-parser");
 dotenv.config({ path: "../../.env" });
 // control + c -> 서버 종료 커맨드
+// .env 마지막줄에  SECRET_KEY=mySuperSecretKey (JWT관련)추가해주세요~ -규현
 
 var connection = mysql.createConnection({
   host: process.env.DATABASE_HOST,
@@ -17,18 +19,39 @@ var connection = mysql.createConnection({
 });
 
 connection.connect();
-
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cors());
 app.use(cookieParser());
+
+app.post("/user/auth", (req, res) => {
+  // 인증
+  const token = req.headers.authorization.split("Bearer ")[1];
+  const result = jwt.verify(token);
+  if (result.ok) {
+    // token이 검증되었으면 req에 값을 세팅하고, 다음 콜백함수로 갑니다.
+    const { id, pwd, nickname } = result;
+    res.status(200).send({
+      ok: true,
+      data: {
+        email: id,
+        nickname,
+      },
+    });
+  } else {
+    // 검증에 실패하거나 토큰이 만료되었다면 클라이언트에게 메세지를 담아서 응답합니다.
+    res.status(401).send({
+      ok: false,
+      message: result.message, // jwt가 만료되었다면 메세지는 'jwt expired'입니다.
+    });
+  }
+});
 
 app.post("/user/login", (req, res) => {
   //로그인
   const id = req.body.id;
   const pwd = req.body.pwd;
   const loginInfo = [id, pwd];
-
   connection.query(
     "SELECT * FROM users where userName=? and password=?",
     loginInfo,
@@ -37,9 +60,16 @@ app.post("/user/login", (req, res) => {
       if (rows.length < 1) {
         res.status(400).send({ message: "입력정보가 맞지 않습니다." });
       } else {
+        const accessToken = jwt.sign(rows[0]);
+        const refreshToken = jwt.refresh();
         console.log("로그인됨");
-        console.log(rows[0].nickName);
-        res.status(200).send({ message: "login success" });
+        res.status(200).send({
+          // client에게 토큰 반환합니다.
+          ok: true,
+          data: {
+            accessToken,
+          },
+        });
       }
     }
   );

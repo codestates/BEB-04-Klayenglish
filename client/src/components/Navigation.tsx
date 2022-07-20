@@ -53,6 +53,10 @@ const Base = styled.div`
 const Navigation: React.FC = () => {
   const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
   const dispatch = useDispatch();
+  const onSignOutBtn = () => {
+    dispatch(userActions.setLoggedOut());
+    localStorage.removeItem("accessToken");
+  };
   return (
     <Base>
       <Navbar variant="dark" expand="lg" className="navcolor">
@@ -91,10 +95,7 @@ const Navigation: React.FC = () => {
             <Form className="d-flex">
               {isLoggedIn ? (
                 <div className="Nav-item">
-                  <Button
-                    className="Nav-signIn"
-                    onClick={() => dispatch(userActions.setLoggedOut())}
-                  >
+                  <Button className="Nav-signIn" onClick={onSignOutBtn}>
                     Sign out
                   </Button>
                 </div>

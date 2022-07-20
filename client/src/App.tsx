@@ -12,12 +12,43 @@ import SignUp from "./pages/SignUp";
 import Wallet from "./pages/Wallet";
 import ChoseTest from "./pages/ChoseTest";
 import TestGroup from "./pages/TestGroup";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { userActions } from "./store/userSlice";
 
 const App: React.FC = () => {
   const [account, setAccount] = useState("");
   const [balance, setBalance] = useState("");
   window.ethereum.request();
+  const userInfo = useSelector((state) => state.user.nickname);
+  const dispatch = useDispatch();
+  // 토큰을 통한 인증확인
+  const auth = async () => {
+    const token: any = localStorage.getItem("accessToken");
+    const parseToken: any = JSON.parse(token);
+    if (token) {
+      dispatch(userActions.setLoggedIn());
+      try {
+        fetch("http://localhost:3001/user/auth", {
+          method: "post",
+          headers: {
+            authorization: `Bearer ${parseToken.accessToken}`,
+          },
+        }).then((res) => {
+          // email과 nickname 저장
+          res
+            .json()
+            .then((msg) => dispatch(userActions.setUserInfo(msg["data"])));
+        });
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  };
+
+  useEffect(() => {
+    console.log("@@@ authenticating @@@");
+    auth();
+  });
   const Connect = async () => {
     try {
       if (window.ethereum) {
