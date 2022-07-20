@@ -36,6 +36,15 @@ const Cards = styled.div`
     background-color: ${palette.black};
   }
 
+  .cards__item.open {
+    display: flex;
+    flex: 1;
+    margin: 0 1rem;
+    border-radius: 10px;
+    background-color: ${palette.yellow};
+    box-shadow: 0 0px 30px #c3f11b;
+  }
+
   .cards__item__link {
     display: flex;
     flex-flow: column;
@@ -43,6 +52,18 @@ const Cards = styled.div`
     box-shadow: 0 0px 30px rgba(0, 0, 0, 1);
     -webkit-filter: drop-shadow(0 6px 20px rgba(56, 125, 255, 0.017));
     filter: drop-shadow(0 6px 20px rgba(56, 125, 255, 0.017));
+    border-radius: 10px;
+    overflow: hidden;
+    text-decoration: none;
+  }
+
+  .cards__item__link.open {
+    display: flex;
+    flex-flow: column;
+    width: 100%;
+    box-shadow: 0 0px 30px #d41010;
+    -webkit-filter: drop-shadow(0 6px 20px rgba(56, 125, 255, 0.017));
+    filter: drop-shadow(0 6px 20px rgba(168, 240, 0, 0.017));
     border-radius: 10px;
     overflow: hidden;
     text-decoration: none;
@@ -132,10 +153,6 @@ const Course: React.FC = () => {
         <div className="cards__wrapper">
           <ul className="cards__items">
             <CardItem />
-            {/* <CardItem />
-            <CardItem />
-            <CardItem />
-            <CardItem /> */}
           </ul>
           {/* <ul className="cards__items"> */}
           {/* <CardItem src={"../dummy/voca.png"} /> */}

@@ -22,7 +22,7 @@ connection.connect();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cors());
-app.use(cookieParser());
+// app.use(cookieParser());
 
 app.post("/user/auth", (req, res) => {
   // 인증
