@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import CardItem from "../components/CardItem";
 import styled from "styled-components";
 import palette from "../styles/palette";
 
 // card.css 파일 옮겨왔습니다. - 규현
+// 나중에 혼동할 수 있으니 className 바꿔야함
 const Cards = styled.div`
   color: ${palette.gray[200]};
   height: 100vh;
@@ -163,15 +164,40 @@ const Cards = styled.div`
 `;
 
 const Course: React.FC = () => {
+  const [cards, setCards] = useState([]);
+  useEffect(() => {
+    const cardData = async () => {
+      try {
+        fetch("http://localhost:3001/selectCard", {
+          method: "post",
+          headers: {
+            "content-type": "application/json",
+          },
+          body: JSON.stringify({}),
+        }).then((res) =>
+          res.json().then((result) => {
+            setCards(result);
+            console.log(result);
+          })
+        );
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    cardData();
+  }, []);
+
+  const cardList: JSX.Element[] = cards.map((lec: any) => (
+    <CardItem props={lec} key={lec.lec_id} />
+  ));
+
   return (
     <Cards>
       <h1 className="choseTest-logo">
         Buy more advanced courses with TUT coins!!!!
       </h1>
       <div className="tests-list-container">
-        <div className="test-list">
-          <CardItem />
-        </div>
+        <div className="test-list">{cardList}</div>
         {/* <ul className="cards__items"> */}
         {/* <CardItem src={"../dummy/voca.png"} /> */}
         {/* <CardItem

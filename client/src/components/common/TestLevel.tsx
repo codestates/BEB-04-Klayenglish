@@ -56,14 +56,16 @@ const Base = styled.div<BaseProps>`
   ${({ level }) => getLevelColor(level)}
 `;
 
-interface Props {
+// extends React.HTMLAttributes<HTMLDivElement> 처럼 확장을 해줘야 className 등 여러 옵션을 추가적용할 수 있다.
+interface Props extends React.HTMLAttributes<HTMLDivElement> {
   level?: "master" | "diamond" | "bronze";
   position?: "ab" | "rel";
 }
 
-const TestLevel: React.FC<Props> = ({ level, position }) => {
+// ...props 를 넣어야 다른 곳에서 className 적용가능
+const TestLevel: React.FC<Props> = ({ level, position, ...props }) => {
   return (
-    <Base level={level} position={position}>
+    <Base level={level} position={position} {...props}>
       {level}
     </Base>
   );
