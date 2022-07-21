@@ -130,8 +130,8 @@ const Base = styled.div`
       margin: 1rem 2.5rem 1rem 0;
       padding: 1.5rem 1.5rem;
       border: solid ${palette.blue[600]};
-      background-color: ${palette.blue[600]};
-      color: ${palette.gray[200]};
+      background-color: #374151;
+      color: ${palette.blue[500]};
     }
     .out-purchase {
       margin: 1rem 0 1rem 2.5rem;
