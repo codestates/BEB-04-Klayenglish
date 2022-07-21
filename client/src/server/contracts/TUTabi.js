@@ -328,3 +328,4 @@ const TUTabi = [
     type: "function",
   },
 ];
+module.exports = TUTabi;

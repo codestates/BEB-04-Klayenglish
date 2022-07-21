@@ -24,6 +24,7 @@
     "caver-js": "^1.8.2",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
+    "lightwallet": "^1.0.4",
     "mysql": "^2.18.1",
     "react": "^18.2.0",
     "react-bootstrap": "^2.4.0",
