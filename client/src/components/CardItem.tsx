@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 // import lectureList from "../lib/lectureList";
 import { css } from "styled-components";
 import styled from "styled-components";
@@ -10,6 +10,8 @@ import {
 import palette from "../styles/palette";
 import TestLevel from "./common/TestLevel";
 import Button from "./common/Button";
+import { modalActions } from "../store/modalSlice";
+import { useSelector, useDispatch } from "../store";
 
 const Base = styled.div`
   box-sizing: border-box;
@@ -156,6 +158,9 @@ interface Props {
 const CardItem: React.FC<Props> = ({ key, props }) => {
   const [flip, setFlip] = useState<boolean>(false);
   const [get, setGet] = useState<string>("notyet");
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
 
   let [closeList, setCloseList] = useState<boolean>(false);
 
@@ -173,8 +178,13 @@ const CardItem: React.FC<Props> = ({ key, props }) => {
 
   const handleBuyClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     // 여기에 구매 함수 작성
-    alert("구매완료!");
-    setGet("complete");
+    if (!isLoggedIn) {
+      navigate("/signin", { replace: true });
+      dispatch(modalActions.openNeedLoginModalOpen());
+    } else {
+      alert("구매완료!");
+      setGet("complete");
+    }
   };
 
   return (

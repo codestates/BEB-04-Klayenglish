@@ -8,11 +8,13 @@ import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 // common
 import Input from "../components/common/Input";
 import Divider from "../components/common/Divider";
+import AlertModal from "../components/common/AlertModal";
 // hooks
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "../store";
 import { userActions } from "../store/userSlice";
+import { modalActions } from "../store/modalSlice";
 import axios from "../lib/api";
 const Base = styled.div`
   background-color: ${palette.black};
@@ -108,6 +110,10 @@ const Base = styled.div`
       }
     }
   }
+  .login-modal {
+    bottom: 3rem;
+    right: 2rem;
+  }
 `;
 
 const SignIn: React.FC = () => {
@@ -122,6 +128,7 @@ const SignIn: React.FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
+  const loginModal = useSelector((state) => state.modal.needLoginModalOpen);
 
   const onChangeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValidated(true);
@@ -170,10 +177,18 @@ const SignIn: React.FC = () => {
 
     navigate("/");
   };
+  // 로그인 안하고 test 페이지 접근시 뜨는 모달
+  const needLogin = () => {
+    setTimeout(() => {
+      dispatch(modalActions.closeNeedLoginModalOpen());
+    }, 5000);
+  };
   // 로그인 되어있으면 리다이렉트
   useEffect(() => {
     if (isLoggedIn) {
       navigate("/", { replace: true });
+    } else if (loginModal) {
+      needLogin();
     }
   }, [isLoggedIn, navigate]);
 
@@ -219,6 +234,14 @@ const SignIn: React.FC = () => {
           </div>
         </div>
       </form>
+      {loginModal ? (
+        <AlertModal
+          message={"로그인 후 이용해주세요"}
+          className="login-modal"
+        />
+      ) : (
+        ""
+      )}
     </Base>
   );
 };
