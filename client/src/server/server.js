@@ -186,19 +186,7 @@ app.post("/user/register", (req, res) => {
               if (err) {
                 console.log(err);
               } else {
-                // let wallet = web3.eth.accounts.create();
-                // connection.query(
-                //   "INSERT INTO users(address,privateKey) values (wallet.address,wallet.privateKey)",
-                //   function (err, rows, fields) {
-                //     if (err) {
-                //       console.error(err);
-                //     } else {
-                //       console.log("insert 성공");
-                //     }
-                //   }
-                // );
-
-                console.log("insert 성공");
+                // console.log("insert 성공");
                 res.status(200).send();
               }
             }
