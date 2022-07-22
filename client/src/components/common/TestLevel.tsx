@@ -4,23 +4,23 @@ import styled, { css } from "styled-components";
 import palette from "../../styles/palette";
 
 interface BaseProps {
-  level?: "고급" | "중급" | "초급";
+  level?: "master" | "diamond" | "bronze";
   position?: "ab" | "rel";
 }
 
-const getLevelColor = (level?: "고급" | "중급" | "초급") => {
+const getLevelColor = (level?: "master" | "diamond" | "bronze") => {
   switch (level) {
-    case "고급":
+    case "master":
       return css`
         background-color: ${palette.purple[100]};
         color: ${palette.purple[600]};
       `;
-    case "중급":
+    case "diamond":
       return css`
         background-color: ${palette.green[100]};
         color: ${palette.green[400]};
       `;
-    case "초급":
+    case "bronze":
       return css`
         background-color: ${palette.yellow[100]};
         color: ${palette.yellow[500]};
@@ -56,14 +56,16 @@ const Base = styled.div<BaseProps>`
   ${({ level }) => getLevelColor(level)}
 `;
 
-interface Props {
-  level?: "고급" | "중급" | "초급";
+// extends React.HTMLAttributes<HTMLDivElement> 처럼 확장을 해줘야 className 등 여러 옵션을 추가적용할 수 있다.
+interface Props extends React.HTMLAttributes<HTMLDivElement> {
+  level?: "master" | "diamond" | "bronze";
   position?: "ab" | "rel";
 }
 
-const TestLevel: React.FC<Props> = ({ level, position }) => {
+// ...props 를 넣어야 다른 곳에서 className 적용가능
+const TestLevel: React.FC<Props> = ({ level, position, ...props }) => {
   return (
-    <Base level={level} position={position}>
+    <Base level={level} position={position} {...props}>
       {level}
     </Base>
   );
