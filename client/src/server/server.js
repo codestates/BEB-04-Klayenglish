@@ -151,19 +151,16 @@ app.post("/user/login", (req, res) => {
 });
 
 app.post("/user/register", (req, res) => {
-  console.log(req.body.regForm.username);
-  console.log(req.body.regForm.password);
-  console.log(req.body.regForm.nickname);
-
+  // console.log(req.body.regForm.username);
   const id = req.body.regForm.username;
-  //   console.log(req.body.signForm);
   // json형식의 object에서 각 value만 담아서 배열을 만든다 아래insert ?구문에 들어갈 [ary]배열을 만들기 위함
   const valExtract = req.body.regForm;
   const ary = [];
-  // key 애러 발생
+
   for (key in valExtract) {
     ary.push(valExtract[key]);
   }
+
   connection.query(
     "SELECT * FROM users where userName=?",
     id,
@@ -174,8 +171,16 @@ app.post("/user/register", (req, res) => {
         if (rows.length < 1) {
           //email을 조회에서 결과가 없다면 insert
           //   address,privateKey 추후에 지갑주소와 니모닉도 넣을때 다음 column들 추가
+
+          let wallet = web3.eth.accounts.create();
+          ary.push(wallet.address);
+          ary.push(wallet.privateKey);
+          console.log("address = " + wallet.address);
+          console.log("privateKey = " + wallet.privateKey);
+          console.log(ary);
+          // console.log(wallet);
           connection.query(
-            "INSERT INTO users(userName,password,nickName) values (?)",
+            "INSERT INTO users(userName,password,nickName,address,privateKey) values (?)",
             [ary],
             function (err, rows, fields) {
               if (err) {
@@ -192,8 +197,7 @@ app.post("/user/register", (req, res) => {
                 //     }
                 //   }
                 // );
-                let wallet = web3.eth.accounts.create();
-                console.log(wallet);
+
                 console.log("insert 성공");
                 res.status(200).send();
               }
