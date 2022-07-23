@@ -23,6 +23,7 @@ try {
   web3.eth
     .getBalance("0x4bFe6D25A7DACbCF9018a86eDd79A7168eBf6b7f")
     .then(console.log);
+  // 콘솔에 내지갑 이더 갯수 나옴
 } catch (e) {
   console.log("Connection Error!", e);
 }
