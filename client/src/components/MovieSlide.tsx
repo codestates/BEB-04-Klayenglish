@@ -3,6 +3,8 @@ import Carousel from "react-multi-carousel"; */
 import "react-multi-carousel/lib/styles.css";
 import Movies from "../pages/Comunity";
 import MovieCard from "./MovieCard";
+import Carousel from "react-multi-carousel";
+import "react-multi-carousel/lib/styles.css";
 // import { MovieCard } from "./MovieCard";
 
 interface movieProps {
@@ -74,23 +76,38 @@ const responsive = {
 };
 
 const MovieSlide: React.FC<movieProps> = ({ movie }) => {
-  console.log("movie", movie);
+  console.log("여기냐", movie);
   return (
     <div>
-      {/* {movie.popularMovies.data.results.map((item: any) => (
+      <Carousel responsive={responsive}>
+        {/* {movie.map((item) => (
           <MovieCard item={item} />
         ))} */}
-      {/* movie.results */}
-      <MovieCard />
-      <MovieCard />
-      <MovieCard />
-      <MovieCard />
-      <MovieCard />
-      <MovieCard />
-      <MovieCard />
-      <MovieCard />
-      <MovieCard />
-      <MovieCard />
+        <div>
+          <MovieCard />
+        </div>
+        <div>
+          <MovieCard />
+        </div>
+        <div>
+          <MovieCard />
+        </div>
+        <div>
+          <MovieCard />
+        </div>
+        <div>
+          <MovieCard />
+        </div>
+        <div>
+          <MovieCard />
+        </div>
+        <div>
+          <MovieCard />
+        </div>
+        <div>
+          <MovieCard />
+        </div>
+      </Carousel>
     </div>
   );
 };

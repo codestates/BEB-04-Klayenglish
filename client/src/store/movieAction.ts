@@ -19,7 +19,7 @@ function getMovies() {
     const popularMovieApi = await api.get(
       `/movie/popular?api_key=${API_KEY}&language=en-US&page=1`
     );
-    let data = await popularMovieApi;
+    let data = await popularMovieApi.data;
     dispatch(movieActions.getPopularMovies({ data }));
     // dispatch(movieActions.getPopularMovies({ data: Object }));
     // api에서 url 받아온후 dispatch로 진행

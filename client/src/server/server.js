@@ -58,6 +58,18 @@ app.use(bodyParser.json());
 app.use(cors());
 // app.use(cookieParser());
 
+app.get("/wallet", (req, res) => {
+  connection.query("SELECT * FROM users", (err, data) => {
+    if (err) {
+      console.log("err");
+      res.send(err);
+    } else {
+      console.log("success");
+      res.send(data);
+    }
+  });
+});
+
 app.post("/user/auth", (req, res) => {
   // 인증
   const token = req.headers.authorization.split("Bearer ")[1];
@@ -141,7 +153,7 @@ app.post("/user/register", (req, res) => {
           let contract = new web3.eth.Contract(contractABI, tokenAddress, {
             from: fromAddress,
           });
-          let amount = web3.utils.toHex(web3.utils.toWei("10")); //1 TUT Token
+          let amount = web3.utils.toHex(web3.utils.toWei("10")); //10 TUT Token
           let data = contract.methods.transfer(toAddress, amount).encodeABI();
           sendErcToken();
           function sendErcToken() {

@@ -15,10 +15,15 @@ import { useState, useEffect } from "react";
 import { userActions } from "./store/userSlice";
 import { WindowRounded } from "@mui/icons-material";
 // import transfer from "./components/transfer";
+import Web3 from "web3";
+import { AbiItem } from "web3-utils";
+// abi 타입스크립트 interface 지정
 
 const App: React.FC = () => {
   const [account, setAccount] = useState("");
   const [balance, setBalance] = useState("");
+  const [tutbalance, setTutbalance] = useState("");
+
   window.ethereum.request();
   const userInfo = useSelector((state) => state.user.nickname);
   const dispatch = useDispatch();
@@ -86,21 +91,30 @@ const App: React.FC = () => {
       console.error(error);
     }
   };
-  // const getBal = async () => {
-  //   try {
-  //     if (window.ethereum) {
-  //       console.log(account);
-  //       const balance = await window.ethereum.request({
-  //         method: "eth_getBalance",
-  //         params: ["0x19eae62c6ab1906aa08253107178a8a502a97c43", "latest"],
-  //       });
-  //       console.log("bal = " + balance / 10 ** 18);
-  //     }
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
+  // const Connect2 = async () => {
+  //   const minABI = [
+  //     // balanceOf
+  //     {
+  //       constant: true,
+  //       inputs: [{ name: "_owner", type: "address" }],
+  //       name: "balanceOf",
+  //       outputs: [{ name: "balance", type: "uint256" }],
+  //       type: "function",
+  //     },
+  //   ];
+  //   const connection = `https://rinkeby.infura.io/v3/039a1d24b7384022a3b6994dd5627c61`;
+  //   const web3 = new Web3(new Web3.providers.HttpProvider(connection));
+  //   const tokenAddress = "0x9d8D3C04240cabcF21639656F8b1F2Af0765Cf08";
+  //   const walletAddress = "0x4bFe6D25A7DACbCF9018a86eDd79A7168eBf6b7f";
+
+  //   const contract = new web3.eth.Contract(minABI as AbiItem[], tokenAddress);
+  //   const result = await contract.methods.balanceOf(walletAddress).call(); // 29803630997051883414242659
+
+  //   const format = web3.utils.fromWei(result); // 29803630.997051883414242659
+
+  //   console.log(format);
+  //   setTutbalance(format);
   // };
-  // getBal();
 
   return (
     <div>
@@ -118,9 +132,11 @@ const App: React.FC = () => {
           path="/wallet"
           element={
             <Wallet
+              tutbalance={tutbalance}
               account={account}
               balance={balance}
               onClickConnect={Connect}
+              // onClickConnect={Connect2}
             />
           }
         ></Route>
@@ -128,5 +144,4 @@ const App: React.FC = () => {
     </div>
   );
 };
-
 export default App;

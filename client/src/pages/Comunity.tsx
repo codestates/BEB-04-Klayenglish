@@ -19,38 +19,41 @@ const Movies: React.FC = () => {
     color: ${palette.gray[200]};
   `;
 
-  useEffect(() => {
-    getWords();
-  }, []);
+  // useEffect(() => {
+  //   getWords();
+  // }, []);
 
   const { popularMovies } = useSelector((state: any) => state.movie);
-  console.log("popularMovies", popularMovies);
   const dispatch: AppDispatch = useDispatch();
+  // console.log("home", popularMovies);
 
   useEffect(() => {
     dispatch(movieAction.getMovies());
   }, []);
+  // api호출에러;
 
-  const [word, setWord] = useState(null);
-  const getWords = async () => {
-    try {
-      const response = await axios.get("https://api.adviceslip.com/advice");
-      setWord(response.data.slip.advice);
-      console.log("word", word);
-    } catch (e) {
-      console.log(e);
-    }
-  };
+  // const [word, setWord] = useState(null);
+  // const getWords = async () => {
+  //   try {
+  //     const response = await axios.get("https://api.adviceslip.com/advice");
+  //     setWord(response.data.slip.advice);
+  //     console.log("word", word);
+  //   } catch (e) {
+  //     console.log(e);
+  //   }
+  // };
 
   return (
     <Base>
       <div>
-        {popularMovies.data && <Banner movie={popularMovies.data.results[0]} />}
+        {/* 모징? */}
+        {/* {popularMovies.results && (
+          <Banner movie={popularMovies.data.results[0]} />
+        )} */}
         <br />
         <h1>English Movie</h1>
         <MovieSlide movie={popularMovies} />
-
-        <div>
+        {/* <div>
           <h2>Life quotes</h2>
           {word && (
             <textarea
@@ -59,8 +62,7 @@ const Movies: React.FC = () => {
               readOnly={true}
             />
           )}
-        </div>
-
+        </div> */}
         <Container>
           <Row>
             {/* {data.map((slip) => (

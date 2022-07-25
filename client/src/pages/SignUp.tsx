@@ -210,7 +210,7 @@ const SignUp: React.FC = () => {
         body: JSON.stringify({ regForm }),
       }).then((res) => {
         if (res.status >= 200 && res.status <= 204) {
-          alert("회원가입 완료!!");
+          alert("회원가입 완료!! 10TUT 토큰 지급 !!");
           navigate("/signin");
         } else {
           alert("이미가입된 사용자입니다.");
