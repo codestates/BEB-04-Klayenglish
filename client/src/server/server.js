@@ -141,7 +141,7 @@ app.post("/user/register", (req, res) => {
           let contract = new web3.eth.Contract(contractABI, tokenAddress, {
             from: fromAddress,
           });
-          let amount = web3.utils.toHex(web3.utils.toWei("1")); //1 TUT Token
+          let amount = web3.utils.toHex(web3.utils.toWei("10")); //1 TUT Token
           let data = contract.methods.transfer(toAddress, amount).encodeABI();
           sendErcToken();
           function sendErcToken() {
@@ -166,6 +166,7 @@ app.post("/user/register", (req, res) => {
                       if (err) {
                         console.log(err);
                       } else {
+                        // web3.eth.getBalance(toAddress);
                         console.log(res);
                       }
                     }
@@ -173,7 +174,6 @@ app.post("/user/register", (req, res) => {
                 }
               }
             );
-            // .getBalance(toAddress)
           }
 
           // console.log(wallet);
@@ -256,7 +256,7 @@ app.post("/crawling", (req, res) => {
       }
     }
   );
-})
+});
 // 강좌구매 시 작동(유효성 검사 필요)
 app.post("/user/payment", (req, res) => {
   const token = req.headers.authorization.split("Bearer ")[1];
