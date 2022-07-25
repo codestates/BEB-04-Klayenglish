@@ -23,11 +23,73 @@ const privateKey =
 // 트랜잭션 해시가 만들어지는 원리는 트랜잭션 정보와 프라이빗 키(서명)가 필요 !
 // 트랜잭션 정보와 서명을 전달하면 노드로 부터 트랜잭션 해시를 받을 수 있다
 // 트랜잭션 정보와 서명(encoding)을 합친 것읅 rawTransaction이라고 부른다.
+const abi = [
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "address",
+        name: "previousOwner",
+        type: "address",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "newOwner",
+        type: "address",
+      },
+    ],
+    name: "OwnershipTransferred",
+    type: "event",
+  },
+  {
+    inputs: [],
+    name: "owner",
+    outputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "renounceOwnership",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "newOwner",
+        type: "address",
+      },
+    ],
+    name: "transferOwnership",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+];
 
 try {
   const web3 = new Web3(new Web3.providers.HttpProvider(connection));
   console.log("web3연결 성공!");
   console.log("갯수: ");
+  const tokenContract = new web3.eth.Contract(
+    abi,
+    "0x9d8d3c04240cabcf21639656f8b1f2af0765cf08"
+  );
+  const data = tokenContract.methods
+    .transfer("0x7208cd7b30ab7ff7f897454aa780df5178a58f49", "10")
+    .encodeABI();
+
   const txHash = web3.eth.accounts
     .signTransaction(
       {
@@ -35,12 +97,13 @@ try {
         value: "1000000000",
         gas: 21000,
         // data를넣어줘야함
+        data: data,
       },
       privateKey
     )
-    .on("transactionHash", (transactionHash) => {
-      console.log("txHash", transactionHash);
-    })
+    // .on("transactionHash", (transactionHash) => {
+    //   console.log("txHash", transactionHash);
+    // })
     // .on("receipt", (receipt) => {
     //   console.log("receipt", receipt);
     //   // txResult = true;
