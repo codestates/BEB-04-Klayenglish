@@ -13,6 +13,7 @@ import ChoseTest from "./pages/ChoseTest";
 import TestGroup from "./pages/TestGroup";
 import { useState, useEffect } from "react";
 import { userActions } from "./store/userSlice";
+// import transfer from "./components/transfer";
 
 const App: React.FC = () => {
   const [account, setAccount] = useState("");

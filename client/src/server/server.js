@@ -13,9 +13,37 @@ dotenv.config({ path: "../../.env" });
 
 // const lightwallet = require("eth-lightwallet");
 const Web3 = require("web3");
-const web3 = new Web3("http://127.0.0.1:7545");
-const TUTabi = require("./contracts/TUTabi");
-const { stringify } = require("querystring");
+const connect = `https://rinkeby.infura.io/v3/039a1d24b7384022a3b6994dd5627c61`;
+const web3 = new Web3(new Web3.providers.HttpProvider(connect));
+const privateKey =
+  "0402db5843b4fbf3f79508185f43c6efeacd178aa31d52e35bc53dfb3becbaf9"; //Your Private key environment variable
+let tokenAddress = "0x9d8D3C04240cabcF21639656F8b1F2Af0765Cf08"; // TUT Token contract address
+// let toAddress = "0x7208cd7b30Ab7Ff7F897454Aa780dF5178a58F49"; // where to send it
+let fromAddress = "0x4bFe6D25A7DACbCF9018a86eDd79A7168eBf6b7f"; // your wallet
+let contractABI = [
+  // transfer
+  {
+    constant: false,
+    inputs: [
+      {
+        name: "_to",
+        type: "address",
+      },
+      {
+        name: "_value",
+        type: "uint256",
+      },
+    ],
+    name: "transfer",
+    outputs: [
+      {
+        name: "",
+        type: "bool",
+      },
+    ],
+    type: "function",
+  },
+];
 
 var connection = mysql.createConnection({
   host: process.env.DATABASE_HOST,
@@ -29,43 +57,6 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cors());
 // app.use(cookieParser());
-
-app.post("/", (req, res) => {
-  // TODO : server라는 admin 계정 생성시에 ethFacet 처리
-  const id = req.body.userName;
-  const pwd = req.body.password;
-  // 요청 데이터 받음
-
-  if (id === "server") {
-    const server = web3.eth.accounts.privateKeyToAccount(
-      rows.dataValues.privateKey
-    ); //검색한 사용자의 프라이빗키
-
-    const ganache = web3.eth.accounts.privateKeyToAccount(
-      env.GANACHE_PRIVATEKEY
-    ); //가나슈의 프라이빗키
-    //console.log(ganache)
-    web3.eth.accounts
-      .signTransaction(
-        //서명 후 전송처리
-        {
-          to: server.address,
-          value: "1000000000000000000",
-          gas: 2000000,
-        },
-        ganache.privateKey
-      )
-
-      .then((value) => {
-        console.log("value값", value);
-        return value.rawTransaction;
-      });
-    // .then(aync(tx))={}
-    web3.eth.sendSignedTransaction(tx, async function (err, hash) {});
-  } else {
-    res.status(501).send({ message: "server 계정생성 필요" });
-  }
-});
 
 app.post("/user/auth", (req, res) => {
   // 인증
@@ -105,39 +96,6 @@ app.post("/user/login", (req, res) => {
       } else {
         const accessToken = jwt.sign(rows[0]);
         const refreshToken = jwt.refresh();
-        //     const payload = {
-        //       userName: userInfo.dataValues.userName,
-        //       email: userInfo.dataValues.email,
-        //       createdAt: userInfo.dataValues.createdAt,
-        //       updatedAt: userInfo.dataValues.updatedAt,
-        //     }
-
-        //    const value = "10";
-        // const erc20Contract = await new web3.eth.Contract(
-        //   tokenabi,
-        //   process.env.ERC20_CONTRACT,
-        //   {
-        //     from: process.env.SERVER_ADDRESS,
-        //   }
-        // );
-
-        // const server = await web3.eth.accounts.wallet.add(process.env.SERVER_SECRET);
-
-        // await erc20Contract.methods.mintToken(userInfo.address, value).send({
-        //   from: server.address,
-        //   to: process.env.ERC20_CONTRACT,
-        //   gasPrice: 100,
-        //   gas: 2000000,
-        // })
-
-        // await User.increment(
-        //   { balance: 1 },
-        //   {
-        //     where: {
-        //       email: req.body.email,
-        //     },
-        //   }
-        // );
         console.log("로그인됨");
         res.status(200).send({
           // client에게 토큰 반환합니다.
@@ -179,6 +137,45 @@ app.post("/user/register", (req, res) => {
           console.log("address = " + wallet.address);
           console.log("privateKey = " + wallet.privateKey);
           console.log(ary);
+          let toAddress = wallet.address;
+          let contract = new web3.eth.Contract(contractABI, tokenAddress, {
+            from: fromAddress,
+          });
+          let amount = web3.utils.toHex(web3.utils.toWei("1")); //1 TUT Token
+          let data = contract.methods.transfer(toAddress, amount).encodeABI();
+          sendErcToken();
+          function sendErcToken() {
+            let txObj = {
+              gas: web3.utils.toHex(100000),
+              to: tokenAddress,
+              value: "0x00",
+              data: data,
+              from: fromAddress,
+            };
+            web3.eth.accounts.signTransaction(
+              txObj,
+              privateKey,
+              (err, signedTx) => {
+                if (err) {
+                  return console("signTransaction ERROR!", err);
+                } else {
+                  console.log(signedTx);
+                  return web3.eth.sendSignedTransaction(
+                    signedTx.rawTransaction,
+                    (err, res) => {
+                      if (err) {
+                        console.log(err);
+                      } else {
+                        console.log(res);
+                      }
+                    }
+                  );
+                }
+              }
+            );
+            // .getBalance(toAddress)
+          }
+
           // console.log(wallet);
           connection.query(
             "INSERT INTO users(userName,password,nickName,address,privateKey) values (?)",
@@ -187,8 +184,9 @@ app.post("/user/register", (req, res) => {
               if (err) {
                 console.log(err);
               } else {
-                // console.log("insert 성공");
+                console.log("insert 성공");
                 res.status(200).send();
+                // 컨트렉트 넣음
               }
             }
           );
