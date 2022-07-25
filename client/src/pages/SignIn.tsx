@@ -170,6 +170,10 @@ const SignIn: React.FC = () => {
           console.log("클라이언트 로그인성공");
           dispatch(userActions.setLoggedIn());
         }
+        console.log(res.status);
+        if (res.status >= 400) {
+          console.log("해당 입력이 잘못되었습니다.");
+        }
       });
     } catch (error) {
       console.error(error);

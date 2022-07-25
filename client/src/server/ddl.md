@@ -78,3 +78,14 @@ CREATE TABLE `board` ( -- 커뮤니티 게시판 테이블
 `created_at` timestamp default now(), --등록날짜
 `views` int default 0 --조회수
 )
+
+CREATE TABLE `qz` ( --바뀐 quiz 테이블
+`qz_id` int PRIMARY KEY AUTO_INCREMENT,
+`lec_id` int NOT NULL,
+`answer` varchar(255),
+`question` varchar(255), --delicious|prestigious|cautious
+`correct` varchar(255), --0|1|0
+`qz_num` int(10), --1,2,3,4 1주차 2주차 3주차 4주차
+`qz_category` varchar(10), --e2k, k2e
+`created_at` timestamp default now()
+)

@@ -162,7 +162,7 @@ app.post("/user/register", (req, res) => {
   }
 
   connection.query(
-    "SELECT * FROM users where userName=?",
+    "SELECT * FROM users where userName=? and not userName='server'",
     id,
     function (err, rows, fields) {
       if (err) {
@@ -226,6 +226,50 @@ app.post("/selectCard", (req, res) => {
       }
     }
   });
+});
+
+app.post("/crawling", (req, res) => {
+  //크롤링
+  // console.log(req.body.extractEng);
+  // console.log(req.body.extractEng[0].word);
+  const reqCnt = req.body.extractEng.length;
+  let question = "";
+  let answer = "";
+  let correct = "";
+
+  for (let i = 0; i < reqCnt; i++) {
+    question += req.body.extractEng[i].word + "|";
+    answer += req.body.extractEng[i].answer + "|";
+    correct += req.body.extractEng[i].correct + "|";
+    if (i === reqCnt - 1) {
+      //마지막 구분자 제거
+      question = question.slice(0, -1);
+      answer = answer.slice(0, -1);
+      correct = correct.slice(0, -1);
+    }
+  }
+
+  // const valExtract = req.body.regForm;
+  let ary = [];
+
+  // for (key in valExtract) {
+  //   ary.push(valExtract[key]);
+  // }
+  ary = [6, answer, question, correct, 5, "e2k"];
+  // console.log(ary.toString());
+
+  connection.query(
+    "INSERT INTO qz (lec_id,answer,question,correct,qz_num,qz_category) values (?)",
+    [ary],
+    function (err, rows, fields) {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log("qz insert 성공");
+        res.status(200).send();
+      }
+    }
+  );
 });
 
 app.listen(port, () => {

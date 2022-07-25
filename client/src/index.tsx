@@ -8,6 +8,7 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import { userActions } from "./store/userSlice";
 import { useDispatch, useSelector } from "./store";
+
 axios.defaults.withCredentials = true;
 
 const root = ReactDOM.createRoot(
