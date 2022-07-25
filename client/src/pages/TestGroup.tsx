@@ -4,7 +4,6 @@ import palette from "../styles/palette";
 // components
 import dummyQuiz from "../lib/dummyQuiz";
 import TestLevel from "../components/common/TestLevel";
-import Test from "../components/Test";
 import TestList from "../components/TestList";
 import dummyTestList from "../lib/dummyTestList";
 import QuizItem from "../components/QuizItem";
@@ -119,6 +118,8 @@ const TestGroup: React.FC = () => {
           <p className="quiz-desc">10문제씩 500개 마스터 도전!</p>
         </div>
         <ul className="quiz-list">
+          <QuizItem id={testId} />
+          <QuizItem id={testId} />
           <QuizItem id={testId} />
         </ul>
       </div>

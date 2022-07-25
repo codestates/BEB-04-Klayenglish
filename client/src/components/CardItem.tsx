@@ -165,7 +165,7 @@ const CardItem: React.FC<Props> = ({ key, props }) => {
   let [closeList, setCloseList] = useState<boolean>(false);
 
   function buyLecture(id: any, name: any, price: any) {
-    //alert(id + " " + name + " " + price + " ");
+    console.log([id + " " + name + " " + price + " "]);
     if (closeList) {
       setCloseList(false);
       console.log(document.getElementById(id));
@@ -184,6 +184,25 @@ const CardItem: React.FC<Props> = ({ key, props }) => {
     } else {
       alert("구매완료!");
       setGet("complete");
+      const cardData = async () => {
+        const token: any = localStorage.getItem("accessToken");
+        const parseToken: any = JSON.parse(token);
+        try {
+          fetch("http://localhost:3001/user/payment", {
+            method: "post",
+            headers: {
+              "content-type": "application/json",
+              // 강좌를 구매한 유저 정보를 식별하기 위한 토큰 전송(DB에서 해당 유저에게 구매한 강좌를 저장시키기 위함)
+              authorization: `Bearer ${parseToken.accessToken}`,
+            },
+            // server로 클릭한 강좌 정보 전송
+            body: JSON.stringify({ lecInfo: props }),
+          });
+        } catch (error) {
+          console.error(error);
+        }
+      };
+      cardData();
     }
   };
 
