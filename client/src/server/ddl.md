@@ -17,8 +17,8 @@ CREATE TABLE `lecture` ( --강좌 테이블
 `lec_level` varchar(10), --강좌 난이도 레벨 'bronze', 'silver, 'gold', 'platinum', 'diamond', 'master', 'challenger'
 `lec_image_path` varchar(255) --강좌 이미지 경로 '/image/voca.png'
 )
-/* lecture data
-insert into lecture (lec*name,lec_price,lec_source,lec_level,lec_image_path) values ('toeic', 10, 'hackers','gold', '/voca.png');
+/\* lecture data
+insert into lecture (lec_name,lec_price,lec_source,lec_level,lec_image_path) values ('toeic', 10, 'hackers','gold', '/voca.png');
 insert into lecture (lec_name,lec_price,lec_source,lec_level,lec_image_path) values ('basic', 13, 'hackers','bronze', '/easy.png');
 insert into lecture (lec_name,lec_price,lec_source,lec_level,lec_image_path) values ('middle', 15, 'ybm','diamond', '/cash.png');
 insert into lecture (lec_name,lec_price,lec_source,lec_level,lec_image_path) values ('high', 17, 'ybm','master', '/hackers.png');

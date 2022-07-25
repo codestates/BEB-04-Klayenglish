@@ -15,6 +15,7 @@ dotenv.config({ path: "../../.env" });
 const Web3 = require("web3");
 const web3 = new Web3("http://127.0.0.1:7545");
 const TUTabi = require("./contracts/TUTabi");
+const { stringify } = require("querystring");
 
 var connection = mysql.createConnection({
   host: process.env.DATABASE_HOST,
@@ -151,19 +152,16 @@ app.post("/user/login", (req, res) => {
 });
 
 app.post("/user/register", (req, res) => {
-  console.log(req.body.regForm.username);
-  console.log(req.body.regForm.password);
-  console.log(req.body.regForm.nickname);
-
+  // console.log(req.body.regForm.username);
   const id = req.body.regForm.username;
-  //   console.log(req.body.signForm);
   // json형식의 object에서 각 value만 담아서 배열을 만든다 아래insert ?구문에 들어갈 [ary]배열을 만들기 위함
   const valExtract = req.body.regForm;
   const ary = [];
-  // key 애러 발생
+
   for (key in valExtract) {
     ary.push(valExtract[key]);
   }
+
   connection.query(
     "SELECT * FROM users where userName=?",
     id,
@@ -174,27 +172,22 @@ app.post("/user/register", (req, res) => {
         if (rows.length < 1) {
           //email을 조회에서 결과가 없다면 insert
           //   address,privateKey 추후에 지갑주소와 니모닉도 넣을때 다음 column들 추가
+
+          let wallet = web3.eth.accounts.create();
+          ary.push(wallet.address);
+          ary.push(wallet.privateKey);
+          console.log("address = " + wallet.address);
+          console.log("privateKey = " + wallet.privateKey);
+          console.log(ary);
+          // console.log(wallet);
           connection.query(
-            "INSERT INTO users(userName,password,nickName) values (?)",
+            "INSERT INTO users(userName,password,nickName,address,privateKey) values (?)",
             [ary],
             function (err, rows, fields) {
               if (err) {
                 console.log(err);
               } else {
-                // let wallet = web3.eth.accounts.create();
-                // connection.query(
-                //   "INSERT INTO users(address,privateKey) values (wallet.address,wallet.privateKey)",
-                //   function (err, rows, fields) {
-                //     if (err) {
-                //       console.error(err);
-                //     } else {
-                //       console.log("insert 성공");
-                //     }
-                //   }
-                // );
-                let wallet = web3.eth.accounts.create();
-                console.log(wallet);
-                console.log("insert 성공");
+                // console.log("insert 성공");
                 res.status(200).send();
               }
             }
@@ -217,11 +210,97 @@ app.post("/selectCard", (req, res) => {
       if (rows.length < 1) {
         console.log("조회된결과가 하나도 없습니다.");
       } else {
-        console.log(rows);
         res.send(rows);
       }
     }
   });
+});
+
+// 강좌구매 시 작동(유효성 검사 필요)
+app.post("/user/payment", (req, res) => {
+  const token = req.headers.authorization.split("Bearer ")[1];
+  const result = jwt.verify(token);
+  const info = req.body.lecInfo;
+  const { lec_id, lec_price } = info;
+  if (result.ok) {
+    const { id, pwd, nickname } = result;
+    // 유저와 일치하는 데이터를 찾기
+    connection.query(
+      "SELECT * FROM users where userName=?",
+      id,
+      function (err, rows, fields) {
+        // 해당 유저의 강의에 현재 구매한 강의 아이디를 넣기
+        const preLec = rows[0].taken_lectures;
+        // 새로운 값 추가할 때 "|"
+        const ary = [preLec + "|" + lec_id];
+        connection.query(
+          "UPDATE users SET taken_lectures = (?) WHERE userName = ?",
+          [[ary], id],
+          function (err, rows, fields) {
+            if (err) {
+              console.log(err);
+            } else {
+              console.log(`${id}에 ${lec_id} 강의 update 성공!`);
+              res.status(200).send({ message: id });
+            }
+          }
+        );
+      }
+    );
+  } else {
+    // 검증에 실패하거나 토큰이 만료되었다면 클라이언트에게 메세지를 담아서 응답합니다.
+    res.status(401).send({
+      ok: false,
+      message: result.message, // jwt가 만료되었다면 메세지는 'jwt expired'입니다.
+    });
+  }
+});
+
+// test페이지에서 데이터 보내기(유효성 검사 필요)
+app.post("/user/testData", (req, res) => {
+  const token = req.headers.authorization.split("Bearer ")[1];
+  const result = jwt.verify(token);
+  if (result.ok) {
+    const { id, pwd, nickname } = result;
+    // 유저와 일치하는 데이터를 찾기
+    connection.query(
+      "SELECT * FROM users where userName=?",
+      id,
+      function (err, rows, fields) {
+        const userLec = rows[0].taken_lectures.split("|");
+        console.log(userLec);
+        // [ '1', '2' ]
+        let cunQuery = "lec_id in (?) ";
+
+        for (let i = 1; i < userLec.length; i++) {
+          if (userLec === 1) {
+            cunQuery = "lec_id in (?) ";
+          } else {
+            cunQuery += "OR lec_id in (?)";
+          }
+        }
+        connection.query(
+          "select * from lecture where " + cunQuery + "",
+          userLec,
+          function (err, rows) {
+            if (err) {
+              console.log(err);
+            } else {
+              console.log(cunQuery);
+              console.log(`${id}님이 ${rows} 강좌 데이터를 불러왔습니다.`);
+              res.status(200).send({ message: rows });
+            }
+          }
+        );
+      }
+    );
+  } else {
+    // 검증에 실패하거나 토큰이 만료되었다면 클라이언트에게 메세지를 담아서 응답합니다.
+    res.status(401).send({
+      ok: false,
+      message: result.message, // jwt가 만료되었다면 메세지는 'jwt expired'입니다.
+    });
+  }
 });
 
 app.listen(port, () => {

@@ -2,7 +2,6 @@ import React from "react";
 import styled from "styled-components";
 import palette from "../styles/palette";
 import TestLevel from "./common/TestLevel";
-import Test from "./Test";
 import { Link } from "react-router-dom";
 import dummyTestList from "../lib/dummyTestList";
 
