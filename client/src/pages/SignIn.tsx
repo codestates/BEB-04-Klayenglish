@@ -192,23 +192,6 @@ const SignIn: React.FC = () => {
     }
   }, [isLoggedIn, navigate]);
 
-  // sendToken실행 => 트랜잭션발생
-  function Erc721({ newErc721addr, web3, account, erc721list }) {
-    const [to, setTo] = useState("");
-    const sendToken = async (tokenId) => {
-      const tokenContract = await new web3.eth.Contract(
-        erc721Abi,
-        newErc721addr,
-        { from: account }
-      );
-      tokenContract.methods
-        .transferFrom(account, to, tokenId)
-        .send({ from: account })
-        .on("receipt", (receipt) => {
-          setTo("");
-        });
-    };
-
   return (
     <Base>
       <h1 className="login_logo">Sign in to Klayenglish</h1>

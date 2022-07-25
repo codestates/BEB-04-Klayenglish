@@ -5,8 +5,8 @@
 //   )
 // );
 const Web3 = require("web3");
-const connection = `https://rinkeby.infura.io/v3/039a1d24b7384022a3b6994dd5627c61`;
-const Web3js = new Web3(new Web3.providers.HttpProvider(connection));
+const connect = `https://rinkeby.infura.io/v3/039a1d24b7384022a3b6994dd5627c61`;
+const web3 = new Web3(new Web3.providers.HttpProvider(connect));
 const privateKey =
   "0402db5843b4fbf3f79508185f43c6efeacd178aa31d52e35bc53dfb3becbaf9"; //Your Private key environment variable
 let tokenAddress = "0x9d8D3C04240cabcF21639656F8b1F2Af0765Cf08"; // Demo Token contract address
@@ -36,26 +36,26 @@ let contractABI = [
     type: "function",
   },
 ];
-let contract = new Web3js.eth.Contract(contractABI, tokenAddress, {
+let contract = new web3.eth.Contract(contractABI, tokenAddress, {
   from: fromAddress,
 });
-let amount = Web3js.utils.toHex(Web3js.utils.toWei("1")); //1 DEMO Token
+let amount = web3.utils.toHex(web3.utils.toWei("1")); //1 TUT Token
 let data = contract.methods.transfer(toAddress, amount).encodeABI();
 sendErcToken();
 function sendErcToken() {
   let txObj = {
-    gas: Web3js.utils.toHex(100000),
+    gas: web3.utils.toHex(100000),
     to: tokenAddress,
     value: "0x00",
     data: data,
     from: fromAddress,
   };
-  Web3js.eth.accounts.signTransaction(txObj, privateKey, (err, signedTx) => {
+  web3.eth.accounts.signTransaction(txObj, privateKey, (err, signedTx) => {
     if (err) {
       return console("signTransaction ERROR!", err);
     } else {
       console.log(signedTx);
-      return Web3js.eth.sendSignedTransaction(
+      return web3.eth.sendSignedTransaction(
         signedTx.rawTransaction,
         (err, res) => {
           if (err) {
