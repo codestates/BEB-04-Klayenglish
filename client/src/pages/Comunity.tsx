@@ -50,6 +50,7 @@ const Movies: React.FC = () => {
         {/* {popularMovies.results && (
           <Banner movie={popularMovies.data.results[0]} />
         )} */}
+        <Banner />
         <br />
         <h1>English Movie</h1>
         <MovieSlide movie={popularMovies} />
