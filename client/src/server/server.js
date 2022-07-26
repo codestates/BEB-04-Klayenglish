@@ -59,15 +59,57 @@ app.use(cors());
 // app.use(cookieParser());
 
 app.get("/wallet", (req, res) => {
-  connection.query("SELECT * FROM users", (err, data) => {
-    if (err) {
-      console.log("err");
-      res.send(err);
-    } else {
-      console.log("success");
-      res.send(data);
+  connection.query(
+    "SELECT address FROM users ORDER BY id DESC LIMIT 1;",
+    (err, data) => {
+      if (err) {
+        console.log("err");
+        res.send(err);
+      } else {
+        console.log("success");
+        res.send(data);
+
+        const minABI = [
+          // balanceOf
+          {
+            constant: true,
+            inputs: [{ name: "_owner", type: "address" }],
+            name: "balanceOf",
+            outputs: [{ name: "balance", type: "uint256" }],
+            type: "function",
+          },
+        ];
+        let userAddress = "SELECT address FROM users ORDER BY id DESC LIMIT 1;";
+        const tokenAddress = "0x9d8D3C04240cabcF21639656F8b1F2Af0765Cf08";
+        const walletAddress = "userAddress"; //UserAddress 불러오기
+
+        const contract = new web3.eth.Contract(minABI, tokenAddress);
+
+        async function getBalance() {
+          const result = await contract.methods.balanceOf(walletAddress).call();
+
+          const format = web3.utils.fromWei(result);
+          console.log(format);
+        }
+        getBalance();
+      }
     }
-  });
+  );
+});
+
+app.post("/wallet", (req, res) => {
+  connection.query(
+    "SELECT address FROM users ORDER BY id DESC LIMIT 1;",
+    function (err, rows, fields) {
+      if (err) {
+        console.log("실패");
+        res.status(400).send();
+      } else {
+        console.log("success");
+        res.status(200).send({ rows });
+      }
+    }
+  );
 });
 
 app.post("/user/auth", (req, res) => {
@@ -92,6 +134,8 @@ app.post("/user/auth", (req, res) => {
     });
   }
 });
+
+//TODO : 1.mysql 주소 넣기 2.balance받고 wallet페이지에 보내기
 
 app.post("/user/login", (req, res) => {
   //로그인

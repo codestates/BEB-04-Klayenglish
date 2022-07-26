@@ -22,7 +22,6 @@ import { AbiItem } from "web3-utils";
 const App: React.FC = () => {
   const [account, setAccount] = useState("");
   const [balance, setBalance] = useState("");
-  const [tutbalance, setTutbalance] = useState("");
 
   window.ethereum.request();
   const userInfo = useSelector((state) => state.user.nickname);
@@ -132,11 +131,9 @@ const App: React.FC = () => {
           path="/wallet"
           element={
             <Wallet
-              tutbalance={tutbalance}
               account={account}
               balance={balance}
               onClickConnect={Connect}
-              // onClickConnect={Connect2}
             />
           }
         ></Route>
