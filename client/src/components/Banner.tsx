@@ -50,7 +50,7 @@ const Base = styled.div`
   }
 `;
 
-const Banner: React.FC<movieProps> = () => {
+const Banner: React.FC = () => {
   // console.log(movie, "movie");
   return (
     <Base>
@@ -66,8 +66,11 @@ const Banner: React.FC<movieProps> = () => {
       >
         {/* jsx 문법상 string으로 해결 */}
         <div className="banner-info">
-          {/* <h1>{movie.popularMovies.data.results[0].title}</h1>
-          <p>{movie.popularMovies.data.results[0].overview}</p> */}
+          <br></br>
+          <h1>Klayenglish pursues equal and free private education</h1>
+          <p> let's get TUT tokens !</p>
+          {/* <h1>{movie.popularMovies.data.results[0].title}</h1> */}
+          {/* <p>{movie.popularMovies.data.results[0].overview}</p> */}
         </div>
       </div>
     </Base>
