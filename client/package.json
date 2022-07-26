@@ -30,6 +30,11 @@
     "dotenv": "^16.0.1",
     "jsonwebtoken": "^8.5.1",
     "mysql": "^2.18.1",
+<<<<<<< HEAD
+    "openzeppelin-solidity": "4.6.0",
+    "os-browserify": "^0.3.0",
+=======
+>>>>>>> bbbdd255eb782ee868749c10a5eb63bb53431d1b
     "react": "^18.2.0",
     "react-bootstrap": "^2.4.0",
     "react-dom": "^18.2.0",

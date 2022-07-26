@@ -212,8 +212,8 @@ const SignUp: React.FC = () => {
         if (res.status >= 200 && res.status <= 204) {
           alert("회원가입 완료!! 10TUT 토큰 지급 !!");
           navigate("/signin");
-        } else {
-          alert("이미가입된 사용자입니다.");
+        } else if (res.status == 400) {
+          res.json().then((msg) => alert(msg.message));
         }
       });
     } catch (error) {
