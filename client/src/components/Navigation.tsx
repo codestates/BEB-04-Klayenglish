@@ -79,7 +79,7 @@ const Navigation: React.FC = () => {
                 Test
               </Link>
               <Link to="/Comunity" className="Nav-item">
-                Comunity
+                Community
               </Link>
               {/* 리액트라우터 Link 사용 ! */}
               <Link to="/Course" className="Nav-item">
