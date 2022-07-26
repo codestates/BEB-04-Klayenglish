@@ -22,18 +22,13 @@ import { AbiItem } from "web3-utils";
 const App: React.FC = () => {
   const [account, setAccount] = useState("");
   const [balance, setBalance] = useState("");
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
+
   // window.ethereum.request();
   const setUserLoggedIn = useSelector((state) => state.user.isLoggedIn);
-=======
   const [tutbalance, setTutbalance] = useState("");
->>>>>>> f3ff345a4bff61233dca3d71ce63229849326335
 
   window.ethereum.request();
   const userInfo = useSelector((state) => state.user.nickname);
->>>>>>> bbbdd255eb782ee868749c10a5eb63bb53431d1b
   const dispatch = useDispatch();
   // 토큰을 통한 인증확인
   const auth = async () => {

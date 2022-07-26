@@ -135,12 +135,7 @@ app.post("/user/auth", (req, res) => {
   }
 });
 
-<<<<<<< HEAD
-//TODO : 1.mysql 주소 넣기 2.balance받고 wallet페이지에 보내기
-
-=======
 // 유효성 검사(기능 구현) -규현
->>>>>>> f3ff345a4bff61233dca3d71ce63229849326335
 app.post("/user/login", (req, res) => {
   //로그인
   const id = req.body.id;
