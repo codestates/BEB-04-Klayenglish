@@ -4,6 +4,7 @@ import palette from "../styles/palette";
 import TestLevel from "./common/TestLevel";
 import { Link } from "react-router-dom";
 import dummyTestList from "../lib/dummyTestList";
+import { useSelector, useDispatch } from "../store";
 
 const Base = styled.div`
   box-sizing: border-box;
@@ -67,21 +68,24 @@ const Base = styled.div`
 
 interface Props {
   id: number;
+  image: string;
+  level?: "master" | "diamond" | "bronze" | "gold" | "silver" | "challenger";
+  name: string;
+  source: string;
 }
 
-const TestList: React.FC<Props> = ({ id }) => {
-  const currentId = id;
-  const testList = dummyTestList[currentId];
-  const { testId, testImg, testTitle, testLevel } = testList;
+const TestList: React.FC<Props> = ({ id, image, level, name, source }) => {
   return (
-    <Link to={`/testgroup/${currentId}`}>
+    <Link to={`/testgroup/${id}`}>
       <Base>
-        <TestLevel level={testLevel} position="ab" />
+        <TestLevel level={level} position="ab" />
         <div className="test-image-container">
-          <img className="test-image" src={testImg} />
+          <img className="test-image" src={image} />
         </div>
         <div className="text-box-detail-container">
-          <span className="text-box-detail">{testTitle}</span>
+          <span className="text-box-detail">
+            {source} {name}
+          </span>
           <div className="test-complete-bar"></div>
           <span className="test-complete-total">0% complete</span>
         </div>

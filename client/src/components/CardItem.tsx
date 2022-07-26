@@ -151,11 +151,10 @@ const Base = styled.div`
 `;
 
 interface Props {
-  key: any;
   props: any;
 }
 
-const CardItem: React.FC<Props> = ({ key, props }) => {
+const CardItem: React.FC<Props> = ({ props }) => {
   const [flip, setFlip] = useState<boolean>(false);
   const [get, setGet] = useState<string>("notyet");
   const navigate = useNavigate();
@@ -182,8 +181,6 @@ const CardItem: React.FC<Props> = ({ key, props }) => {
       navigate("/signin", { replace: true });
       dispatch(modalActions.openNeedLoginModalOpen());
     } else {
-      alert("구매완료!");
-      setGet("complete");
       const cardData = async () => {
         const token: any = localStorage.getItem("accessToken");
         const parseToken: any = JSON.parse(token);
@@ -197,6 +194,17 @@ const CardItem: React.FC<Props> = ({ key, props }) => {
             },
             // server로 클릭한 강좌 정보 전송
             body: JSON.stringify({ lecInfo: props }),
+          }).then((res) => {
+            res.json().then((msg) => {
+              // 이미 구매한 강좌 유효성 검사
+              if (!msg.ok) {
+                alert("이미 구매하신 강좌입니다.");
+                setGet("complete");
+              } else {
+                alert("구매완료!");
+                setGet("complete");
+              }
+            });
           });
         } catch (error) {
           console.error(error);

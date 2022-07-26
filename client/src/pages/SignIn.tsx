@@ -120,7 +120,7 @@ const SignIn: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [validated, setValidated] = useState(true);
-  // passwordType state
+  // passwordType state -규현
   const [passwordType, setPasswordType] = useState({
     type: "password",
     visible: false,
@@ -138,7 +138,7 @@ const SignIn: React.FC = () => {
     setValidated(true);
     setPassword(e.target.value);
   };
-  // password type을 변경하는 함수
+  // password type을 변경하는 함수 -규현
   const onVisible = () => {
     setPasswordType(() => {
       if (!passwordType.visible) {
@@ -149,7 +149,7 @@ const SignIn: React.FC = () => {
     });
   };
   const [msg, setMsg] = useState("");
-  // 로그인 버튼
+  // 로그인 버튼 -규현
   const login = async (event: React.MouseEvent<HTMLButtonElement>) => {
     //console.log("id = " + id + "pwd = " + pwd);
     try {
@@ -169,28 +169,32 @@ const SignIn: React.FC = () => {
             );
           console.log("클라이언트 로그인성공");
           dispatch(userActions.setLoggedIn());
+        } else if (res.status == 400) {
+          navigate("/signin");
+          res.json().then((msg) => alert(msg.message));
+          // 다시 로그인 양식 기입하게끔 -규현
         }
       });
     } catch (error) {
-      console.error(error);
+      console.log(error);
     }
-
+    // error 메시지 확인 가능 -규현 https://krpeppermint100.medium.com/ts-nodejs-express%EC%9D%98-%EC%9A%94%EC%B2%AD-%EC%9D%91%EB%8B%B5-%EC%97%90%EB%9F%AC-%ED%95%B8%EB%93%A4%EB%A7%81-8943ab7bd13b
     navigate("/");
   };
-  // 로그인 안하고 test 페이지 접근시 뜨는 모달
+  // 로그인 안하고 test 페이지 접근시 뜨는 모달 -규현
   const needLogin = () => {
     setTimeout(() => {
       dispatch(modalActions.closeNeedLoginModalOpen());
     }, 5000);
   };
-  // 로그인 되어있으면 리다이렉트
+  // 로그인 되어있으면 리다이렉트 -규현
   useEffect(() => {
     if (isLoggedIn) {
-      navigate("/", { replace: true });
+      navigate("/");
     } else if (loginModal) {
       needLogin();
     }
-  }, [isLoggedIn, navigate]);
+  });
 
   return (
     <Base>

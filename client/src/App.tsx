@@ -18,8 +18,8 @@ import { userActions } from "./store/userSlice";
 const App: React.FC = () => {
   const [account, setAccount] = useState("");
   const [balance, setBalance] = useState("");
-  window.ethereum.request();
-  const userInfo = useSelector((state) => state.user.nickname);
+  // window.ethereum.request();
+  const setUserLoggedIn = useSelector((state) => state.user.isLoggedIn);
   const dispatch = useDispatch();
   // 토큰을 통한 인증확인
   const auth = async () => {
@@ -35,9 +35,14 @@ const App: React.FC = () => {
           },
         }).then((res) => {
           // email과 nickname 저장
-          res
-            .json()
-            .then((msg) => dispatch(userActions.setUserInfo(msg["data"])));
+          res.json().then((msg) => {
+            if (msg.ok) {
+              dispatch(userActions.setUserInfo(msg["data"]));
+              console.log("인증 성공");
+            } else {
+              alert(msg.message);
+            }
+          });
         });
       } catch (error) {
         console.error(error);
@@ -46,8 +51,12 @@ const App: React.FC = () => {
   };
 
   useEffect(() => {
-    console.log("@@@ authenticating @@@");
-    auth();
+    if (!setUserLoggedIn) {
+      if (localStorage.length != 0) {
+        console.log("유저 인증 중...");
+        auth();
+      }
+    }
   });
   const Connect = async () => {
     try {

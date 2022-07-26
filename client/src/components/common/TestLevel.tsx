@@ -4,11 +4,13 @@ import styled, { css } from "styled-components";
 import palette from "../../styles/palette";
 
 interface BaseProps {
-  level?: "master" | "diamond" | "bronze";
+  level?: "master" | "diamond" | "bronze" | "gold" | "silver" | "challenger";
   position?: "ab" | "rel";
 }
 
-const getLevelColor = (level?: "master" | "diamond" | "bronze") => {
+const getLevelColor = (
+  level?: "master" | "diamond" | "bronze" | "gold" | "silver" | "challenger"
+) => {
   switch (level) {
     case "master":
       return css`
@@ -58,7 +60,7 @@ const Base = styled.div<BaseProps>`
 
 // extends React.HTMLAttributes<HTMLDivElement> 처럼 확장을 해줘야 className 등 여러 옵션을 추가적용할 수 있다.
 interface Props extends React.HTMLAttributes<HTMLDivElement> {
-  level?: "master" | "diamond" | "bronze";
+  level?: "master" | "diamond" | "bronze" | "gold" | "silver" | "challenger";
   position?: "ab" | "rel";
 }
 
