@@ -174,6 +174,10 @@ const SignIn: React.FC = () => {
           res.json().then((msg) => alert(msg.message));
           // 다시 로그인 양식 기입하게끔 -규현
         }
+        console.log(res.status);
+        if (res.status >= 400) {
+          console.log("해당 입력이 잘못되었습니다.");
+        }
       });
     } catch (error) {
       console.log(error);

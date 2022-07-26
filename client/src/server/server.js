@@ -58,6 +58,18 @@ app.use(bodyParser.json());
 app.use(cors());
 // app.use(cookieParser());
 
+app.get("/wallet", (req, res) => {
+  connection.query("SELECT * FROM users", (err, data) => {
+    if (err) {
+      console.log("err");
+      res.send(err);
+    } else {
+      console.log("success");
+      res.send(data);
+    }
+  });
+});
+
 app.post("/user/auth", (req, res) => {
   // 인증
   const token = req.headers.authorization.split("Bearer ")[1];
@@ -127,7 +139,7 @@ app.post("/user/register", (req, res) => {
   }
 
   connection.query(
-    "SELECT * FROM users where userName=?",
+    "SELECT * FROM users where userName=? and not userName='server'",
     id,
     function (err, rows, fields) {
       if (err) {
@@ -147,7 +159,7 @@ app.post("/user/register", (req, res) => {
           let contract = new web3.eth.Contract(contractABI, tokenAddress, {
             from: fromAddress,
           });
-          let amount = web3.utils.toHex(web3.utils.toWei("1")); //1 TUT Token
+          let amount = web3.utils.toHex(web3.utils.toWei("10")); //10 TUT Token
           let data = contract.methods.transfer(toAddress, amount).encodeABI();
           sendErcToken();
           function sendErcToken() {
@@ -172,6 +184,7 @@ app.post("/user/register", (req, res) => {
                       if (err) {
                         console.log(err);
                       } else {
+                        // web3.eth.getBalance(toAddress);
                         console.log(res);
                       }
                     }
@@ -179,7 +192,6 @@ app.post("/user/register", (req, res) => {
                 }
               }
             );
-            // .getBalance(toAddress)
           }
 
           // console.log(wallet);
@@ -221,6 +233,50 @@ app.post("/selectCard", (req, res) => {
 });
 
 // 강좌구매 시 작동(유효성 검사 구현) -규현
+app.post("/crawling", (req, res) => {
+  //크롤링
+  // console.log(req.body.extractEng);
+  // console.log(req.body.extractEng[0].word);
+  const reqCnt = req.body.extractEng.length;
+  let question = "";
+  let answer = "";
+  let correct = "";
+
+  for (let i = 0; i < reqCnt; i++) {
+    question += req.body.extractEng[i].word + "|";
+    answer += req.body.extractEng[i].answer + "|";
+    correct += req.body.extractEng[i].correct + "|";
+    if (i === reqCnt - 1) {
+      //마지막 구분자 제거
+      question = question.slice(0, -1);
+      answer = answer.slice(0, -1);
+      correct = correct.slice(0, -1);
+    }
+  }
+
+  // const valExtract = req.body.regForm;
+  let ary = [];
+
+  // for (key in valExtract) {
+  //   ary.push(valExtract[key]);
+  // }
+  ary = [6, answer, question, correct, 5, "e2k"];
+  // console.log(ary.toString());
+
+  connection.query(
+    "INSERT INTO qz (lec_id,answer,question,correct,qz_num,qz_category) values (?)",
+    [ary],
+    function (err, rows, fields) {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log("qz insert 성공");
+        res.status(200).send();
+      }
+    }
+  );
+});
+// 강좌구매 시 작동(유효성 검사 필요)
 app.post("/user/payment", (req, res) => {
   const token = req.headers.authorization.split("Bearer ")[1];
   const result = jwt.verify(token);

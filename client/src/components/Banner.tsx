@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-type movieProps = {
+interface movieProps {
   movie: {
     popularMovies: {
       data: {
@@ -27,7 +27,7 @@ type movieProps = {
       };
     };
   };
-};
+}
 
 const Base = styled.div`
   .banner {

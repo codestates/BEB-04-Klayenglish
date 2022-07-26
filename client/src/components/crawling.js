@@ -3,19 +3,35 @@ const { style, display } = require("@mui/system");
 const axios = require("axios");
 const cheerio = require("cheerio");
 const fs = require("fs");
+const vm = require("vm");
 
 let today = new Date();
 let year = today.getFullYear(); // 년도
 let month = today.getMonth() + 1; // 월
 let date = today.getDate(); // 날짜
 let day = today.getDay(); // 요일
-let resToday = year + "" + month + "" + date;
+let resToday = year + "" + month + "" + date; //오늘날짜 구하기
 
-// let url = "https://wquiz.dict.naver.com/endic/news/home.dict?targetDate=20220721#tab=3";
-const getHTML = async (keyword) => {
+function getDateRangeData(param1, param2) {
+  //param1은 시작일, param2는 종료일이다.
+  var res_day = [];
+  var ss_day = new Date(param1);
+  var ee_day = new Date(param2);
+  while (ss_day.getTime() <= ee_day.getTime()) {
+    var _mon_ = ss_day.getMonth() + 1;
+    _mon_ = _mon_ < 10 ? "0" + _mon_ : _mon_;
+    var _day_ = ss_day.getDate();
+    _day_ = _day_ < 10 ? "0" + _day_ : _day_;
+    res_day.push(ss_day.getFullYear() + "" + _mon_ + "" + _day_);
+    ss_day.setDate(ss_day.getDate() + 1);
+  }
+  return res_day;
+}
+
+const getHTML = async (paramDate) => {
   let url =
-    "https://wquiz.dict.naver.com/endic/news/home.dict?targetDate=20220701#tab=1";
-  console.log("url = " + url);
+    "https://wquiz.dict.naver.com/endic/news/home.dict?targetDate=" + paramDate;
+  //   console.log("url = " + paramDate);
   try {
     return await axios.get(url);
   } catch (err) {
@@ -23,33 +39,41 @@ const getHTML = async (keyword) => {
   }
 };
 
-const parsing = async (keyword) => {
-  const html = await getHTML(keyword);
-  //   console.log(html);
+const parsing = async (paramDate) => {
+  const html = await getHTML(paramDate);
   const $ = cheerio.load(html.data);
-  //   const wordList = $(".word_list_item");
+
   const tab1_kor = $(".article_answer_block").text();
-  const tab1_eng = $(".quiz_answer_item");
+  let tab1_eng = $(".quiz_answer_item._keyword_answer_item");
+  let extractEng = []; //공백제거를 위해 생성
 
-  console.log(tab1_kor);
-  // tab1_eng.each((idx, node) => {
-  //     console.log($(node).find(".quiz_answer_item._keyword_answer_item").text());
-  // })
-  //   let wordEngArray = [];
-  //   let wordKorArray = [];
+  tab1_eng.each((idx, node) => {
+    // console.log(idx + " " + $(node).first().text());
+    extractEng.push({
+      idx: idx,
+      word: $(node)
+        .text()
+        .replace("오답입니다", "")
+        .replace("정답입니다", "")
+        .replace(".", "")
+        .trim(),
+      correct: $(node).attr("data-correct"),
+      answer: tab1_kor,
+    });
+  });
+  //console.log(JSON.stringify(extractEng));
 
-  //   wordList.each((idx, node) => {
-  //     console.log($(node).find(".word_eng").text());
-  //     wordEngArray.push({
-  //       id: idx,
-  //       wordEng: $(node).find(".word_eng").text(),
-  //       wordKor: $(node).find(".word_kor").text(),
-  //     });
-  //   });
-  //   aa.each((idx, node) => {
-  //     const pp = $(node).find(".word_eng").text();
-  //     console.log(idx + " | " + pp + " | ");
-  //   });
+  // axios.get("url주소",[,config])
+  // axios.post("url주소",{data객체},[,config])
+
+  axios
+    .post("http://localhost:3001/crawling", { extractEng })
+    .then((response) => {
+      console.log(response);
+    })
+    .catch((error) => {
+      console.log(error.response);
+    });
 
   //파일생성
   //   fs.writeFileSync(
@@ -60,7 +84,9 @@ const parsing = async (keyword) => {
   //   );
   //   console.log(wordEngArray);
 };
-//   const child = $(".quiz_answer_list > button").eq(0).text();
+
+const fromTo = getDateRangeData("2022-06-26", "2022-06-30"); //결과는 (-)하이픈 없이 나옴
+//console.log(fromTo);
 
 //   let course = [];
 //   $courseList.each((idx, node) => {
@@ -74,5 +100,8 @@ const parsing = async (keyword) => {
 //       img: $(node).find(".card-image > figure > img").attr("src"),
 //     });
 //   });
-
-parsing("");
+for (let i = 0; i < fromTo.length; i++) {
+  //   console.log(fromTo[i]);
+  parsing(fromTo[i]);
+}
+// parsing("");
