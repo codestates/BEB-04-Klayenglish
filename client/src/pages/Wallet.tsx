@@ -3,7 +3,8 @@ import Web3 from "web3";
 import Button from "../components/common/Button";
 import styled from "styled-components";
 import palette from "../styles/palette";
-// import { AbiItem } from "web3-utils";
+import { AbiItem } from "web3-utils";
+import { useState } from "react";
 // abi 타입스크립트 interface 지정
 
 const connection = `https://rinkeby.infura.io/v3/039a1d24b7384022a3b6994dd5627c61`;
@@ -53,7 +54,10 @@ type walProps = {
 };
 
 function Wallet({ account, balance, onClickConnect }: walProps) {
-  // const [TUTBalance, setTUTBalance] = useState("");
+  const [TUTBalance, setTUTBalance] = useState("");
+
+  const tokenAddress = "0x9d8D3C04240cabcF21639656F8b1F2Af0765Cf08";
+  const walletAddress = "0x1Cc5eCC0d68a7a6D6B0305F6A0660529c0D186d8"; //UserAddress 불러오기
   const minABI = [
     // balanceOf
     {
@@ -64,14 +68,10 @@ function Wallet({ account, balance, onClickConnect }: walProps) {
       type: "function",
     },
   ];
-  const tokenAddress = "0x9d8D3C04240cabcF21639656F8b1F2Af0765Cf08";
-  const walletAddress = "0x1Cc5eCC0d68a7a6D6B0305F6A0660529c0D186d8"; //UserAddress 불러오기
-
-  // const contract = new web3.eth.Contract(minABI:object, tokenAddress);
+  const contract = new web3.eth.Contract(minABI as AbiItem[], tokenAddress);
 
   async function getBalance() {
     const result = await contract.methods.balanceOf(walletAddress).call();
-    console.log("result", result);
     const format = web3.utils.fromWei(result);
     console.log(format);
   }
@@ -95,8 +95,9 @@ function Wallet({ account, balance, onClickConnect }: walProps) {
           //   res.json().then((data) => console.log(data));
           // }, 5000);
           alert("업데이트 완료");
-          res.json().then((data) => console.log(data));
-          // setTUTbalance(data.addressuser);
+          res.json().then((data) => setTUTBalance(data));
+          console.log("setTUTBalance", setTUTBalance);
+          // setTUTBalance(data.addressuser);
           // .then ((data)=>setTUTbalance)
           // console.log("data", setTUTbalance);
         } else {
