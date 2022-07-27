@@ -11,6 +11,7 @@ import { AppDispatch } from "../store";
 import Banner from "../components/Banner";
 import MovieSlide from "../components/MovieSlide";
 import MovieCard from "../components/MovieCard";
+import PostCard from "../components/PostCard";
 
 const Movies: React.FC = () => {
   const Base = styled.div`
@@ -50,6 +51,7 @@ const Movies: React.FC = () => {
         {/* {popularMovies.results && (
           <Banner movie={popularMovies.data.results[0]} />
         )} */}
+        <Banner />
         <br />
         <h1>English Movie</h1>
         <MovieSlide movie={popularMovies} />
@@ -71,8 +73,14 @@ const Movies: React.FC = () => {
                 <WordsCard item={slip} />
               </Col>
             ))} */}
-            <h1>게시판 & 이벤트</h1>
-            <Col lg={3}>
+
+            <h1>Notice & Event</h1>
+            <PostCard />
+            <PostCard />
+            <PostCard />
+            <PostCard />
+
+            {/* <Col lg={3}>
               {" "}
               <WordsCard />
             </Col>
@@ -83,11 +91,7 @@ const Movies: React.FC = () => {
             <Col lg={3}>
               {" "}
               <WordsCard />
-            </Col>
-            <Col lg={3}>
-              {" "}
-              <WordsCard />
-            </Col>
+            </Col> */}
           </Row>
         </Container>
       </div>

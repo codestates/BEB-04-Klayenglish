@@ -147,11 +147,9 @@ const App: React.FC = () => {
           path="/wallet"
           element={
             <Wallet
-              tutbalance={tutbalance}
               account={account}
               balance={balance}
               onClickConnect={Connect}
-              // onClickConnect={Connect2}
             />
           }
         ></Route>

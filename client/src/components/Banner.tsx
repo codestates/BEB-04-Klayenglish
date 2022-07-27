@@ -50,8 +50,8 @@ const Base = styled.div`
   }
 `;
 
-const Banner: React.FC<movieProps> = ({ movie }) => {
-  console.log(movie, "movie");
+const Banner: React.FC = () => {
+  // console.log(movie, "movie");
   return (
     <Base>
       <div
@@ -59,14 +59,18 @@ const Banner: React.FC<movieProps> = ({ movie }) => {
         style={{
           backgroundImage:
             "url(" +
-            `https://www.themoviedb.org/t/p/w1920_and_h800_multi_faces/${movie.popularMovies.data.results[0].poster_path}` +
+            `https://www.themoviedb.org/t/p/w1440_and_h320_multi_faces/62Qe28oi9PaK3P2ljDYUDTGAyST.jpg` +
             ")",
         }}
+        // https://www.themoviedb.org/t/p/w1920_and_h800_multi_faces/${movie.popularMovies.data.results[0].poster_path}
       >
         {/* jsx 문법상 string으로 해결 */}
         <div className="banner-info">
-          <h1>{movie.popularMovies.data.results[0].title}</h1>
-          <p>{movie.popularMovies.data.results[0].overview}</p>
+          <br></br>
+          <h1>Klayenglish pursues equal and free private education</h1>
+          <p> let's get TUT tokens !</p>
+          {/* <h1>{movie.popularMovies.data.results[0].title}</h1> */}
+          {/* <p>{movie.popularMovies.data.results[0].overview}</p> */}
         </div>
       </div>
     </Base>
