@@ -1,14 +1,11 @@
 import React from "react";
-import Web3 from "web3";
+// import Web3 from "web3";
 import Button from "../components/common/Button";
 import styled from "styled-components";
 import palette from "../styles/palette";
-import { AbiItem } from "web3-utils";
+// import { AbiItem } from "web3-utils";
 import { useState } from "react";
 // abi 타입스크립트 interface 지정
-
-const connection = `https://rinkeby.infura.io/v3/039a1d24b7384022a3b6994dd5627c61`;
-const web3 = new Web3(new Web3.providers.HttpProvider(connection));
 
 const Base = styled.div`
   display: flex;
@@ -46,6 +43,9 @@ const Base = styled.div`
     }
   }
 `;
+// interface TUTData{
+//   SetStateAction :any;
+// }
 
 type walProps = {
   account: string;
@@ -54,31 +54,7 @@ type walProps = {
 };
 
 function Wallet({ account, balance, onClickConnect }: walProps) {
-  const [TUTBalance, setTUTBalance] = useState("");
-
-  const tokenAddress = "0x9d8D3C04240cabcF21639656F8b1F2Af0765Cf08";
-  const walletAddress = "0x1Cc5eCC0d68a7a6D6B0305F6A0660529c0D186d8"; //UserAddress 불러오기
-  const minABI = [
-    // balanceOf
-    {
-      constant: true,
-      inputs: [{ name: "_owner", type: "address" }],
-      name: "balanceOf",
-      outputs: [{ name: "balance", type: "uint256" }],
-      type: "function",
-    },
-  ];
-  const contract = new web3.eth.Contract(minABI as AbiItem[], tokenAddress);
-
-  async function getBalance() {
-    const result = await contract.methods.balanceOf(walletAddress).call();
-    const format = web3.utils.fromWei(result);
-    console.log(format);
-  }
-
-  getBalance();
-
-  // const [TUTbalance, setTUTbalance] = useState();
+  const [TUTbalance, setTUTbalance] = useState();
 
   const TUTClick = async () => {
     try {
@@ -87,19 +63,12 @@ function Wallet({ account, balance, onClickConnect }: walProps) {
         headers: {
           "content-type": "application/json",
         },
-        // body: JSON.stringify({ id: email, pwd: password }),
       }).then((res) => {
         if (res.status >= 200 && res.status <= 204) {
-          // setTimeout(function () {
-          //   alert("업데이트 완료");
-          //   res.json().then((data) => console.log(data));
-          // }, 5000);
           alert("업데이트 완료");
-          res.json().then((data) => console.log(data.data.bal / 10 ** 18));
-          // console.log("setTUTBalance", setTUTBalance);
-          // setTUTBalance(data.addressuser);
-          // .then ((data)=>setTUTbalance)
-          // console.log("data", setTUTbalance);
+          res
+            .json()
+            .then((data) => setTUTbalance((data.data.bal / 10 ** 18) as any));
         } else {
           alert("TUT가 없습니다");
         }
@@ -111,9 +80,6 @@ function Wallet({ account, balance, onClickConnect }: walProps) {
 
   return (
     <Base>
-      {/* 3항 연산자를 이용 */}
-      {/* account 가 있으면 (지갑연결이 되어있으면) disConnect 버튼이 나오고 */}
-      {/* account 가 없으면 지갑 연결하라는 버튼이 나온다 */}
       {account ? (
         <div className="wallet_form">
           <Button className="btn_walletConnected">Wallet Connected</Button>
@@ -131,34 +97,27 @@ function Wallet({ account, balance, onClickConnect }: walProps) {
           </Button>
         </div>
       )}
-      {account ? (
+      {TUTbalance ? (
         <div className="wallet_form">
           <Button className="btn_walletConnected">Wallet Connected</Button>
           <div>
-            <div>TUTClick</div>
+            <div>
+              {" "}
+              <h2> Balance : {TUTbalance} TUT</h2>
+            </div>
             <div className="horizontalLine"></div>
-            <div>{account}</div>
             <div className="horizontalLine"></div>
           </div>
         </div>
       ) : (
         <div className="wallet_form">
           <Button className="btn_walletConnect" onClick={TUTClick}>
-            TUTClick
+            Check your TUT!
           </Button>
         </div>
       )}
     </Base>
   );
-}
-{
-  /* <div>
-<div>현재 토큰</div>
-<div>
-  {parseInt(balance, 16) / 10 ** 18}
-  <span> tut</span>
-</div>
-</div> */
 }
 
 export default Wallet;

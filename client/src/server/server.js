@@ -59,20 +59,12 @@ app.use(cors());
 // app.use(cookieParser());
 
 app.post("/wallet", (req, res) => {
-  // const id = req.body.id;
   connection.query(
     "SELECT address FROM users ORDER BY id DESC LIMIT 1;",
     function (err, rows, fields) {
-      //   console.log("rows = " + rows.length);
       if (rows.length > 0) {
-        // const addressuser = rows[0].address;
-        const addressuser = "0x19eae62c6ab1906aa08253107178a8a502a97c43";
-        console.log("로그인됨", addressuser);
-
-        // 답은 비동기식 처리방법에 있다 post 요청을 받고 안에서 분명히 getRedisData를 호출하여 리턴 값을 요청했지만
-        // 비동기식 처리로 인해 getRedisData의 리턴을 기다리지 않고 res.send요청을 실행해서 이런 결과가 발생한 것이다
-        // 외부함수로 부터 리턴을 받기 위해서는 Promise형식으로 작성해야한다⚠
-
+        const addressuser = rows[0].address;
+        console.log("로그인유저 지갑주소:", addressuser);
         const minABI = [
           // balanceOf
           {
@@ -85,23 +77,14 @@ app.post("/wallet", (req, res) => {
         ];
         const tokenAddress = "0x9d8D3C04240cabcF21639656F8b1F2Af0765Cf08";
         const walletAddress = addressuser; //UserAddress 불러오기
-        console.log("tokenAddress = " + tokenAddress);
-        console.log("walletAddress = " + walletAddress);
         const contract = new web3.eth.Contract(minABI, tokenAddress);
 
         async function getBalance(walletAddress) {
           const result = await contract.methods.balanceOf(walletAddress).call();
-          // console.log("result = " + result);
-          // const format = await web3.utils.fromWei(result);
-          console.log(result);
-
           return result;
         }
         const getBal = Promise.resolve(getBalance(walletAddress));
-        // console.log(getBalance(walletAddress));
         getBal.then((bal) => {
-          console.log("bal = " + bal);
-
           return res.status(200).send({
             ok: true,
             data: {
@@ -110,28 +93,6 @@ app.post("/wallet", (req, res) => {
             },
           });
         });
-        // const TUTbalance = getBalance().then(function (format) {
-        //   console.log("format", format);
-        // });
-
-        // async function responseCheck(){}
-
-        // const TUTbalance = getBalance();
-        // console.log("TUTbalance", TUTbalance);
-        // new Promise(function (resolve, reject) {
-        //   getBalance(function () {
-        //     resolve(1);
-        //   }, 2000);
-        // });
-        // setTimeout(function () {
-        //   res.status(200).send({
-        //     ok: true,
-        //     data: {
-        //       TUTbalance,
-        //       addressuser,
-        //     },
-        //   });
-        // }, 3000);
       } else {
         res.status(400).send({
           ok: false,
@@ -142,21 +103,6 @@ app.post("/wallet", (req, res) => {
     }
   );
 });
-
-// app.post("/wallet", (req, res) => {
-//   connection.query(
-//     "SELECT address FROM users ORDER BY id DESC LIMIT 1;",
-//     function (err, rows, fields) {
-//       if (err) {
-//         console.log("실패");
-//         res.status(400).send();
-//       } else {
-//         console.log("success");
-//         res.status(200).send({ rows });
-//       }
-//     }
-//   );
-// });
 
 app.post("/user/auth", (req, res) => {
   // 인증
