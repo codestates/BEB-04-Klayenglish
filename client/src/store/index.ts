@@ -9,6 +9,9 @@ import userSlice from "./userSlice";
 import movieSlice from "./movieSlice";
 import modalSlice from "./modalSlice";
 import lectureSlice from "./lectureSlice";
+import qzSlice from "./qzSlice";
+import resultSlice from "./resultSlice";
+import miniQzSlice from "./miniQzSlice";
 
 //useSelector, useDispatch 등을 react-redux에서 가져온 후 state에 저장해서 사용할 수 있게 index.ts로 저장
 export const store = configureStore({
@@ -18,6 +21,9 @@ export const store = configureStore({
     lecture: lectureSlice.reducer,
     movie: movieSlice,
     modal: modalSlice.reducer,
+    qz: qzSlice.reducer,
+    result: resultSlice.reducer,
+    miniQz: miniQzSlice.reducer,
   },
 });
 

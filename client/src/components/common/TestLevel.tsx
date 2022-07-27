@@ -19,13 +19,28 @@ const getLevelColor = (
       `;
     case "diamond":
       return css`
-        background-color: ${palette.green[100]};
-        color: ${palette.green[400]};
+        background-color: ${palette.blue[100]};
+        color: ${palette.blue[400]};
       `;
     case "bronze":
       return css`
+        background-color: ${palette.yellow[300]};
+        color: ${palette.yellow[800]};
+      `;
+    case "gold":
+      return css`
         background-color: ${palette.yellow[100]};
         color: ${palette.yellow[500]};
+      `;
+    case "silver":
+      return css`
+        background-color: ${palette.gray[100]};
+        color: ${palette.gray[500]};
+      `;
+    case "challenger":
+      return css`
+        background-color: ${palette.black};
+        color: ${palette.yellow[400]};
       `;
   }
 };

@@ -3,6 +3,7 @@ import styled from "styled-components";
 import palette from "../styles/palette";
 import TestLevel from "./common/TestLevel";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import dummyTestList from "../lib/dummyTestList";
 import { useSelector, useDispatch } from "../store";
 
@@ -21,6 +22,7 @@ const Base = styled.div`
     }
     .text-box-detail-container {
       bottom: 5rem;
+      color: ${palette.gray[200]};
     }
   }
   .test-image-container {
@@ -75,22 +77,21 @@ interface Props {
 }
 
 const TestList: React.FC<Props> = ({ id, image, level, name, source }) => {
+  const navi = useNavigate();
   return (
-    <Link to={`/testgroup/${id}`}>
-      <Base>
-        <TestLevel level={level} position="ab" />
-        <div className="test-image-container">
-          <img className="test-image" src={image} />
-        </div>
-        <div className="text-box-detail-container">
-          <span className="text-box-detail">
-            {source} {name}
-          </span>
-          <div className="test-complete-bar"></div>
-          <span className="test-complete-total">0% complete</span>
-        </div>
-      </Base>
-    </Link>
+    <Base onClick={() => navi(`/testgroup/${id}`)}>
+      <TestLevel level={level} position="ab" />
+      <div className="test-image-container">
+        <img className="test-image" src={image} />
+      </div>
+      <div className="text-box-detail-container">
+        <span className="text-box-detail">
+          {source} {name}
+        </span>
+        <div className="test-complete-bar"></div>
+        <span className="test-complete-total">0% complete</span>
+      </div>
+    </Base>
   );
 };
 

@@ -36,10 +36,8 @@ const ChoseTest: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
-  const [loading, setLoading] = useState(true);
   const lecture = useSelector((state) => state.lecture);
   // map함수 실행
-  // 데이터를 불러오기 전에 실행하면 데이터 값이 없으므로 오류가 난다. 로딩 필요
   const testList: JSX.Element[] = lecture.map((el) => (
     <TestList
       id={el.id}
@@ -74,7 +72,6 @@ const ChoseTest: React.FC = () => {
                 for (let i = 0; i < lecture.length; i++) {
                   if (el.lec_id == lecture[i].id) {
                     console.log("이미 불러온 데이터 입니다.");
-                    setLoading(false);
                     return;
                   }
                 }
@@ -87,7 +84,6 @@ const ChoseTest: React.FC = () => {
                     source: el.lec_source,
                   })
                 );
-                setLoading(false);
               });
             })
           );
@@ -99,22 +95,16 @@ const ChoseTest: React.FC = () => {
     }
   }, [isLoggedIn, navigate]);
   return (
-    <>
-      {loading ? (
-        ""
+    <Base>
+      <h1 className="choseTest-logo">Test</h1>
+      {isLoggedIn ? (
+        <div className="tests-list-container">
+          <div className="test-list">{testList}</div>
+        </div>
       ) : (
-        <Base>
-          <h1 className="choseTest-logo">Test</h1>
-          {isLoggedIn ? (
-            <div className="tests-list-container">
-              <div className="test-list">{testList}</div>
-            </div>
-          ) : (
-            ""
-          )}
-        </Base>
+        ""
       )}
-    </>
+    </Base>
   );
 };
 

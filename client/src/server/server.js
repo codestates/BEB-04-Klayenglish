@@ -357,8 +357,7 @@ app.post("/user/testData", (req, res) => {
             if (err) {
               console.log(err);
             } else {
-              console.log(cunQuery);
-              console.log(`${id}님이 ${rows} 강좌 데이터를 불러왔습니다.`);
+              console.log(`${id}님이 강좌 데이터를 불러왔습니다.`);
               res.status(200).send({ message: rows });
             }
           }
@@ -374,6 +373,56 @@ app.post("/user/testData", (req, res) => {
   }
 });
 
+app.post("/user/qzData", (req, res) => {
+  const id = req.body.id;
+  connection.query(
+    "SELECT * FROM lecture WHERE lec_id = ?",
+    id,
+    function (err, rows) {
+      if (err) {
+        console.log(err);
+      } else {
+        const lec = rows[0];
+        connection.query(
+          "SELECT * FROM qz WHERE lec_id = ?",
+          id,
+          function (err, rows) {
+            const result = rows;
+            res.status(200).send({
+              data: result,
+              lec: lec,
+            });
+          }
+        );
+      }
+    }
+  );
+});
+
 app.listen(port, () => {
   console.log(`✅ Connect at http://localhost:${port} 🚀`);
 });
+
+/* data1: [result[0], result[1], result[2], result[3], result[4]],
+data2: [result[5], result[6], result[7], result[8], result[9]],
+data3: [
+  result[10],
+  result[11],
+  result[12],
+  result[13],
+  result[14],
+],
+data4: [
+  result[15],
+  result[16],
+  result[17],
+  result[18],
+  result[19],
+],
+data5: [
+  result[20],
+  result[21],
+  result[22],
+  result[23],
+  result[24],
+], */

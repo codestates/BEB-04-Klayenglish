@@ -9,8 +9,10 @@ import Comunity from "./pages/Comunity";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import Wallet from "./pages/Wallet";
+import Test from "./pages/Test";
 import ChoseTest from "./pages/ChoseTest";
 import TestGroup from "./pages/TestGroup";
+import TestResult from "./pages/TestResult";
 import { useState, useEffect } from "react";
 import { userActions } from "./store/userSlice";
 import { WindowRounded } from "@mui/icons-material";
@@ -22,15 +24,12 @@ import { AbiItem } from "web3-utils";
 const App: React.FC = () => {
   const [account, setAccount] = useState("");
   const [balance, setBalance] = useState("");
-<<<<<<< HEAD
   // window.ethereum.request();
   const setUserLoggedIn = useSelector((state) => state.user.isLoggedIn);
-=======
   const [tutbalance, setTutbalance] = useState("");
 
   window.ethereum.request();
   const userInfo = useSelector((state) => state.user.nickname);
->>>>>>> bbbdd255eb782ee868749c10a5eb63bb53431d1b
   const dispatch = useDispatch();
   // 토큰을 통한 인증확인
   const auth = async () => {
@@ -137,11 +136,13 @@ const App: React.FC = () => {
       <Routes>
         <Route path="/" element={<Home />}></Route>
         <Route path="/choseTest" element={<ChoseTest />}></Route>
+        <Route path="/testResult" element={<TestResult />}></Route>
         <Route path="/testgroup/:id" element={<TestGroup />}></Route>
         <Route path="/comunity" element={<Comunity />}></Route>
         <Route path="/course/" element={<Course />}></Route>
         <Route path="/signin" element={<SignIn />}></Route>
         <Route path="/signup" element={<SignUp />}></Route>
+        <Route path="/test/:id" element={<Test />}></Route>
         <Route
           path="/wallet"
           element={
