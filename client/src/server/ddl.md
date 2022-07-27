@@ -6,7 +6,7 @@ CREATE TABLE `users` ( --유저 테이블
 `nickName` varchar(255),
 `address` varchar(255), --지갑 주소
 `privateKey` varchar(255), --니모닉 key
-`taken_lectures` varchar(255) --가지고있는 강좌들 lecture table에 lec_id
+`taken_lectures` varchar(255) default '1' --가지고있는 강좌들 lecture table에 lec_id
 )
 
 CREATE TABLE `lecture` ( --강좌 테이블
@@ -67,7 +67,7 @@ insert into quiz (lec_id,lec_category,kor_questions,eng_answer,eng_choose) value
 CREATE TABLE `lecturestate` ( --강좌 통과유무 테이블
 `lec_name` varchar(50), --강좌 이름
 `userName` varchar(255), --강좌 통과한유저이름 email형식
-`pass_state` char(1) default 'N' --강좌 통과유무 'Y', 'N'
+`pass_state` char(1) --강좌 통과유무 1d|2d| ....
 )
 
 CREATE TABLE `board` ( -- 커뮤니티 게시판 테이블

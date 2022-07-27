@@ -20,6 +20,7 @@ const privateKey =
 let tokenAddress = "0x9d8D3C04240cabcF21639656F8b1F2Af0765Cf08"; // TUT Token contract address
 // let toAddress = "0x7208cd7b30Ab7Ff7F897454Aa780dF5178a58F49"; // where to send it
 let fromAddress = "0x4bFe6D25A7DACbCF9018a86eDd79A7168eBf6b7f"; // your wallet
+
 let contractABI = [
   // transfer
   {
@@ -41,6 +42,17 @@ let contractABI = [
         type: "bool",
       },
     ],
+    type: "function",
+  },
+];
+
+const minABI = [
+  // balanceOf
+  {
+    constant: true,
+    inputs: [{ name: "_owner", type: "address" }],
+    name: "balanceOf",
+    outputs: [{ name: "balance", type: "uint256" }],
     type: "function",
   },
 ];
@@ -73,16 +85,6 @@ app.post("/wallet", (req, res) => {
         // 비동기식 처리로 인해 getRedisData의 리턴을 기다리지 않고 res.send요청을 실행해서 이런 결과가 발생한 것이다
         // 외부함수로 부터 리턴을 받기 위해서는 Promise형식으로 작성해야한다⚠
 
-        const minABI = [
-          // balanceOf
-          {
-            constant: true,
-            inputs: [{ name: "_owner", type: "address" }],
-            name: "balanceOf",
-            outputs: [{ name: "balance", type: "uint256" }],
-            type: "function",
-          },
-        ];
         const tokenAddress = "0x9d8D3C04240cabcF21639656F8b1F2Af0765Cf08";
         const walletAddress = addressuser; //UserAddress 불러오기
         console.log("tokenAddress = " + tokenAddress);
@@ -227,7 +229,7 @@ app.post("/user/register", (req, res) => {
   }
 
   connection.query(
-    "SELECT * FROM users where userName=? and not userName='server'",
+    "SELECT * FROM users where userName=?",
     id,
     function (err, rows, fields) {
       if (err) {
@@ -369,6 +371,7 @@ app.post("/user/payment", (req, res) => {
   const token = req.headers.authorization.split("Bearer ")[1];
   const result = jwt.verify(token);
   const info = req.body.lecInfo;
+  console.log(info);
   const { lec_id, lec_price } = info;
   if (result.ok) {
     const { id, pwd, nickname } = result;
@@ -390,19 +393,42 @@ app.post("/user/payment", (req, res) => {
           res.status(400).send({ ok: false, message: lec_id });
         } else {
           // 새로운 값 추가할 때 "|"
-          const ary = [preLec + "|" + lec_id];
-          connection.query(
-            "UPDATE users SET taken_lectures = (?) WHERE userName = ?",
-            [[ary], id],
-            function (err, rows, fields) {
-              if (err) {
-                console.log(err);
-              } else {
-                console.log(`${id}님이 ${lec_id} 강좌를 구매하였습니다.`);
-                res.status(200).send({ ok: true, message: id });
-              }
-            }
-          );
+          console.log("현재강좌 가격 = " + lec_price);
+          const address = rows[0].address;
+          console.log("현재 address = " + address);
+          let wallet = web3.eth.accounts.create();
+
+          // 내계좌에서 -> 중앙계좌로
+          // 내계좌 0x19eaE62c6ab1906AA08253107178a8A502A97C43
+          // 중앙계좌 0x9d8D3C04240cabcF21639656F8b1F2Af0765Cf08
+          console.log("wallet.address = " + wallet.address);
+          console.log("wallet.privateKey = " + wallet.privateKey);
+          // ary.push(wallet.address);
+          // ary.push(wallet.privateKey);
+
+          //   const contract = new web3.eth.Contract(minABI, tokenAddress);
+
+          // async function getBalance(walletAddress) {
+          //   const result = await contract.methods.balanceOf(walletAddress).call();
+          //   return result;
+          // }
+          // const getBal = Promise.resolve(getBalance(walletAddress));
+
+          // getBal.then((bal) => {})
+
+          // const ary = [preLec + "|" + lec_id];
+          // connection.query(
+          //   "UPDATE users SET taken_lectures = (?) WHERE userName = ?",
+          //   [[ary], id],
+          //   function (err, rows, fields) {
+          //     if (err) {
+          //       console.log(err);
+          //     } else {
+          //       console.log(`${id}님이 ${lec_id} 강좌를 구매하였습니다.`);
+          //       res.status(200).send({ ok: true, message: id });
+          //     }
+          //   }
+          // );
         }
       }
     );

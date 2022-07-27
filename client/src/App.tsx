@@ -139,7 +139,7 @@ const App: React.FC = () => {
         <Route path="/testResult" element={<TestResult />}></Route>
         <Route path="/testgroup/:id" element={<TestGroup />}></Route>
         <Route path="/comunity" element={<Comunity />}></Route>
-        <Route path="/course/" element={<Course />}></Route>
+        <Route path="/course/" element={<Course account={account} />}></Route>
         <Route path="/signin" element={<SignIn />}></Route>
         <Route path="/signup" element={<SignUp />}></Route>
         <Route path="/test/:id" element={<Test />}></Route>

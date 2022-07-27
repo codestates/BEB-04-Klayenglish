@@ -162,8 +162,15 @@ const Cards = styled.div`
     }
   } */
 `;
+type courseProps = {
+  account: string;
+};
 
-const Course: React.FC = () => {
+// function Wallet({ account, balance, onClickConnect }: walProps) {
+
+const Course = ({ account }: courseProps) => {
+  // console.log("Course account" + account);
+  const acc = account;
   const [cards, setCards] = useState([]);
   useEffect(() => {
     const cardData = async () => {
