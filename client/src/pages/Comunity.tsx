@@ -11,6 +11,7 @@ import { AppDispatch } from "../store";
 import Banner from "../components/Banner";
 import MovieSlide from "../components/MovieSlide";
 import MovieCard from "../components/MovieCard";
+import PostCard from "../components/PostCard";
 
 const Movies: React.FC = () => {
   const Base = styled.div`
@@ -19,38 +20,42 @@ const Movies: React.FC = () => {
     color: ${palette.gray[200]};
   `;
 
-  useEffect(() => {
-    getWords();
-  }, []);
+  // useEffect(() => {
+  //   getWords();
+  // }, []);
 
   const { popularMovies } = useSelector((state: any) => state.movie);
-  console.log("popularMovies", popularMovies);
   const dispatch: AppDispatch = useDispatch();
+  // console.log("home", popularMovies);
 
   useEffect(() => {
     dispatch(movieAction.getMovies());
   }, []);
+  // api호출에러;
 
-  const [word, setWord] = useState(null);
-  const getWords = async () => {
-    try {
-      const response = await axios.get("https://api.adviceslip.com/advice");
-      setWord(response.data.slip.advice);
-      console.log("word", word);
-    } catch (e) {
-      console.log(e);
-    }
-  };
+  // const [word, setWord] = useState(null);
+  // const getWords = async () => {
+  //   try {
+  //     const response = await axios.get("https://api.adviceslip.com/advice");
+  //     setWord(response.data.slip.advice);
+  //     console.log("word", word);
+  //   } catch (e) {
+  //     console.log(e);
+  //   }
+  // };
 
   return (
     <Base>
       <div>
-        {popularMovies.data && <Banner movie={popularMovies.data.results[0]} />}
+        {/* 모징? */}
+        {/* {popularMovies.results && (
+          <Banner movie={popularMovies.data.results[0]} />
+        )} */}
+        <Banner />
         <br />
         <h1>English Movie</h1>
         <MovieSlide movie={popularMovies} />
-
-        <div>
+        {/* <div>
           <h2>Life quotes</h2>
           {word && (
             <textarea
@@ -59,8 +64,7 @@ const Movies: React.FC = () => {
               readOnly={true}
             />
           )}
-        </div>
-
+        </div> */}
         <Container>
           <Row>
             {/* {data.map((slip) => (
@@ -69,8 +73,14 @@ const Movies: React.FC = () => {
                 <WordsCard item={slip} />
               </Col>
             ))} */}
-            <h1>게시판 & 이벤트</h1>
-            <Col lg={3}>
+
+            <h1>Notice & Event</h1>
+            <PostCard />
+            <PostCard />
+            <PostCard />
+            <PostCard />
+
+            {/* <Col lg={3}>
               {" "}
               <WordsCard />
             </Col>
@@ -81,11 +91,7 @@ const Movies: React.FC = () => {
             <Col lg={3}>
               {" "}
               <WordsCard />
-            </Col>
-            <Col lg={3}>
-              {" "}
-              <WordsCard />
-            </Col>
+            </Col> */}
           </Row>
         </Container>
       </div>

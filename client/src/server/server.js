@@ -58,6 +58,60 @@ app.use(bodyParser.json());
 app.use(cors());
 // app.use(cookieParser());
 
+app.get("/wallet", (req, res) => {
+  connection.query(
+    "SELECT address FROM users ORDER BY id DESC LIMIT 1;",
+    (err, data) => {
+      if (err) {
+        console.log("err");
+        res.send(err);
+      } else {
+        console.log("success");
+        res.send(data);
+
+        const minABI = [
+          // balanceOf
+          {
+            constant: true,
+            inputs: [{ name: "_owner", type: "address" }],
+            name: "balanceOf",
+            outputs: [{ name: "balance", type: "uint256" }],
+            type: "function",
+          },
+        ];
+        let userAddress = "SELECT address FROM users ORDER BY id DESC LIMIT 1;";
+        const tokenAddress = "0x9d8D3C04240cabcF21639656F8b1F2Af0765Cf08";
+        const walletAddress = "userAddress"; //UserAddress 불러오기
+
+        const contract = new web3.eth.Contract(minABI, tokenAddress);
+
+        async function getBalance() {
+          const result = await contract.methods.balanceOf(walletAddress).call();
+
+          const format = web3.utils.fromWei(result);
+          console.log(format);
+        }
+        getBalance();
+      }
+    }
+  );
+});
+
+app.post("/wallet", (req, res) => {
+  connection.query(
+    "SELECT address FROM users ORDER BY id DESC LIMIT 1;",
+    function (err, rows, fields) {
+      if (err) {
+        console.log("실패");
+        res.status(400).send();
+      } else {
+        console.log("success");
+        res.status(200).send({ rows });
+      }
+    }
+  );
+});
+
 app.post("/user/auth", (req, res) => {
   // 인증
   const token = req.headers.authorization.split("Bearer ")[1];
@@ -81,6 +135,7 @@ app.post("/user/auth", (req, res) => {
   }
 });
 
+// 유효성 검사(기능 구현) -규현
 app.post("/user/login", (req, res) => {
   //로그인
   const id = req.body.id;
@@ -91,9 +146,7 @@ app.post("/user/login", (req, res) => {
     loginInfo,
     function (err, rows, fields) {
       //   console.log("rows = " + rows.length);
-      if (rows.length < 1) {
-        res.status(400).send({ message: "입력정보가 맞지 않습니다." });
-      } else {
+      if (rows.length > 0) {
         const accessToken = jwt.sign(rows[0]);
         const refreshToken = jwt.refresh();
         console.log("로그인됨");
@@ -104,11 +157,18 @@ app.post("/user/login", (req, res) => {
             accessToken,
           },
         });
+      } else {
+        res.status(400).send({
+          ok: false,
+          message: "해당 유저가 존재하지 않거나, 유효하지 않은 양식입니다.",
+        });
+        console.log("로그인 fail");
       }
     }
   );
 });
 
+// user 회원가입
 app.post("/user/register", (req, res) => {
   // console.log(req.body.regForm.username);
   const id = req.body.regForm.username;
@@ -141,7 +201,7 @@ app.post("/user/register", (req, res) => {
           let contract = new web3.eth.Contract(contractABI, tokenAddress, {
             from: fromAddress,
           });
-          let amount = web3.utils.toHex(web3.utils.toWei("1")); //1 TUT Token
+          let amount = web3.utils.toHex(web3.utils.toWei("10")); //10 TUT Token
           let data = contract.methods.transfer(toAddress, amount).encodeABI();
           sendErcToken();
           function sendErcToken() {
@@ -166,6 +226,7 @@ app.post("/user/register", (req, res) => {
                       if (err) {
                         console.log(err);
                       } else {
+                        // web3.eth.getBalance(toAddress);
                         console.log(res);
                       }
                     }
@@ -173,7 +234,6 @@ app.post("/user/register", (req, res) => {
                 }
               }
             );
-            // .getBalance(toAddress)
           }
 
           // console.log(wallet);
@@ -192,8 +252,8 @@ app.post("/user/register", (req, res) => {
           );
         } else {
           //email을 조회해서 결과가 있다면 이미 등록된 아이디
-          //   console.log("이미가입된 사용자입니다.");
-          res.status(400).send();
+          console.log("이미가입된 사용자입니다.");
+          res.status(400).send({ message: "이미가입된 사용자입니다." });
         }
       }
     }
@@ -214,6 +274,7 @@ app.post("/selectCard", (req, res) => {
   });
 });
 
+// 강좌구매 시 작동(유효성 검사 구현) -규현
 app.post("/crawling", (req, res) => {
   //크롤링
   // console.log(req.body.extractEng);
@@ -256,7 +317,7 @@ app.post("/crawling", (req, res) => {
       }
     }
   );
-})
+});
 // 강좌구매 시 작동(유효성 검사 필요)
 app.post("/user/payment", (req, res) => {
   const token = req.headers.authorization.split("Bearer ")[1];
@@ -272,20 +333,31 @@ app.post("/user/payment", (req, res) => {
       function (err, rows, fields) {
         // 해당 유저의 강의에 현재 구매한 강의 아이디를 넣기
         const preLec = rows[0].taken_lectures;
-        // 새로운 값 추가할 때 "|"
-        const ary = [preLec + "|" + lec_id];
-        connection.query(
-          "UPDATE users SET taken_lectures = (?) WHERE userName = ?",
-          [[ary], id],
-          function (err, rows, fields) {
-            if (err) {
-              console.log(err);
-            } else {
-              console.log(`${id}에 ${lec_id} 강의 update 성공!`);
-              res.status(200).send({ message: id });
+        // 담고있는 lec_id를 새로 들어온 강의 id와 비교할 수 있게 숫자를 담은 배열로 변경하는 과정 -규현
+        const aryPreLec = preLec.split("|");
+        const numLec = aryPreLec.join("");
+        const strLec = String(numLec);
+        const mapfn = (arg) => Number(arg);
+        const newLec = Array.from(strLec, mapfn);
+        if (newLec.includes(lec_id)) {
+          console.log("이미 구매한 강좌입니다.");
+          res.status(400).send({ ok: false, message: lec_id });
+        } else {
+          // 새로운 값 추가할 때 "|"
+          const ary = [preLec + "|" + lec_id];
+          connection.query(
+            "UPDATE users SET taken_lectures = (?) WHERE userName = ?",
+            [[ary], id],
+            function (err, rows, fields) {
+              if (err) {
+                console.log(err);
+              } else {
+                console.log(`${id}님이 ${lec_id} 강좌를 구매하였습니다.`);
+                res.status(200).send({ ok: true, message: id });
+              }
             }
-          }
-        );
+          );
+        }
       }
     );
   } else {
@@ -297,7 +369,7 @@ app.post("/user/payment", (req, res) => {
   }
 });
 
-// test페이지에서 데이터 보내기(유효성 검사 필요)
+// test페이지에 데이터 보내기(유효성 검사 필요)
 app.post("/user/testData", (req, res) => {
   const token = req.headers.authorization.split("Bearer ")[1];
   const result = jwt.verify(token);

@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 import TestList from "../components/TestList";
 import dummyTestList from "../lib/dummyTestList";
 import { modalActions } from "../store/modalSlice";
+import { lecData } from "../store/lectureSlice";
 
 const Base = styled.div`
   color: ${palette.gray[200]};
@@ -35,12 +36,19 @@ const ChoseTest: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
+  const [loading, setLoading] = useState(true);
   const lecture = useSelector((state) => state.lecture);
   // map함수 실행
-  const testList: JSX.Element[] = dummyTestList.map((el) => (
-    <TestList id={el.testId} />
+  // 데이터를 불러오기 전에 실행하면 데이터 값이 없으므로 오류가 난다. 로딩 필요
+  const testList: JSX.Element[] = lecture.map((el) => (
+    <TestList
+      id={el.id}
+      image={el.image}
+      level={el.level}
+      name={el.name}
+      source={el.source}
+    />
   ));
-
   useEffect(() => {
     if (!isLoggedIn) {
       navigate("/signin", { replace: true });
@@ -61,23 +69,26 @@ const ChoseTest: React.FC = () => {
           }).then((res) =>
             res.json().then((result) => {
               console.log(result.message);
-              const {
-                lec_id,
-                lec_image_path,
-                lec_level,
-                lec_name,
-                lec_source,
-              } = result.message;
-              dispatch(
-                lectureActions.setLecture({
-                  id: lec_id,
-                  image: lec_image_path,
-                  level: lec_level,
-                  name: lec_name,
-                  source: lec_source,
-                })
-              );
-              console.log(lecture);
+              // DB에서 가져온 데이터를 slice에 넣어주는데, 중복저장이 안되게 for문을 먼저 진행.
+              result.message.map((el: any) => {
+                for (let i = 0; i < lecture.length; i++) {
+                  if (el.lec_id == lecture[i].id) {
+                    console.log("이미 불러온 데이터 입니다.");
+                    setLoading(false);
+                    return;
+                  }
+                }
+                dispatch(
+                  lecData({
+                    id: el.lec_id,
+                    image: el.lec_image_path,
+                    level: el.lec_level,
+                    name: el.lec_name,
+                    source: el.lec_source,
+                  })
+                );
+                setLoading(false);
+              });
             })
           );
         } catch (error) {
@@ -88,16 +99,22 @@ const ChoseTest: React.FC = () => {
     }
   }, [isLoggedIn, navigate]);
   return (
-    <Base>
-      <h1 className="choseTest-logo">Test</h1>
-      {isLoggedIn ? (
-        <div className="tests-list-container">
-          <div className="test-list">{testList}</div>
-        </div>
-      ) : (
+    <>
+      {loading ? (
         ""
+      ) : (
+        <Base>
+          <h1 className="choseTest-logo">Test</h1>
+          {isLoggedIn ? (
+            <div className="tests-list-container">
+              <div className="test-list">{testList}</div>
+            </div>
+          ) : (
+            ""
+          )}
+        </Base>
       )}
-    </Base>
+    </>
   );
 };
 

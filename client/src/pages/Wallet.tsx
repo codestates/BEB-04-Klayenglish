@@ -48,22 +48,51 @@ type walProps = {
 };
 
 function Wallet({ account, balance, onClickConnect }: walProps) {
-  //   const getBalance: any = async () => {
-  //     let wei, balance;
-  //     // console.log("account = " + account);
-  //     // console.log("bal = " + window.web3.);
-  //     try {
-  //       window.ethereum.getBalance(account, function (error: any, wei: any) {
-  //         if (!error) {
-  //           balance = window.ethereum.fromWei(wei, "ether");
-  //           console.log(balance);
-  //         }
-  //       });
-  //     } catch (err) {
-  //       console.log(err);
-  //     }
-  //     return balance;
-  //   };
+  // const [TUTBalance, setTUTBalance] = useState("");
+
+  const TUTClick = async () => {
+    try {
+      fetch("http://localhost:3001/wallet", {
+        method: "post",
+        headers: {
+          "content-type": "application/json",
+        },
+      }).then((res) => {
+        if (res.status >= 200 && res.status <= 204) {
+          alert("업데이트 완료");
+          // console.log("res", res);
+        } else {
+          alert("TUT가 없습니다");
+        }
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  // const minABI = [
+  //   // balanceOf
+  //   {
+  //     constant: true,
+  //     inputs: [{ name: "_owner", type: "address" }],
+  //     name: "balanceOf",
+  //     outputs: [{ name: "balance", type: "uint256" }],
+  //     type: "function",
+  //   },
+  // ];
+  // const tokenAddress = "0x9d8D3C04240cabcF21639656F8b1F2Af0765Cf08";
+  // const walletAddress = "0x4bFe6D25A7DACbCF9018a86eDd79A7168eBf6b7f";
+
+  // const contract = new web3.eth.Contract(minABI as AbiItem[], tokenAddress);
+
+  // async function getBalance() {
+  //   const result = await contract.methods.balanceOf(walletAddress).call();
+
+  //   const format = web3.utils.fromWei(result);
+
+  //   console.log(format);
+  // }
+
+  // getBalance();
   return (
     <Base>
       {/* 3항 연산자를 이용 */}
