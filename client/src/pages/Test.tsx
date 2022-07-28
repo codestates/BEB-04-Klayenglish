@@ -75,14 +75,14 @@ const Test: React.FC = () => {
   const qz = useSelector((state: any) => state.qz);
   const [quiz, setQuiz] = useState<any>([]);
   const list = quiz[currentPage];
-  const onResetClick = () => {
+  /*   const onResetClick = () => {
     if (currentPage == 0) {
       console.log(list);
       console.log(list.answer.split("|"));
     } else {
       dispatch(quizActions.backQuiz());
     }
-  };
+  }; */
   // page id에 따른 qzSlice의 5개 값을 퀴즈를 miniQzSlice에 저장
   useEffect(() => {
     if (Number(id) == 0) {
