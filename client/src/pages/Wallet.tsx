@@ -96,7 +96,7 @@ function Wallet({ account, balance, onClickConnect }: walProps) {
           // }, 5000);
           alert("업데이트 완료");
           res.json().then((data) => setTUTBalance(data));
-          console.log("setTUTBalance", setTUTBalance);
+          console.log("setTUTBalance", TUTBalance);
           // setTUTBalance(data.addressuser);
           // .then ((data)=>setTUTbalance)
           // console.log("data", setTUTbalance);

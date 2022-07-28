@@ -12,6 +12,7 @@ import styled from "styled-components";
 import palette from "../styles/palette";
 import Button from "./common/Button";
 import { useSelector, useDispatch } from "../store";
+import { useNavigate } from "react-router-dom";
 import { userActions } from "../store/userSlice";
 const Base = styled.div`
   border-bottom: 1px solid ${palette.gray[400]};
@@ -51,11 +52,13 @@ const Base = styled.div`
 // 스타일컴포넌트 넣기
 
 const Navigation: React.FC = () => {
+  const navigate = useNavigate();
   const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
   const dispatch = useDispatch();
   const onSignOutBtn = () => {
     dispatch(userActions.setLoggedOut());
     localStorage.removeItem("accessToken");
+    navigate("/");
   };
   return (
     <Base>

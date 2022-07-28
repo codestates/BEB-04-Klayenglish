@@ -393,7 +393,14 @@ app.post("/user/payment", (req, res) => {
               if (err) {
                 console.log(err);
               } else {
-                console.log(`${id}님이 ${lec_id} 강좌를 구매하였습니다.`);
+                // lecturestate에 해당 유저 등록 -규현
+                connection.query(
+                  "INSERT INTO lecturestate(lec_name,userName,pass_state) values (?,?,?)",
+                  [lec_id, id, null]
+                );
+                console.log(
+                  `${id}님이 lec_id : ${lec_id} 강좌를 구매하였습니다. lecturestate에 해당 정보를 저장합니다.`
+                );
                 res.status(200).send({ ok: true, message: id });
               }
             }
@@ -421,30 +428,33 @@ app.post("/user/testData", (req, res) => {
       "SELECT * FROM users where userName=?",
       id,
       function (err, rows, fields) {
-        const userLec = rows[0].taken_lectures.split("|");
-        console.log(userLec);
-        // [ '1', '2' ]
-        let cunQuery = "lec_id in (?) ";
+        if (rows[0].taken_lectures == null) {
+          res.status(200).send({ message: "보유한 강좌가 없습니다." });
+        } else {
+          const userLec = rows[0].taken_lectures.split("|");
+          // [ '1', '2' ]
+          let cunQuery = "lec_id in (?) ";
 
-        for (let i = 1; i < userLec.length; i++) {
-          if (userLec === 1) {
-            cunQuery = "lec_id in (?) ";
-          } else {
-            cunQuery += "OR lec_id in (?)";
-          }
-        }
-        connection.query(
-          "select * from lecture where " + cunQuery + "",
-          userLec,
-          function (err, rows) {
-            if (err) {
-              console.log(err);
+          for (let i = 1; i < userLec.length; i++) {
+            if (userLec === 1) {
+              cunQuery = "lec_id in (?) ";
             } else {
-              console.log(`${id}님이 강좌 데이터를 불러왔습니다.`);
-              res.status(200).send({ message: rows });
+              cunQuery += "OR lec_id in (?)";
             }
           }
-        );
+          connection.query(
+            "select * from lecture where " + cunQuery + "",
+            userLec,
+            function (err, rows) {
+              if (err) {
+                console.log(err);
+              } else {
+                console.log(`${id}님이 보유 강좌 데이터를 불러왔습니다.`);
+                res.status(200).send({ message: rows });
+              }
+            }
+          );
+        }
       }
     );
   } else {
@@ -456,6 +466,7 @@ app.post("/user/testData", (req, res) => {
   }
 });
 
+// lec id를 통해서 강좌의 퀴즈 데이터 전송
 app.post("/user/qzData", (req, res) => {
   const id = req.body.id;
   connection.query(
@@ -482,30 +493,32 @@ app.post("/user/qzData", (req, res) => {
   );
 });
 
+app.post("/user/sendResult", (req, res) => {
+  const token = req.headers.authorization.split("Bearer ")[1];
+  const result = jwt.verify(token);
+  const { currentLec, day } = req.body;
+  if (result.ok) {
+    const email = result.id;
+    // 유저와 일치하는 데이터를 찾기
+    /*     connection.query(
+      "SELECT * FROM lecturestate WHERE userName = ? AND lec_name = ?",
+      [email, currentLec],
+      function (err, rows) {
+        const pass = rows[0].pass_state;
+        if(pass == null) {
+
+        }
+      }
+    ); */
+  } else {
+    // 검증에 실패하거나 토큰이 만료되었다면 클라이언트에게 메세지를 담아서 응답합니다.
+    res.status(401).send({
+      ok: false,
+      message: result.message, // jwt가 만료되었다면 메세지는 'jwt expired'입니다.
+    });
+  }
+});
+
 app.listen(port, () => {
   console.log(`✅ Connect at http://localhost:${port} 🚀`);
 });
-
-/* data1: [result[0], result[1], result[2], result[3], result[4]],
-data2: [result[5], result[6], result[7], result[8], result[9]],
-data3: [
-  result[10],
-  result[11],
-  result[12],
-  result[13],
-  result[14],
-],
-data4: [
-  result[15],
-  result[16],
-  result[17],
-  result[18],
-  result[19],
-],
-data5: [
-  result[20],
-  result[21],
-  result[22],
-  result[23],
-  result[24],
-], */
