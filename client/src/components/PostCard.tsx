@@ -34,7 +34,7 @@ const Post = () => {
               <blockquote className="blockquote mb-0">
                 <p> 👍 TuT 지급 이벤트</p>
                 <footer className="blockquote-footer">
-                  <cite title="Source Title">admin</cite>
+                  <cite title="Source Title">admin admin 30th July, 2022</cite>
                 </footer>
               </blockquote>
             </Card.Body>
@@ -63,7 +63,7 @@ const Post = () => {
               <blockquote className="blockquote mb-0">
                 <p> 🤍 게시판 테마 추가</p>
                 <footer className="blockquote-footer">
-                  <cite title="Source Title">admin</cite>
+                  <cite title="Source Title">admin 28th July, 2022</cite>
                 </footer>
               </blockquote>
             </Card.Body>
@@ -92,7 +92,7 @@ const Post = () => {
               <blockquote className="blockquote mb-0">
                 <p> 🚀 강좌 추가 업데이트</p>
                 <footer className="blockquote-footer">
-                  <cite title="Source Title">admin</cite>
+                  <cite title="Source Title">admin admin 13th March, 2022</cite>
                 </footer>
               </blockquote>
             </Card.Body>
