@@ -58,7 +58,8 @@ const Navigation: React.FC = () => {
   const onSignOutBtn = () => {
     dispatch(userActions.setLoggedOut());
     localStorage.removeItem("accessToken");
-    navigate("/");
+    // 리다이렉트해서 담고 있던 slice 초기화 시켜주기
+    window.location.replace("/");
   };
   return (
     <Base>
