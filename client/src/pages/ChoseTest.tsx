@@ -66,7 +66,10 @@ const ChoseTest: React.FC = () => {
             body: JSON.stringify({}),
           }).then((res) =>
             res.json().then((result) => {
-              console.log(result.message);
+              // 강좌가 없다면?
+              if (res.status == 201) {
+                return alert(result.message);
+              }
               // DB에서 가져온 데이터를 slice에 넣어주는데, 중복저장이 안되게 for문을 먼저 진행.
               result.message.map((el: any) => {
                 for (let i = 0; i < lecture.length; i++) {

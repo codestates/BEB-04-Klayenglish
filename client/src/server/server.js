@@ -380,7 +380,7 @@ app.post("/user/testData", (req, res) => {
       id,
       function (err, rows, fields) {
         if (rows[0].taken_lectures == null) {
-          res.status(200).send({ message: "보유한 강좌가 없습니다." });
+          res.status(201).send({ message: "보유한 강좌가 없습니다." });
         } else {
           const userLec = rows[0].taken_lectures.split("|");
           // [ '1', '2' ]
