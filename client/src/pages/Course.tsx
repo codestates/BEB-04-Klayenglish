@@ -12,8 +12,8 @@ const Cards = styled.div`
     padding-top: 2rem;
     text-align: center;
   }
-  .list-container {
-    .list {
+  .tests-list-container {
+    .test-list {
       margin-top: 3rem;
       display: flex;
       // 화면 가운데에서 왼쪽부터 추가하는 방법을 모르겠다
@@ -162,15 +162,8 @@ const Cards = styled.div`
     }
   } */
 `;
-type courseProps = {
-  account: string;
-};
 
-// function Wallet({ account, balance, onClickConnect }: walProps) {
-
-const Course = ({ account }: courseProps) => {
-  // console.log("Course account" + account);
-  const acc = account;
+const Course: React.FC = () => {
   const [cards, setCards] = useState([]);
   useEffect(() => {
     const cardData = async () => {
@@ -203,8 +196,8 @@ const Course = ({ account }: courseProps) => {
       <h1 className="choseTest-logo">
         Buy more advanced courses with TUT coins!!!!
       </h1>
-      <div className="list-container">
-        <div className="list">{cardList}</div>
+      <div className="tests-list-container">
+        <div className="test-list">{cardList}</div>
         {/* <ul className="cards__items"> */}
         {/* <CardItem src={"../dummy/voca.png"} /> */}
         {/* <CardItem
