@@ -9,6 +9,8 @@ CREATE TABLE `users` ( --유저 테이블
 `taken_lectures` varchar(255) --가지고있는 강좌들 lecture table에 lec_id
 )
 
+alter table users add taken_lectures varchar(255);
+
 CREATE TABLE `lecture` (
 `lec_id` int PRIMARY KEY AUTO_INCREMENT,
 `lec_name` varchar(50),

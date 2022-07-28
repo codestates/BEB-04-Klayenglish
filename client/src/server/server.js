@@ -476,7 +476,8 @@ app.post("/user/sendResult", (req, res) => {
         const pass = rows[0].pass_state;
         if (pass == null) {
           connection.query(
-            "UPDATE lecturestate SET pass_state = (?) WHERE userName = ? AND lec_name = ?"
+            "UPDATE lecturestate SET pass_state = (?) WHERE userName = ? AND lec_name = ?",
+            [day, email, currentLec]
           );
         }
       }
