@@ -8,10 +8,10 @@ const Web3 = require("web3");
 const connect = `https://rinkeby.infura.io/v3/039a1d24b7384022a3b6994dd5627c61`;
 const web3 = new Web3(new Web3.providers.HttpProvider(connect));
 const privateKey =
-  "0402db5843b4fbf3f79508185f43c6efeacd178aa31d52e35bc53dfb3becbaf9"; //Your Private key environment variable
-let tokenAddress = "0x9d8D3C04240cabcF21639656F8b1F2Af0765Cf08"; // Demo Token contract address
-let toAddress = "0x7208cd7b30Ab7Ff7F897454Aa780dF5178a58F49"; // where to send it
-let fromAddress = "0x4bFe6D25A7DACbCF9018a86eDd79A7168eBf6b7f"; // your wallet
+  "0402db5843b4fbf3f79508185f43c6efeacd178aa31d52e35bc53dfb3becbaf9"; //보낼계좌 프라이빗키 => 서버 프라이빗키써둠
+let tokenAddress = "0x9d8D3C04240cabcF21639656F8b1F2Af0765Cf08"; // 토큰 스마트컨트렉트 주소
+let toAddress = "0x7208cd7b30Ab7Ff7F897454Aa780dF5178a58F49"; // 받을계좌
+let fromAddress = "0x4bFe6D25A7DACbCF9018a86eDd79A7168eBf6b7f"; // 보낼계좌 => 이주소는 현재 서버주소써둠
 let contractABI = [
   // transfer
   {
