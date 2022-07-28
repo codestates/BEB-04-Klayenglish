@@ -2,59 +2,16 @@ import React from "react"; /*
 import Carousel from "react-multi-carousel"; */
 import "react-multi-carousel/lib/styles.css";
 import Movies from "../pages/Comunity";
-import MovieCard from "./MovieCard";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
+import First from "./Moviecard/First";
+import Second from "./Moviecard/Second";
+import Three from "./Moviecard/Three";
+import Four from "./Moviecard/Four";
+import Five from "./Moviecard/Five";
+import Six from "./Moviecard/Six";
 // import { MovieCard } from "./MovieCard";
 
-interface movieProps {
-  movie: {
-    popularMovies: {
-      data: {
-        page: string;
-        results: [
-          {
-            adult: any;
-            backdrop_path: any;
-            genre_ids: [any, any, any, any, any];
-            id: any;
-            original_language: any;
-            original_title: any;
-            overview: any;
-            popularity: any;
-            poster_path: any;
-            release_date: any;
-            title: any;
-            video: any;
-            vote_average: any;
-            vote_count: any;
-            [propName: string]: any;
-          }
-        ];
-      };
-    };
-  };
-}
-
-interface itemProps {
-  results: {
-    adult?: any;
-    backdrop_path?: any;
-    genre_ids?: [any, any, any, any, any];
-    id?: any;
-    original_language?: any;
-    original_title?: any;
-    overview?: any;
-    popularity?: any;
-    poster_path?: any;
-    release_date?: any;
-    title?: any;
-    video?: any;
-    vote_average?: any;
-    vote_count?: any;
-    // [propName: string]: any;
-  };
-}
 const responsive = {
   superLargeDesktop: {
     // the naming can be any, depends on you.
@@ -75,8 +32,8 @@ const responsive = {
   },
 };
 
-const MovieSlide: React.FC<movieProps> = ({ movie }) => {
-  console.log("여기냐", movie);
+const MovieSlide: React.FC = () => {
+  // console.log("여기냐", movie);
   return (
     <div>
       <Carousel responsive={responsive}>
@@ -84,28 +41,31 @@ const MovieSlide: React.FC<movieProps> = ({ movie }) => {
           <MovieCard item={item} />
         ))} */}
         <div>
-          <MovieCard />
+          <First />
         </div>
         <div>
-          <MovieCard />
+          <Second />
         </div>
         <div>
-          <MovieCard />
+          <Three />
         </div>
         <div>
-          <MovieCard />
+          <Four />
         </div>
         <div>
-          <MovieCard />
+          <Five />
         </div>
         <div>
-          <MovieCard />
+          <Six />
         </div>
         <div>
-          <MovieCard />
+          <Three />
         </div>
         <div>
-          <MovieCard />
+          <Four />
+        </div>
+        <div>
+          <First />
         </div>
       </Carousel>
     </div>

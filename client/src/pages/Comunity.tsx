@@ -10,7 +10,6 @@ import { movieAction } from "../store/movieAction";
 import { AppDispatch } from "../store";
 import Banner from "../components/Banner";
 import MovieSlide from "../components/MovieSlide";
-import MovieCard from "../components/MovieCard";
 import PostCard from "../components/PostCard";
 
 const Movies: React.FC = () => {
@@ -47,51 +46,14 @@ const Movies: React.FC = () => {
   return (
     <Base>
       <div>
-        {/* 모징? */}
-        {/* {popularMovies.results && (
-          <Banner movie={popularMovies.data.results[0]} />
-        )} */}
         <Banner />
         <br />
-        <h1>English Movie</h1>
-        <MovieSlide movie={popularMovies} />
-        {/* <div>
-          <h2>Life quotes</h2>
-          {word && (
-            <textarea
-              rows={7}
-              value={JSON.stringify(word, null, 2)}
-              readOnly={true}
-            />
-          )}
-        </div> */}
+        <h1>English Recommand</h1>
+        <MovieSlide />
         <Container>
           <Row>
-            {/* {data.map((slip) => (
-              <Col lg={3}>
-                {" "}
-                <WordsCard item={slip} />
-              </Col>
-            ))} */}
-
             <h1>Notice & Event</h1>
             <PostCard />
-            <PostCard />
-            <PostCard />
-            <PostCard />
-
-            {/* <Col lg={3}>
-              {" "}
-              <WordsCard />
-            </Col>
-            <Col lg={3}>
-              {" "}
-              <WordsCard />
-            </Col>
-            <Col lg={3}>
-              {" "}
-              <WordsCard />
-            </Col> */}
           </Row>
         </Container>
       </div>

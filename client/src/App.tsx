@@ -16,10 +16,6 @@ import TestResult from "./pages/TestResult";
 import { useState, useEffect } from "react";
 import { userActions } from "./store/userSlice";
 import { WindowRounded } from "@mui/icons-material";
-// import transfer from "./components/transfer";
-import Web3 from "web3";
-import { AbiItem } from "web3-utils";
-// abi 타입스크립트 interface 지정
 
 const App: React.FC = () => {
   const [account, setAccount] = useState("");
