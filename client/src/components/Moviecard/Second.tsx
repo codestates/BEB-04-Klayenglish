@@ -5,10 +5,12 @@ const Base = styled.div`
   .card {
     width: 350px;
     height: 200px;
+    cursor: pointer;
   }
   .src {
     width: 305px;
     height: 200px;
+    cursor: pointer;
   }
 `;
 
