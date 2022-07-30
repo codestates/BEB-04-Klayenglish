@@ -71,20 +71,18 @@ const Base = styled.div`
 const Test: React.FC = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const currentPage = useSelector((state: any) => state.quiz.page);
   const qz = useSelector((state: any) => state.qz);
   const [quiz, setQuiz] = useState<any>([]);
   const list = quiz[currentPage];
-
-  const onResetClick = () => {
+  /*   const onResetClick = () => {
     if (currentPage == 0) {
       console.log(list);
       console.log(list.answer.split("|"));
     } else {
       dispatch(quizActions.backQuiz());
     }
-  };
+  }; */
   // page id에 따른 qzSlice의 5개 값을 퀴즈를 miniQzSlice에 저장
   useEffect(() => {
     if (Number(id) == 0) {
@@ -176,9 +174,10 @@ const Test: React.FC = () => {
     <Base>
       <div className="quiz_header">
         <h2 className="quiz_title">Quiz</h2>
+        {/* 
         <a className="quiz_back_btn" onClick={onResetClick}>
           <ArrowBackIcon />
-        </a>
+        </a> */}
       </div>
       <div className="quiz_container">
         <div className="quiz_content">
@@ -193,6 +192,7 @@ const Test: React.FC = () => {
               words={list.question.split("|")}
               page={currentPage}
               ans={list.correct.split("|")}
+              parm={id}
             />
           </div>
         </div>

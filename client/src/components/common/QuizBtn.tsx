@@ -4,7 +4,7 @@ import palette from "../../styles/palette";
 import dummyQuiz from "../../lib/dummyQuiz";
 import { useDispatch, useSelector } from "../../store";
 import { quizActions } from "../../store/quizSlice";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { resultActions } from "../../store/resultSlice";
 
 const Base = styled.button`
@@ -37,15 +37,21 @@ interface Props {
   words: string[];
   page: number;
   ans: string[];
+  parm: React.ReactNode;
 }
 
-const QuizBtn: React.FC<Props> = ({ mean, words, page, ans, ...props }) => {
+const QuizBtn: React.FC<Props> = ({
+  mean,
+  words,
+  page,
+  ans,
+  parm,
+  ...props
+}) => {
   const navigate = useNavigate();
   const isCorrect = useSelector((state) => state.quiz.pass);
   const qzPage = useSelector((state) => state.quiz.page);
   const [pass, setPass] = useState(false);
-  const [correct, setCorrect] = useState("");
-  const [answer, setanswer] = useState("");
 
   const dispatch = useDispatch();
   const onClick = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -56,22 +62,30 @@ const QuizBtn: React.FC<Props> = ({ mean, words, page, ans, ...props }) => {
     // 클릭 시 resultSlice에 정답과 맞았는지 여부를 삽입
     if (qzPage == 4) {
       if (clickedWord == answerWord) {
-        console.log("correct");
         setPass(true);
+        // 이 두개를 하나로 통합하고 pass에 pass state값을 넣는다면 이전에 기록된 state가 들어가기 때문에 옳은 답을 골랐어도 이전 문제의 pass결과가 따른다.
+        // 따라서 dispatch를 if, else 두 번 작성
+        dispatch(
+          resultActions.resultData({
+            page: qzPage,
+            pass: true,
+            word: mean,
+            answer: answerWord,
+          })
+        );
       } else {
         setPass(false);
-        console.log("fail");
+        dispatch(
+          resultActions.resultData({
+            page: qzPage,
+            pass: false,
+            word: mean,
+            answer: answerWord,
+          })
+        );
       }
-      dispatch(
-        resultActions.resultData({
-          page: qzPage,
-          pass: pass,
-          word: mean,
-          answer: answerWord,
-        })
-      );
       // 마지막 페이지이므로 결과 페이지로 넘어감
-      navigate("/testResult");
+      navigate(`/testResult/${parm}`);
     }
     // 첫번째 페이지는 state에 저장이 안된채로 넘어가기 때문에 통과 유무에 따라서 dispatch를 별개로 진행
     else if (qzPage == 0) {
@@ -100,11 +114,9 @@ const QuizBtn: React.FC<Props> = ({ mean, words, page, ans, ...props }) => {
       }
     } else {
       if (clickedWord == answerWord) {
-        console.log("correct");
         setPass(true);
         dispatch(quizActions.passQuiz());
       } else {
-        console.log("fail");
         setPass(false);
         dispatch(quizActions.failQuiz());
       }

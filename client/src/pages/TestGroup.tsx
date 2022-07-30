@@ -111,7 +111,7 @@ const TestGroup: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const onBackClick = () => {
-    navigate(-1);
+    navigate("/choseTest");
   };
 
   useEffect(() => {
@@ -119,7 +119,7 @@ const TestGroup: React.FC = () => {
       navigate("/signin", { replace: true });
       dispatch(modalActions.openNeedLoginModalOpen());
     } else {
-      const qzData = async () => {
+      const quizData = async () => {
         try {
           fetch("http://localhost:3001/user/qzData", {
             method: "post",
@@ -167,7 +167,7 @@ const TestGroup: React.FC = () => {
           console.error(error);
         }
       };
-      qzData();
+      quizData();
     }
   }, []);
 

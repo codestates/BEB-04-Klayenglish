@@ -16,6 +16,7 @@ import TestResult from "./pages/TestResult";
 import { useState, useEffect } from "react";
 import { userActions } from "./store/userSlice";
 import { WindowRounded } from "@mui/icons-material";
+import { accountActions } from "./store/accountSlice";
 // import transfer from "./components/transfer";
 import Web3 from "web3";
 import { AbiItem } from "web3-utils";
@@ -37,6 +38,7 @@ const App: React.FC = () => {
     const parseToken: any = JSON.parse(token);
     if (token) {
       dispatch(userActions.setLoggedIn());
+
       try {
         fetch("http://localhost:3001/user/auth", {
           method: "post",
@@ -76,7 +78,7 @@ const App: React.FC = () => {
         });
 
         setAccount(accounts[0]);
-
+        dispatch(accountActions.setAccount({ account: accounts[0] }));
         const balances = await window.ethereum.request({
           method: "eth_getBalance",
           params: [accounts[0], "latest"],
@@ -136,7 +138,7 @@ const App: React.FC = () => {
       <Routes>
         <Route path="/" element={<Home />}></Route>
         <Route path="/choseTest" element={<ChoseTest />}></Route>
-        <Route path="/testResult" element={<TestResult />}></Route>
+        <Route path="/testResult/:id" element={<TestResult />}></Route>
         <Route path="/testgroup/:id" element={<TestGroup />}></Route>
         <Route path="/comunity" element={<Comunity />}></Route>
         <Route path="/course/" element={<Course />}></Route>
