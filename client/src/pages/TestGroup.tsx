@@ -101,10 +101,12 @@ const TestGroup: React.FC = () => {
     level?: "master" | "diamond" | "bronze" | "gold" | "silver" | "challenger";
     name: string;
     source: string;
+    lecId: any;
   };
   const [lec, setLec] = useState<stateType>({
     name: "",
     source: "",
+    lecId: "",
   });
   const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
   const quiz = useSelector((state) => state.qz);
@@ -136,6 +138,7 @@ const TestGroup: React.FC = () => {
                 level: lecData.lec_level,
                 name: lecData.lec_name,
                 source: lecData.lec_source,
+                lecId: lecData.lec_id,
               });
               // 이미 다른 퀴즈 데이터가 저장되어 있다면 배열 초기화 후 데이터 삽입
               if (quiz.length > 1) {
@@ -190,11 +193,11 @@ const TestGroup: React.FC = () => {
           <p className="quiz-desc">하루 5문제씩 도전!</p>
         </div>
         <ul className="quiz-list">
-          <QuizItem id={0} num={1} />
-          <QuizItem id={5} num={2} />
-          <QuizItem id={10} num={3} />
-          <QuizItem id={15} num={4} />
-          <QuizItem id={20} num={5} />
+          <QuizItem id={0} num={1} lecId={lec.lecId} />
+          <QuizItem id={5} num={2} lecId={lec.lecId} />
+          <QuizItem id={10} num={3} lecId={lec.lecId} />
+          <QuizItem id={15} num={4} lecId={lec.lecId} />
+          <QuizItem id={20} num={5} lecId={lec.lecId} />
         </ul>
       </div>
     </Base>

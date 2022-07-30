@@ -337,8 +337,9 @@ app.post("/user/payment", (req, res) => {
             function (err, rows) {
               connection.query(
                 "INSERT INTO lecturestate(lec_name,userName,pass_state) values (?,?,?)",
-                [lec_id, id, null]
+                [lec_id, id, "none"]
               );
+              res.status(200).send({ ok: true, message: lec_id });
               console.log(
                 `${id}님이 lec_id : ${lec_id} 강좌를 구매하였습니다. lecturestate에 해당 정보를 저장합니다.`
               );
@@ -351,9 +352,16 @@ app.post("/user/payment", (req, res) => {
           const aryPreLec = preLec.split("|");
           const numLec = aryPreLec.join("");
           const strLec = String(numLec);
+          // mapfn : 배열 내 모든 요소를 숫자로 변경 https://hianna.tistory.com/707
           const mapfn = (arg) => Number(arg);
           const newLec = Array.from(strLec, mapfn);
-          if (newLec.includes(lec_id)) {
+          // 처음 구매하고 바로 다시 처음 강좌를 재구매 할 때
+          if (preLec == lec_id) {
+            console.log("이미 구매한 강좌입니다.");
+            res.status(400).send({ ok: false, message: lec_id });
+          }
+          // 이후 중복 구매시
+          else if (newLec.includes(lec_id)) {
             console.log("이미 구매한 강좌입니다.");
             res.status(400).send({ ok: false, message: lec_id });
           } else {
@@ -361,7 +369,17 @@ app.post("/user/payment", (req, res) => {
             const ary = [preLec + "|" + lec_id];
             connection.query(
               "UPDATE users SET taken_lectures = (?) WHERE userName = ?",
-              [[ary], id]
+              [[ary], id],
+              function (err, rows) {
+                connection.query(
+                  "INSERT INTO lecturestate(lec_name,userName,pass_state) values (?,?,?)",
+                  [lec_id, id, "none"]
+                );
+                res.status(200).send({ ok: true, message: lec_id });
+                console.log(
+                  `${id}님이 lec_id : ${lec_id} 강좌를 구매하였습니다. lecturestate에 해당 정보를 저장합니다.`
+                );
+              }
             );
           }
         }
@@ -427,10 +445,8 @@ app.post("/user/payment", (req, res) => {
               }
             }
           }
+          // https://velog.io/@yhe228/ERRHTTPHEADERSSENT-Cannot-set-headers-after-they-are-sent-to-the-client 런타임 오류 발생했음
         );
-        // -------설정-------
-        console.log(`${id}님이 ${lec_id} 강좌를 구매하였습니다.`);
-        res.status(200).send({ ok: true, message: id });
       }
     );
   } else {
@@ -473,8 +489,19 @@ app.post("/user/testData", (req, res) => {
               if (err) {
                 console.log(err);
               } else {
-                console.log(`${id}님이 보유 강좌 데이터를 불러왔습니다.`);
-                res.status(200).send({ message: rows });
+                const lecData = rows;
+                connection.query(
+                  "SELECT lec_name,pass_state FROM lecturestate WHERE userName = ?",
+                  id,
+                  function (err, rows) {
+                    if (err) {
+                      console.log(err);
+                    } else {
+                      console.log(`${id}님이 보유 강좌 데이터를 불러왔습니다.`);
+                      res.status(200).send({ lec: lecData, lecPass: rows });
+                    }
+                  }
+                );
               }
             }
           );
@@ -528,11 +555,68 @@ app.post("/user/sendResult", (req, res) => {
       [email, currentLec],
       function (err, rows) {
         const pass = rows[0].pass_state;
-        if (pass == null) {
+        if (pass == "none") {
           connection.query(
             "UPDATE lecturestate SET pass_state = (?) WHERE userName = ? AND lec_name = ?",
-            [day, email, currentLec]
+            [day, email, currentLec],
+            function (err, rows) {
+              if (err) {
+                console.log(err);
+              } else {
+                console.log(
+                  `${email}님이 ${currentLec} 강의의 ${day}일차 퀴즈를 통과했습니다.`
+                );
+                res.status(200).send({ ok: true, message: day, currentLec });
+              }
+            }
           );
+        } else {
+          // 여기서 부터는 0일차 이후
+          if (day == "0") {
+            // 만약 같은 0일차 통과시
+            console.log(
+              `${email}님은 ${currentLec} 강의의 ${day}일차 퀴즈를 이미 통과하였습니다.`
+            );
+            res
+              .status(400)
+              .send({ ok: false, message: "이미 통과한 퀴즈입니다." });
+          } else {
+            // 0일차가 아닌 다른 일차가 들어왔을 때 중복 확인
+            // 데이터 "|" 부분을 없에고 배열 내 문자열을 숫자로 변경
+            const splitPass = pass.split("|");
+            const joinPass = splitPass.join("");
+            const strPass = String(joinPass);
+            const mapfn = (arg) => Number(arg);
+            const newPass = Array.from(strPass, mapfn);
+            // 중복확인
+            if (newPass.includes(Number(day))) {
+              console.log(
+                `${email}님은 ${currentLec} 강의의 ${day}일차 퀴즈를 이미 통과하였습니다.`
+              );
+              res
+                .status(400)
+                .send({ ok: false, message: "이미 통과한 퀴즈입니다." });
+            } else {
+              // "|"를 추가해서 전송
+              const ary = [pass + "|" + day];
+              connection.query(
+                "UPDATE lecturestate SET pass_state = (?) WHERE userName = ? AND lec_name = ?",
+                [[ary], email, currentLec],
+                function (err, rows) {
+                  if (err) {
+                    console.log(err);
+                  } else {
+                    console.log(
+                      `${email}님이 ${currentLec} 강의의 ${day}일차 퀴즈를 통과했습니다.`
+                    );
+                    res
+                      .status(200)
+                      .send({ ok: true, message: ary, currentLec });
+                  }
+                }
+              );
+            }
+          }
         }
       }
     );

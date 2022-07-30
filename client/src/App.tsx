@@ -16,11 +16,6 @@ import TestResult from "./pages/TestResult";
 import { useState, useEffect } from "react";
 import { userActions } from "./store/userSlice";
 import { WindowRounded } from "@mui/icons-material";
-import { accountActions } from "./store/accountSlice";
-// import transfer from "./components/transfer";
-import Web3 from "web3";
-import { AbiItem } from "web3-utils";
-// abi 타입스크립트 interface 지정
 
 const App: React.FC = () => {
   const [account, setAccount] = useState("");
@@ -78,7 +73,7 @@ const App: React.FC = () => {
         });
 
         setAccount(accounts[0]);
-        dispatch(accountActions.setAccount({ account: accounts[0] }));
+        //dispatch(accountActions.setAccount({ account: accounts[0] }));
         const balances = await window.ethereum.request({
           method: "eth_getBalance",
           params: [accounts[0], "latest"],
