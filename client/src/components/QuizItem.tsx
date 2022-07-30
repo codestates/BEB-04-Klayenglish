@@ -8,7 +8,7 @@ import { useSelector } from "../store";
 interface Props {
   id: number;
   num: number;
-  lecId: any;
+  lecid: any;
 }
 
 const Base = styled.li`
@@ -73,25 +73,26 @@ const Base = styled.li`
 
 // 추후 각 퀴즈 아이템 데이터 별로 불러오는 로직 구현 필요
 
-const QuizItem: React.FC<Props> = ({ id, num, lecId }) => {
+const QuizItem: React.FC<Props> = ({ id, num, lecid }) => {
   const navigate = useNavigate();
   const [pass, setPass] = useState<any>();
   const passData = useSelector((state) => state.pass);
   // passSlice에서 해당 강좌id와 현재 페이지 id에 맞는 퀴즈 통과 여부를 가져온다.
   useEffect(() => {
     for (let i = 0; i < passData.length; i++) {
-      if (Number(lecId) == passData[i].lecId) {
+      if (Number(lecid) == passData[i].lecId) {
         if (passData[i].passed == "none") {
           return setPass(1);
         } else {
+          if (Number(passData[i].passed) == 0) {
+            return setPass(2);
+          }
           // 하나라도 통과했다면 해당 길이에 +1 (기본 페이지는 1부터 시작이니까)
           return setPass(passData[i].passed.split("|").length + 1);
         }
-      } else {
-        // return 쓰면 ts(2322) 오류 발생
-        return setPass(0);
       }
     }
+    return setPass(0);
   });
   const onClick = () => {
     if (num == 1) {

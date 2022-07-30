@@ -88,10 +88,8 @@ const TestList: React.FC<Props> = ({ id, image, level, name, source }) => {
         } else {
           return setPass(passData[i].passed.split("|").length);
         }
-      } else {
-        // return 쓰면 ts(2322) 오류 발생
-        return;
       }
+      // return 쓰면 ts(2322) 오류 발생
     }
   });
   return (
