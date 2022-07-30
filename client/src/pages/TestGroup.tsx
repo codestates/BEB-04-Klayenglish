@@ -193,11 +193,11 @@ const TestGroup: React.FC = () => {
           <p className="quiz-desc">하루 5문제씩 도전!</p>
         </div>
         <ul className="quiz-list">
-          <QuizItem id={0} num={1} lecId={lec.lecId} />
-          <QuizItem id={5} num={2} lecId={lec.lecId} />
-          <QuizItem id={10} num={3} lecId={lec.lecId} />
-          <QuizItem id={15} num={4} lecId={lec.lecId} />
-          <QuizItem id={20} num={5} lecId={lec.lecId} />
+          <QuizItem id={0} num={1} lecid={lec.lecId} />
+          <QuizItem id={5} num={2} lecid={lec.lecId} />
+          <QuizItem id={10} num={3} lecid={lec.lecId} />
+          <QuizItem id={15} num={4} lecid={lec.lecId} />
+          <QuizItem id={20} num={5} lecid={lec.lecId} />
         </ul>
       </div>
     </Base>
