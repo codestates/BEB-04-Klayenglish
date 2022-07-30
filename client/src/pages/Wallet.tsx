@@ -63,6 +63,7 @@ function Wallet({ account, balance, onClickConnect }: walProps) {
         headers: {
           "content-type": "application/json",
         },
+        body: JSON.stringify({ account }),
       }).then((res) => {
         if (res.status >= 200 && res.status <= 204) {
           alert("업데이트 완료");

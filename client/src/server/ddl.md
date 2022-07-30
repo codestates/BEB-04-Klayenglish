@@ -6,7 +6,7 @@ CREATE TABLE `users` ( --유저 테이블
 `nickName` varchar(255),
 `address` varchar(255), --지갑 주소
 `privateKey` varchar(255), --니모닉 key
-`taken_lectures` varchar(255) --가지고있는 강좌들 lecture table에 lec_id
+`taken_lectures` varchar(255) default '1' --가지고있는 강좌들 lecture table에 lec_id
 )
 
 alter table users add taken_lectures varchar(255);
@@ -40,13 +40,10 @@ CREATE TABLE `quiz` ( --퀴즈 테이블
 `kor_choose` varchar(255) --퀴즈의 한글보기 ex) 배|복숭아|사과^복숭아|무화과|유자^포도|배|멜론^포도|망고|사과^대추|유자|망고
 )
 
-alter table lecturestate drop pass_state;
-alter table lecturestate add pass_state varchar(255);
-
-CREATE TABLE `lecturestate` (
-`lec_name` varchar(50),
-`userName` varchar(255),
-`pass_state` char(1)
+CREATE TABLE `lecturestate` ( --강좌 통과유무 테이블
+`lec_name` varchar(50), --강좌 이름
+`userName` varchar(255), --강좌 통과한유저이름 email형식
+`pass_state` varchar(50) --강좌 통과유무 1d|2d| ....
 )
 
 ALTER TABLE "table_name" ALTER COLUMN "name_column" DROP DEFAULT;

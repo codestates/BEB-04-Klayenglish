@@ -20,6 +20,7 @@ const privateKey =
 let tokenAddress = "0x9d8D3C04240cabcF21639656F8b1F2Af0765Cf08"; // TUT Token contract address
 // let toAddress = "0x7208cd7b30Ab7Ff7F897454Aa780dF5178a58F49"; // where to send it
 let fromAddress = "0x4bFe6D25A7DACbCF9018a86eDd79A7168eBf6b7f"; // your wallet
+
 let contractABI = [
   // transfer
   {
@@ -45,6 +46,17 @@ let contractABI = [
   },
 ];
 
+const minABI = [
+  // balanceOf
+  {
+    constant: true,
+    inputs: [{ name: "_owner", type: "address" }],
+    name: "balanceOf",
+    outputs: [{ name: "balance", type: "uint256" }],
+    type: "function",
+  },
+];
+
 var connection = mysql.createConnection({
   host: process.env.DATABASE_HOST,
   user: process.env.DATABASE_USERNAME, //mysql의 id
@@ -59,22 +71,20 @@ app.use(cors());
 // app.use(cookieParser());
 
 app.post("/wallet", (req, res) => {
+  let currentAccount = req.body.account;
+  console.log(currentAccount); //연결된 주소로 바꾸기
   connection.query(
     "SELECT address FROM users ORDER BY id DESC LIMIT 1;",
     function (err, rows, fields) {
       if (rows.length > 0) {
-        const addressuser = rows[0].address;
-        console.log("로그인유저 지갑주소:", addressuser);
-        const minABI = [
-          // balanceOf
-          {
-            constant: true,
-            inputs: [{ name: "_owner", type: "address" }],
-            name: "balanceOf",
-            outputs: [{ name: "balance", type: "uint256" }],
-            type: "function",
-          },
-        ];
+        // const addressuser = rows[0].address;
+        const addressuser = "0x19eae62c6ab1906aa08253107178a8a502a97c43";
+        console.log("로그인됨", addressuser);
+
+        // 답은 비동기식 처리방법에 있다 post 요청을 받고 안에서 분명히 getRedisData를 호출하여 리턴 값을 요청했지만
+        // 비동기식 처리로 인해 getRedisData의 리턴을 기다리지 않고 res.send요청을 실행해서 이런 결과가 발생한 것이다
+        // 외부함수로 부터 리턴을 받기 위해서는 Promise형식으로 작성해야한다⚠
+
         const tokenAddress = "0x9d8D3C04240cabcF21639656F8b1F2Af0765Cf08";
         const walletAddress = addressuser; //UserAddress 불러오기
         const contract = new web3.eth.Contract(minABI, tokenAddress);
@@ -163,6 +173,7 @@ app.post("/user/login", (req, res) => {
 // user 회원가입
 app.post("/user/register", (req, res) => {
   // console.log(req.body.regForm.username);
+  console.log("setAccount ===== " + req.body.setAccount);
   const id = req.body.regForm.username;
   // json형식의 object에서 각 value만 담아서 배열을 만든다 아래insert ?구문에 들어갈 [ary]배열을 만들기 위함
   const valExtract = req.body.regForm;
@@ -173,7 +184,7 @@ app.post("/user/register", (req, res) => {
   }
 
   connection.query(
-    "SELECT * FROM users where userName=? and not userName='server'",
+    "SELECT * FROM users where userName=?",
     id,
     function (err, rows, fields) {
       if (err) {
@@ -269,8 +280,6 @@ app.post("/selectCard", (req, res) => {
 // 강좌구매 시 작동(유효성 검사 구현) -규현
 app.post("/crawling", (req, res) => {
   //크롤링
-  // console.log(req.body.extractEng);
-  // console.log(req.body.extractEng[0].word);
   const reqCnt = req.body.extractEng.length;
   let question = "";
   let answer = "";
@@ -288,14 +297,9 @@ app.post("/crawling", (req, res) => {
     }
   }
 
-  // const valExtract = req.body.regForm;
   let ary = [];
 
-  // for (key in valExtract) {
-  //   ary.push(valExtract[key]);
-  // }
   ary = [6, answer, question, correct, 5, "e2k"];
-  // console.log(ary.toString());
 
   connection.query(
     "INSERT INTO qz (lec_id,answer,question,correct,qz_num,qz_category) values (?)",
@@ -310,11 +314,13 @@ app.post("/crawling", (req, res) => {
     }
   );
 });
+
 // 강좌구매 시 작동(유효성 검사 필요)
 app.post("/user/payment", (req, res) => {
   const token = req.headers.authorization.split("Bearer ")[1];
   const result = jwt.verify(token);
   const info = req.body.lecInfo;
+  console.log(info);
   const { lec_id, lec_price } = info;
   if (result.ok) {
     const { id, pwd, nickname } = result;

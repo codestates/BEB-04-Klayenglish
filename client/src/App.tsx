@@ -33,6 +33,7 @@ const App: React.FC = () => {
     const parseToken: any = JSON.parse(token);
     if (token) {
       dispatch(userActions.setLoggedIn());
+
       try {
         fetch("http://localhost:3001/user/auth", {
           method: "post",
@@ -72,7 +73,7 @@ const App: React.FC = () => {
         });
 
         setAccount(accounts[0]);
-
+        //dispatch(accountActions.setAccount({ account: accounts[0] }));
         const balances = await window.ethereum.request({
           method: "eth_getBalance",
           params: [accounts[0], "latest"],

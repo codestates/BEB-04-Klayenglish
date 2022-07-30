@@ -31,7 +31,6 @@ function getDateRangeData(param1, param2) {
 const getHTML = async (paramDate) => {
   let url =
     "https://wquiz.dict.naver.com/endic/news/home.dict?targetDate=" + paramDate;
-  //   console.log("url = " + paramDate);
   try {
     return await axios.get(url);
   } catch (err) {
@@ -48,7 +47,6 @@ const parsing = async (paramDate) => {
   let extractEng = []; //공백제거를 위해 생성
 
   tab1_eng.each((idx, node) => {
-    // console.log(idx + " " + $(node).first().text());
     extractEng.push({
       idx: idx,
       word: $(node)
@@ -61,10 +59,6 @@ const parsing = async (paramDate) => {
       answer: tab1_kor,
     });
   });
-  //console.log(JSON.stringify(extractEng));
-
-  // axios.get("url주소",[,config])
-  // axios.post("url주소",{data객체},[,config])
 
   axios
     .post("http://localhost:3001/crawling", { extractEng })
@@ -74,19 +68,24 @@ const parsing = async (paramDate) => {
     .catch((error) => {
       console.log(error.response);
     });
-
-  //파일생성
-  //   fs.writeFileSync(
-  //     "/home/parksk/Desktop/blockchain_5/team_klayenglish/BEB-04-Klayenglish/client/src/lib/" +
-  //       resToday +
-  //       ".json",
-  //     JSON.stringify(wordEngArray)
-  //   );
-  //   console.log(wordEngArray);
 };
 
 const fromTo = getDateRangeData("2022-06-26", "2022-06-30"); //결과는 (-)하이픈 없이 나옴
-//console.log(fromTo);
+
+for (let i = 0; i < fromTo.length; i++) {
+  //   console.log(fromTo[i]);
+  parsing(fromTo[i]);
+}
+// parsing("");
+
+//파일생성
+//   fs.writeFileSync(
+//     "/home/parksk/Desktop/blockchain_5/team_klayenglish/BEB-04-Klayenglish/client/src/lib/" +
+//       resToday +
+//       ".json",
+//     JSON.stringify(wordEngArray)
+//   );
+//   console.log(wordEngArray);
 
 //   let course = [];
 //   $courseList.each((idx, node) => {
@@ -100,8 +99,3 @@ const fromTo = getDateRangeData("2022-06-26", "2022-06-30"); //결과는 (-)하�
 //       img: $(node).find(".card-image > figure > img").attr("src"),
 //     });
 //   });
-for (let i = 0; i < fromTo.length; i++) {
-  //   console.log(fromTo[i]);
-  parsing(fromTo[i]);
-}
-// parsing("");
