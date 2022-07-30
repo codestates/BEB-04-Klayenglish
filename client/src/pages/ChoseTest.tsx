@@ -13,6 +13,7 @@ import TestList from "../components/TestList";
 import dummyTestList from "../lib/dummyTestList";
 import { modalActions } from "../store/modalSlice";
 import { lecData } from "../store/lectureSlice";
+import { setPassData } from "../store/passSlice";
 
 const Base = styled.div`
   color: ${palette.gray[200]};
@@ -37,6 +38,7 @@ const ChoseTest: React.FC = () => {
   const dispatch = useDispatch();
   const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
   const lecture = useSelector((state) => state.lecture);
+  const passData = useSelector((state) => state.pass);
   // map함수 실행
   const testList: JSX.Element[] = lecture.map((el) => (
     <TestList
@@ -71,7 +73,27 @@ const ChoseTest: React.FC = () => {
                 return alert(result.message);
               }
               // DB에서 가져온 데이터를 slice에 넣어주는데, 중복저장이 안되게 for문을 먼저 진행.
-              result.message.map((el: any) => {
+              // 이건 lecturestate 데이터 값을 불러옴
+              // 추후 퍼센테이지 채울 때 필요함
+              const passList = result.lecPass.map((el: any) => el);
+              // 강좌에 따른 통과진행률 데이터를 passSlice에 저장
+              // 퀴즈를 통과하고 다시 들어올 때 새로고침을 안하면 통과율 저장이 안됨, slice내 추가 action을 만들어야 할 것 같다 - 규현
+              passList.map((el: any) => {
+                for (let i = 0; i < passData.length; i++) {
+                  if (el.lec_name == passData[i].lecId) {
+                    console.log("이미 불러온 데이터 입니다.");
+                    return;
+                  }
+                }
+                dispatch(
+                  setPassData({
+                    lecId: el.lec_name,
+                    passed: el.pass_state,
+                  })
+                );
+              });
+              // lecture의 데이터를 넣는 lectureSlice에 넣는 과정
+              result.lec.map((el: any) => {
                 for (let i = 0; i < lecture.length; i++) {
                   if (el.lec_id == lecture[i].id) {
                     console.log("이미 불러온 데이터 입니다.");

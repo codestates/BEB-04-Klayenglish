@@ -16,6 +16,7 @@ import TestResult from "./pages/TestResult";
 import { useState, useEffect } from "react";
 import { userActions } from "./store/userSlice";
 import { WindowRounded } from "@mui/icons-material";
+import Footer from "./components/Footer";
 // import transfer from "./components/transfer";
 import Web3 from "web3";
 import { AbiItem } from "web3-utils";

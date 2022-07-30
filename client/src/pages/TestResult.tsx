@@ -10,6 +10,7 @@ import ResultList from "../components/common/ResultList";
 import ReplayIcon from "@mui/icons-material/Replay";
 import HomeIcon from "@mui/icons-material/Home";
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
+import { useDispatch, useSelector } from "../store";
 
 // accountSlice 사용에 필요한 툴
 // useDispatch -> action을 통해서 account값을 바꿀 수 있다.
@@ -17,8 +18,6 @@ import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 //  dispatch(accountActions.setAccount({ account: "thisIsAccount" }));
 
 // useSelector -> useSelector로 store에 있는 account값을 가져올 수 있다. ex) const accountValue = useSelector((state) => state.account);
-import { useDispatch, useSelector } from "../store";
-import { accountActions } from "../store/accountSlice";
 
 const Base = styled.div`
   color: ${palette.gray[200]};
@@ -173,7 +172,10 @@ const TestResult: React.FC<Props> = () => {
             </div>
             <div className="link_text">다시 풀기</div>
           </li>
-          <li className="result_menu_item" onClick={() => navigate(`/`)}>
+          <li
+            className="result_menu_item"
+            onClick={() => window.location.replace("/")}
+          >
             <div className="list">
               <HomeIcon className="link_icon" />
             </div>

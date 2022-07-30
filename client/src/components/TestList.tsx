@@ -1,11 +1,10 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import palette from "../styles/palette";
 import TestLevel from "./common/TestLevel";
-import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import dummyTestList from "../lib/dummyTestList";
 import { useSelector, useDispatch } from "../store";
+import Bar from "./common/Bar";
 
 const Base = styled.div`
   box-sizing: border-box;
@@ -60,6 +59,7 @@ const Base = styled.div`
       width: 90%;
       background-color: ${palette.gray[200]};
       border-radius: 1rem;
+      display: flex;
     }
     .test-complete-total {
       margin-top: 0.5rem;
@@ -78,6 +78,22 @@ interface Props {
 
 const TestList: React.FC<Props> = ({ id, image, level, name, source }) => {
   const navi = useNavigate();
+  const [pass, setPass] = useState<any>(0);
+  const passData = useSelector((state) => state.pass);
+  useEffect(() => {
+    for (let i = 0; i < passData.length; i++) {
+      if (id == passData[i].lecId) {
+        if (passData[i].passed == "none") {
+          return setPass(0);
+        } else {
+          return setPass(passData[i].passed.split("|").length);
+        }
+      } else {
+        // return 쓰면 ts(2322) 오류 발생
+        return;
+      }
+    }
+  });
   return (
     <Base onClick={() => navi(`/testgroup/${id}`)}>
       <TestLevel level={level} position="ab" />
@@ -88,8 +104,12 @@ const TestList: React.FC<Props> = ({ id, image, level, name, source }) => {
         <span className="text-box-detail">
           {source} {name}
         </span>
-        <div className="test-complete-bar"></div>
-        <span className="test-complete-total">0% complete</span>
+        <div className="test-complete-bar">
+          {pass > 0 ? <Bar size={pass} /> : ""}
+        </div>
+        <span className="test-complete-total">
+          {pass ? pass * 20 : 0}% complete
+        </span>
       </div>
     </Base>
   );
