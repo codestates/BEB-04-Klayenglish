@@ -42,4 +42,5 @@
 - passport
 - nodemailer
 
-[![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=ge5rg2)](https://github.com/ge5rg2/github-readme-stats)
+### ERD
+<img src="https://velog.velcdn.com/images/ge5rg2/post/9f792d2f-d2c9-478c-a21b-fef36139449d/image.png" />
