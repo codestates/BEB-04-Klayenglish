@@ -27,3 +27,19 @@
   - Solidity
   - Ethers
 
+###  Package
+- react
+- @reduxjs/toolkit
+- axios
+- react-router-dom
+- styled-components
+- @web3-react/core
+- @mui/material
+- typescript
+- jsonwebtoken
+- mysql
+- typeorm
+- passport
+- nodemailer
+
+[![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=ge5rg2)](https://github.com/ge5rg2/github-readme-stats)
