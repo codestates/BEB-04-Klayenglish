@@ -1,6 +1,8 @@
-# BEB-04-Klayenglish
+# BEB-04-Klayenglish👨‍💼
 
 ## 블록체인 기반 영어교육 어플리케이션입니다.
+
+<img src="https://velog.velcdn.com/images/ge5rg2/post/1a085b85-c200-4674-a6b5-ab6432d1d79e/image.png" />
 
 ###  기술 스택
 - Program Languege
