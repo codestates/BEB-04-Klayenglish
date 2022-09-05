@@ -46,3 +46,6 @@
 
 ### ERD
 <img src="https://velog.velcdn.com/images/ge5rg2/post/9f792d2f-d2c9-478c-a21b-fef36139449d/image.png" />
+
+### Example
+<img src="https://velog.velcdn.com/images/ge5rg2/post/43302ddf-3aff-40bd-8ad7-952a58e7119e/image.gif" />
