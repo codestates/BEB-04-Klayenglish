@@ -49,3 +49,10 @@
 
 ### Example
 <img src="https://velog.velcdn.com/images/ge5rg2/post/43302ddf-3aff-40bd-8ad7-952a58e7119e/image.gif" />
+
+<img src="https://velog.velcdn.com/images/ge5rg2/post/b5857fb7-2ed3-4511-a591-a9999dce2ac6/image.png" />
+
+### More
+[![Velog's GitHub stats](https://velog-readme-stats.vercel.app/api?name=ge5rg2)](https://velog.io/@ge5rg2/Project-Klayenglish)
+
+![Footer](https://capsule-render.vercel.app/api?type=waving&color=auto&height=200&section=footer)
